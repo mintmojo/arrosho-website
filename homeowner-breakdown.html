@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arrosho — Selling Without the 7%</title>
+<meta name="description" content="No commission. No closing costs on your side. No listing, no open houses, no sign in the yard. Watch the breakdown, then text Ethan at (956) 379-7019.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="arrosho%20logo-fedf7f80.svg">
+<meta property="og:title" content="Arrosho — Selling Without the 7%">
+<meta property="og:description" content="What you don't deal with: the fees, the listing, the deadline. Watch the breakdown.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Archivo+Black&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --slate:#2B3F45;
+    --steel:#6894A1;
+    --sage:#6A7062;
+    --olive:#3E442B;
+    --white:#E6E8E4;
+    --grey:#A1B0AB;
+    --black:#1B1F0A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--white);
+    color:var(--black);
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:0;
+  }
+  a{color:inherit; text-decoration:none;}
+  img,svg{display:block; max-width:100%;}
+  section{position:relative; overflow:hidden;}
+
+  .wrap{
+    max-width:1040px;
+    margin:0 auto;
+    padding:0 48px;
+    position:relative;
+    z-index:1;
+  }
+  .stream-bg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(140% 100% at 8% 8%, rgba(27,31,10,0.55) 0%, rgba(27,31,10,0) 42%),
+      radial-gradient(140% 120% at 100% 0%, rgba(104,148,161,0.55) 0%, rgba(43,63,69,0) 55%),
+      linear-gradient(155deg, #24343A 0%, #3A555F 42%, #6894A1 78%, #7CA0AC 100%);
+    padding:44px 48px 72px;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events:none;
+    mix-blend-mode:overlay;
+  }
+  .hero-inner{
+    max-width:1040px;
+    width:100%;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+    text-align:center;
+  }
+  .wordmark{
+    color:var(--white);
+    margin:0 auto 44px;
+    width:min(230px, 52vw);
+  }
+  .brand-word{display:block; width:100%; height:auto;}
+  h1.headline{
+    font-family:'Archivo Black', sans-serif;
+    font-weight:400;
+    font-size:clamp(34px, 5.6vw, 68px);
+    line-height:1.0;
+    color:var(--white);
+    letter-spacing:-0.025em;
+    max-width:900px;
+    margin:0 auto;
+    text-transform:uppercase;
+    text-wrap:balance;
+  }
+  .hero-copy{
+    margin:22px auto 0;
+    max-width:620px;
+    font-size:18px;
+    line-height:1.6;
+    color:var(--white);
+    opacity:0.85;
+    text-wrap:balance;
+  }
+  .hero-tag{
+    display:inline-block;
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    font-size:12px;
+    color:var(--white);
+    opacity:0.7;
+    border:1px solid rgba(230,232,228,0.28);
+    border-radius:999px;
+    padding:8px 16px;
+    margin-bottom:24px;
+  }
+
+  /* ---------- VIDEO ---------- */
+  .video-shell{
+    max-width:900px;
+    margin:44px auto 0;
+    position:relative;
+    z-index:1;
+  }
+  .video-frame{
+    position:relative;
+    padding-top:56.25%;
+    border-radius:20px;
+    overflow:hidden;
+    background:#12181A;
+    border:1px solid rgba(230,232,228,0.18);
+    box-shadow:0 24px 60px rgba(0,0,0,0.35);
+  }
+  .video-frame iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+  }
+  .video-note{
+    margin-top:16px;
+    font-size:14px;
+    color:var(--white);
+    opacity:0.65;
+    text-align:center;
+  }
+
+  .cta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    justify-content:center;
+    margin-top:32px;
+    position:relative;
+    z-index:1;
+  }
+  .btn-primary{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:var(--steel);
+    color:var(--black);
+    font-weight:600;
+    font-size:16.5px;
+    padding:17px 30px;
+    border-radius:14px;
+    border:none;
+    cursor:pointer;
+    transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .btn-primary:hover{background:#7CA0AC; transform:translateY(-2px);}
+  .btn-ghost{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:rgba(230,232,228,0.08);
+    border:1px solid rgba(230,232,228,0.28);
+    color:var(--white);
+    font-weight:600;
+    font-size:16.5px;
+    padding:17px 30px;
+    border-radius:14px;
+    transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .btn-ghost:hover{background:rgba(230,232,228,0.16); transform:translateY(-2px);}
+  .btn-primary svg, .btn-ghost svg{width:19px; height:19px; flex-shrink:0;}
+
+  /* ---------- THREE POINTS ---------- */
+  .points{
+    background:#D7E0E2;
+    padding:104px 48px 96px;
+  }
+  .sec-head{
+    text-align:center;
+    max-width:680px;
+    margin:0 auto 56px;
+  }
+  .eyebrow{
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    font-size:13px;
+    color:var(--steel);
+    margin-bottom:18px;
+  }
+  .sec-head h2{
+    font-family:'Archivo Black', sans-serif;
+    font-size:clamp(28px, 3.8vw, 42px);
+    color:var(--black);
+    line-height:1.15;
+    text-wrap:balance;
+  }
+  .point-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+    max-width:1040px;
+    margin:0 auto;
+  }
+  .point{
+    background:var(--slate);
+    color:var(--white);
+    border-radius:24px;
+    padding:40px 34px;
+  }
+  .point:nth-child(2){background:var(--olive);}
+  .point-num{
+    font-family:'Archivo', sans-serif;
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--grey);
+    margin-bottom:14px;
+  }
+  .point h3{
+    font-family:'Archivo Black', sans-serif;
+    font-size:24px;
+    margin-bottom:14px;
+    line-height:1.2;
+  }
+  .point p{
+    font-size:15.5px;
+    line-height:1.65;
+    opacity:0.84;
+  }
+  .point p + p{margin-top:12px;}
+
+  /* ---------- MECHANICS ---------- */
+  .mech{
+    background:var(--slate);
+    color:var(--white);
+    padding:100px 48px;
+  }
+  .mech h2{
+    font-family:'Archivo Black', sans-serif;
+    font-size:clamp(28px, 3.4vw, 40px);
+    line-height:1.18;
+    margin-bottom:22px;
+    max-width:620px;
+    text-wrap:balance;
+  }
+  .mech p{
+    font-size:17px;
+    line-height:1.7;
+    color:var(--white);
+    opacity:0.82;
+    max-width:640px;
+  }
+  .mech p + p{margin-top:16px;}
+  .mech .eyebrow{color:var(--grey);}
+  .mech-note{
+    margin-top:32px;
+    border-left:3px solid var(--steel);
+    padding:6px 0 6px 22px;
+    max-width:640px;
+  }
+  .mech-note p{font-size:16px; opacity:0.72;}
+
+  /* ---------- FAQ ---------- */
+  .faq{
+    background:#DDE0D2;
+    padding:104px 48px;
+  }
+  .faq-list{
+    max-width:820px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+  }
+  details.qa{
+    border-bottom:1px solid rgba(27,31,10,0.14);
+    padding:22px 0;
+  }
+  details.qa:first-child{border-top:1px solid rgba(27,31,10,0.14);}
+  details.qa summary{
+    list-style:none;
+    cursor:pointer;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:20px;
+    font-size:18px;
+    font-weight:600;
+    color:var(--black);
+    line-height:1.4;
+  }
+  details.qa summary::-webkit-details-marker{display:none;}
+  details.qa summary::after{
+    content:"+";
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    font-size:24px;
+    line-height:1;
+    color:var(--steel);
+    flex-shrink:0;
+    transition:transform 0.2s ease;
+  }
+  details.qa[open] summary::after{content:"–";}
+  details.qa p{
+    margin-top:14px;
+    font-size:16px;
+    line-height:1.7;
+    color:var(--olive);
+    max-width:680px;
+  }
+  details.qa p + p{margin-top:12px;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{
+    background:var(--olive);
+    color:var(--white);
+    padding:104px 48px;
+    text-align:center;
+  }
+  .contact .eyebrow{color:var(--grey);}
+  .contact h2{
+    font-family:'Archivo Black', sans-serif;
+    font-size:clamp(28px, 3.6vw, 42px);
+    line-height:1.18;
+    margin:0 auto 18px;
+    max-width:680px;
+    text-wrap:balance;
+  }
+  .contact p.lede{
+    font-size:16.5px;
+    line-height:1.7;
+    opacity:0.84;
+    max-width:520px;
+    margin:0 auto 34px;
+    text-wrap:balance;
+  }
+  .phone-big{
+    display:inline-block;
+    font-family:'Archivo Black', sans-serif;
+    font-size:clamp(30px, 5vw, 46px);
+    letter-spacing:-0.01em;
+    color:var(--white);
+    margin:8px 0 6px;
+  }
+  .phone-sub{
+    font-size:14px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    color:var(--grey);
+    margin-bottom:32px;
+  }
+  .contact-meta{
+    margin-top:36px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px 28px;
+    justify-content:center;
+    font-size:15px;
+    opacity:0.78;
+  }
+  .contact-meta span{display:inline-flex; align-items:center; gap:9px;}
+  .contact-meta svg{width:16px; height:16px; flex-shrink:0;}
+
+  footer{
+    background:var(--black);
+    color:var(--grey);
+    text-align:center;
+    padding:32px 24px 32px;
+    font-size:13px;
+  }
+  footer a{border-bottom:1px solid rgba(161,176,171,0.4);}
+
+  /* ---------- STICKY MOBILE BAR ---------- */
+  .sticky-bar{
+    display:none;
+    position:fixed;
+    left:0; right:0; bottom:0;
+    z-index:50;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(27,31,10,0.94);
+    backdrop-filter:blur(8px);
+    border-top:1px solid rgba(230,232,228,0.14);
+    gap:10px;
+  }
+  .sticky-bar a{
+    flex:1;
+    justify-content:center;
+    padding:15px 12px;
+    font-size:16px;
+    border-radius:12px;
+  }
+
+  @media (max-width:900px){
+    .point-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:860px){
+    .wrap{padding:0 22px;}
+    .hero{padding:32px 22px 56px;}
+    .points, .mech, .faq, .contact{padding-left:22px; padding-right:22px;}
+    .points{padding-top:76px; padding-bottom:72px;}
+    .mech, .faq, .contact{padding-top:76px; padding-bottom:76px;}
+    .point{padding:32px 26px;}
+    .cta-row{flex-direction:column;}
+    .cta-row a{justify-content:center;}
+    .video-shell{margin-top:32px;}
+    body{padding-bottom:82px;}
+    .sticky-bar{display:flex;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO + VIDEO ===================== -->
+<section class="hero">
+  <svg class="stream-bg" viewBox="0 0 1200 800" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-20,560 C 150,520 220,610 340,580 C 460,550 520,640 660,600 C 800,560 860,650 1000,610 C 1100,585 1160,610 1230,590" stroke="#E6E8E4" stroke-width="2" opacity="0.16"/>
+    <path d="M-20,610 C 140,660 240,600 360,630 C 480,660 560,590 690,625 C 820,660 900,600 1020,635 C 1110,660 1170,630 1230,650" stroke="#E6E8E4" stroke-width="1.5" opacity="0.1"/>
+    <path d="M-20,505 C 160,470 210,540 330,515 C 460,488 540,545 650,520 C 780,492 850,545 980,520 C 1080,500 1150,520 1230,505" stroke="#E6E8E4" stroke-width="1.5" opacity="0.09"/>
+  </svg>
+  <div class="hero-inner">
+    <a class="wordmark" href="https://arrosho.com" aria-label="Arrosho home">
+      <svg class="brand-word" viewBox="-6.6 0 1874.1 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Arrosho">
+        <g transform="translate(-8,23) scale(0.9)">
+          <polygon points="222,70 278,70 391.5,430 315.5,430 250,155 184.5,430 108.5,430" fill="currentColor"></polygon>
+          <path d="M 54.62,362.98 C 60.20,357.39 66.74,335.87 88.09,329.47 C 109.43,323.07 155.75,336.56 182.67,324.57 C 209.59,312.59 222.68,269.54 249.60,257.56 C 276.52,245.57 321.69,256.48 344.19,252.66 C 368.00,248.60 381.50,219.00 392.00,204.50" fill="none" stroke="#3F9EAF" stroke-width="17.5" stroke-linecap="round"></path>
+          <path d="M 72.37,370.86 C 77.29,365.94 83.07,346.94 101.90,341.30 C 120.73,335.65 161.61,347.55 185.36,336.98 C 209.11,326.40 220.66,288.42 244.41,277.85 C 268.16,267.27 308.02,276.89 327.87,273.53 C 354.00,268.50 375.00,224.00 392.00,204.50" fill="none" stroke="#3F9EAF" stroke-width="13.75" stroke-linecap="round" opacity="0.75"></path>
+          <path d="M 89.12,378.75 C 93.39,374.48 98.39,358.02 114.71,353.12 C 131.03,348.23 166.46,358.55 187.04,349.38 C 207.63,340.22 217.64,307.30 238.22,298.13 C 258.81,288.97 293.35,297.31 310.55,294.39 C 340.00,289.00 368.00,238.00 392.00,204.50" fill="none" stroke="#3F9EAF" stroke-width="11.25" stroke-linecap="round" opacity="0.5"></path>
+        </g>
+        <g transform="translate(392,0)">
+          <polygon fill="currentColor" points="0,90 47,90 47,238 65,410 0,410"></polygon>
+          <path fill="currentColor" d="M 47,90 L 138,90 Q 196,90 196,148 L 196,180 Q 196,238 138,238 L 47,238 L 47,192 L 124,192 Q 150,192 150,164 Q 150,136 124,136 L 47,136 Z"></path>
+          <path fill="currentColor" d="M 100,220 L 149,220 L 210,410 L 145,410 Z"></path>
+        </g>
+        <g transform="translate(646,0)">
+          <polygon fill="currentColor" points="0,90 47,90 47,238 65,410 0,410"></polygon>
+          <path fill="currentColor" d="M 47,90 L 138,90 Q 196,90 196,148 L 196,180 Q 196,238 138,238 L 47,238 L 47,192 L 124,192 Q 150,192 150,164 Q 150,136 124,136 L 47,136 Z"></path>
+          <path fill="currentColor" d="M 100,220 L 149,220 L 210,410 L 145,410 Z"></path>
+        </g>
+        <g transform="translate(900,0)">
+          <path fill="currentColor" fill-rule="evenodd" d="M 0,150 Q 0,86 64,86 L 136,86 Q 200,86 200,150 L 200,350 Q 200,414 136,414 L 64,414 Q 0,414 0,350 Z M 52,163 Q 52,127 79,127 L 121,127 Q 148,127 148,163 L 148,337 Q 148,373 121,373 L 79,373 Q 52,373 52,337 Z"></path>
+        </g>
+        <g transform="translate(1146,0)">
+          <path fill="currentColor" d="M 190,163 L 143,163 Q 143,133 113,133 L 77,133 Q 47,133 47,163 L 47,197 Q 47,227 77,227 L 143,227 Q 190,227 190,274 L 190,340 Q 190,410 120,410 L 60,410 Q 0,410 0,350 L 0,320 L 47,320 L 47,347 Q 47,367 77,367 L 120,367 Q 143,367 143,337 L 143,303 Q 143,273 113,273 L 47,273 Q 0,273 0,226 L 0,160 Q 0,90 70,90 L 130,90 Q 190,90 190,150 Z"></path>
+        </g>
+        <g transform="translate(1380,0)">
+          <polygon fill="currentColor" points="0,90 47,90 65,410 0,410"></polygon>
+          <polygon fill="currentColor" points="135,90 200,90 200,410 153,410"></polygon>
+          <polygon fill="currentColor" points="52,226 145,226 148,274 55,274"></polygon>
+        </g>
+        <g transform="translate(1627,0)">
+          <path fill="currentColor" fill-rule="evenodd" d="M 0,150 Q 0,86 64,86 L 136,86 Q 200,86 200,150 L 200,350 Q 200,414 136,414 L 64,414 Q 0,414 0,350 Z M 52,163 Q 52,127 79,127 L 121,127 Q 148,127 148,163 L 148,337 Q 148,373 121,373 L 79,373 Q 52,373 52,337 Z"></path>
+        </g>
+      </svg>
+    </a>
+
+    <div class="hero-tag">For homeowners</div>
+    <h1 class="headline">Seven percent of your home's value should stay in your pocket.</h1>
+    <p class="hero-copy">Agents usually take a commission, and you pay closing costs. I take no commission from you. No closing costs on your side. No sign in the yard. Here's the whole breakdown in a few minutes — then decide if it's for you.</p>
+
+    <div class="video-shell">
+      <div class="video-frame">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/RDdMWPZxcGI?rel=0&modestbranding=1&playsinline=1"
+          title="Arrosho — the homeowner breakdown"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+      <p class="video-note">Best with sound on. Watch the whole thing — the last part is the part that matters.</p>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn-primary" href="sms:+19563797019?&body=Hi%20Ethan%20%E2%80%94%20saw%20the%20video.%20My%20name%20is%20">Text me: (956) 379-7019
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </a>
+      <a class="btn-ghost" href="tel:+19563797019">Or call
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== THREE POINTS ===================== -->
+<section class="points">
+  <svg class="stream-bg" viewBox="0 0 1200 900" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-20,120 C 160,150 220,90 360,115 C 500,140 560,85 700,110 C 840,135 900,85 1040,105 C 1130,118 1180,110 1230,115" stroke="#6A7062" stroke-width="2" opacity="0.14"/>
+    <path d="M-20,800 C 150,770 230,830 370,800 C 510,770 580,825 720,800 C 850,777 920,825 1050,800 C 1130,785 1180,800 1230,790" stroke="#6894A1" stroke-width="2" opacity="0.13"/>
+  </svg>
+  <div class="sec-head">
+    <div class="eyebrow">The short version</div>
+    <h2>Three things you don't deal with</h2>
+  </div>
+  <div class="point-grid">
+    <div class="point">
+      <div class="point-num">One — the fees</div>
+      <h3>Zero on your side</h3>
+      <p>No commission. No closing costs on your end. I get paid by the buyer at closing.</p>
+      <p>On the market, between the agents and the seller's side of closing, you're giving up 7–8%. On a million-dollar house that's $70,000–$80,000. That's not a discount I'm offering — it's money that never leaves your pocket.</p>
+    </div>
+    <div class="point">
+      <div class="point-num">Two — the listing</div>
+      <h3>Nobody has to know</h3>
+      <p>No open houses. No photographer in your bedroom. No sign in the yard telling the whole street your business.</p>
+      <p>Sometimes it's one guy, one visit, twenty minutes — and he doesn't even have to go inside.</p>
+    </div>
+    <div class="point">
+      <div class="point-num">Three — the deadline</div>
+      <h3>You pick the timeline</h3>
+      <p>Close in thirty days if you've already got the next place. Or next spring, after your kids graduate.</p>
+      <p>Need to stay in the house a few months after closing while you figure out where you're going? That's normal here. Nobody's standing outside with boxes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MECHANICS ===================== -->
+<section class="mech">
+  <svg class="stream-bg" viewBox="0 0 1200 700" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-20,90 C 140,60 210,120 340,95 C 470,70 540,120 670,95 C 800,72 870,115 1000,95 C 1090,82 1160,92 1230,88" stroke="#2B3F45" stroke-width="2" opacity="0.08"/>
+    <path d="M-20,630 C 160,600 240,650 380,625 C 520,600 590,645 730,620 C 860,598 930,640 1060,618 C 1130,606 1180,618 1230,612" stroke="#6894A1" stroke-width="2" opacity="0.1"/>
+  </svg>
+  <div class="wrap">
+    <div class="eyebrow">If that sounds too good — fair</div>
+    <h2>Here's the actual mechanics</h2>
+    <p>It's me and a short list of builders I talk to. They tell me what they're hunting, I go find it, and they pay me at closing. That's it.</p>
+    <p>I'd be out of business fast if I brought them bad deals — so I'm not going to waste your time with a lowball either.</p>
+    <div class="mech-note">
+      <p>And if squeezing out the absolute highest number matters more to you than any of this — put it on the market and go get every dollar you can. Genuinely. This isn't for everybody.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="faq">
+  <svg class="stream-bg" viewBox="0 0 1200 700" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-20,100 C 150,130 220,75 350,105 C 480,133 550,80 680,108 C 810,134 880,82 1010,108 C 1100,124 1160,110 1230,116" stroke="#3E442B" stroke-width="2" opacity="0.09"/>
+    <path d="M-20,615 C 160,585 240,635 380,608 C 520,582 590,628 730,602 C 860,578 930,622 1060,600 C 1130,588 1180,600 1230,594" stroke="#6894A1" stroke-width="2" opacity="0.1"/>
+  </svg>
+  <div class="sec-head">
+    <div class="eyebrow">Straight answers</div>
+    <h2>The questions everybody asks first</h2>
+  </div>
+  <div class="faq-list">
+    <details class="qa">
+      <summary>What does this cost me?</summary>
+      <p>Nothing. No commission, and no closing costs on your side. I'm paid by the buyer at closing, not by you.</p>
+    </details>
+    <details class="qa">
+      <summary>Can you just tell me a number from my address?</summary>
+      <p>No — and be careful with anyone who does. What a builder pays depends on how much of the lot they can actually build on, and I can't see that from the street.</p>
+      <p>Ten minutes on the phone and I can tell you something real.</p>
+    </details>
+    <details class="qa">
+      <summary>Am I committing to anything by texting you?</summary>
+      <p>No. You're not signing anything. If it's not for you, tell me no and we're done. Your house, your call.</p>
+    </details>
+    <details class="qa">
+      <summary>I don't know where I'd move yet. Is it too early to talk?</summary>
+      <p>No — that's kind of the point of talking early. Most people don't have it figured out. You can close in thirty days, or next spring, and staying in the house for a few months after closing is normal here.</p>
+    </details>
+    <details class="qa">
+      <summary>Will my neighbors find out I'm selling?</summary>
+      <p>Not from me. There's no listing, no sign, no open house, and no photos online. Sometimes it's one visit, twenty minutes, and he doesn't even go inside.</p>
+    </details>
+    <details class="qa">
+      <summary>Is this the best way to sell?</summary>
+      <p>Not always, and I'll say so. If getting the absolute highest number matters more to you than the fees, the privacy, and the timeline — list it on the market and go get every dollar. This isn't for everybody.</p>
+    </details>
+    <details class="qa">
+      <summary>What do I send in the first text?</summary>
+      <p>Just your name and your address. That's enough to start. We'll set up ten minutes on the phone from there.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="contact" id="contact">
+  <svg class="stream-bg" viewBox="0 0 1200 700" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-20,90 C 140,60 210,120 340,95 C 470,70 540,120 670,95 C 800,72 870,115 1000,95 C 1090,82 1160,92 1230,88" stroke="#E6E8E4" stroke-width="2" opacity="0.1"/>
+    <path d="M-20,620 C 160,590 240,640 380,613 C 520,587 590,633 730,607 C 860,583 930,627 1060,605 C 1130,593 1180,605 1230,599" stroke="#A1B0AB" stroke-width="2" opacity="0.12"/>
+  </svg>
+  <div class="wrap">
+    <div class="eyebrow">Contact</div>
+    <h2>Send me your name and your address. That's the whole first step.</h2>
+    <p class="lede">You're not signing anything. If it's not for you, tell me no and we're done.</p>
+
+    <a class="phone-big" href="tel:+19563797019">(956)&nbsp;379-7019</a>
+    <div class="phone-sub">Ethan · Arrosho</div>
+
+    <div class="cta-row">
+      <a class="btn-primary" href="sms:+19563797019?&body=Hi%20Ethan%20%E2%80%94%20saw%20the%20video.%20My%20name%20is%20">Text me
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </a>
+      <a class="btn-ghost" href="tel:+19563797019">Call instead
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </a>
+    </div>
+
+    <div class="contact-meta">
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#E6E8E4" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m4 4 8 8 8-8"/></svg>
+        <a href="mailto:ethan@arrosho.com">ethan@arrosho.com</a>
+      </span>
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#E6E8E4" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Serving homeowners across the U.S.
+      </span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> Arrosho. All rights reserved. · <a href="https://arrosho.com">arrosho.com</a>
+</footer>
+
+<!-- ===================== STICKY MOBILE CTA ===================== -->
+<div class="sticky-bar">
+  <a class="btn-primary" href="sms:+19563797019?&body=Hi%20Ethan%20%E2%80%94%20saw%20the%20video.%20My%20name%20is%20">Text Ethan</a>
+  <a class="btn-ghost" href="tel:+19563797019">Call</a>
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
