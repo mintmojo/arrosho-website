@@ -486,6 +486,12 @@
     padding:32px 24px;
     font-size:13px;
   }
+  footer a{
+    color:var(--grey);
+    border-bottom:1px solid rgba(161,176,171,0.3);
+  }
+  footer a:hover{color:var(--white);}
+  .foot-links{margin-top:10px; display:flex; gap:18px; justify-content:center; flex-wrap:wrap;}
 
   @media (max-width:860px){
     .wrap{padding:0 24px;}
@@ -855,6 +861,10 @@
 
 <footer>
   © <span id="year"></span> Arrosho. All rights reserved.
+  <div class="foot-links">
+    <a href="#top">Home</a>
+    <a href="/terms">Terms &amp; Conditions</a>
+  </div>
 </footer>
 
 <script>

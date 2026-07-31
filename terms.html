@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arrosho — Terms &amp; Conditions</title>
+<meta name="description" content="Terms and Conditions for Arrosho — lead generation and off-market sourcing services.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="arrosho%20logo-fedf7f80.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Archivo+Black&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --slate:#2B3F45;
+    --steel:#6894A1;
+    --sage:#6A7062;
+    --olive:#3E442B;
+    --white:#E6E8E4;
+    --grey:#A1B0AB;
+    --black:#1B1F0A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--white);
+    color:var(--black);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  img,svg{display:block; max-width:100%;}
+  section{position:relative; overflow:hidden;}
+
+  .stream-bg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ---------- HERO / HEADER ---------- */
+  .terms-hero{
+    background:
+      radial-gradient(140% 100% at 8% 8%, rgba(27,31,10,0.55) 0%, rgba(27,31,10,0) 42%),
+      radial-gradient(140% 120% at 100% 0%, rgba(104,148,161,0.55) 0%, rgba(43,63,69,0) 55%),
+      linear-gradient(155deg, #24343A 0%, #3A555F 42%, #6894A1 78%, #7CA0AC 100%);
+    padding:48px 48px 72px;
+    overflow:hidden;
+  }
+  .terms-hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events:none;
+    mix-blend-mode:overlay;
+  }
+  .hero-inner{
+    max-width:920px;
+    width:100%;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+  }
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:64px;
+  }
+  .brand-word{
+    display:block;
+    height:1.6em;
+    width:auto;
+  }
+  .wordmark{
+    font-family:'Archivo', sans-serif;
+    font-weight:800;
+    font-size:clamp(22px, 3vw, 30px);
+    letter-spacing:0.22em;
+    color:var(--white);
+  }
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+    font-size:14px;
+    color:var(--white);
+    opacity:0.85;
+    border-bottom:1px solid rgba(230,232,228,0.35);
+    padding-bottom:3px;
+    transition:opacity 0.15s ease, border-color 0.15s ease;
+  }
+  .back-link:hover{opacity:1; border-color:var(--white);}
+  .back-link svg{width:16px; height:16px;}
+  .eyebrow{
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    font-size:13px;
+    color:var(--white);
+    opacity:0.75;
+    margin-bottom:16px;
+  }
+  h1.title{
+    font-family:'Archivo Black', sans-serif;
+    font-weight:400;
+    font-size:clamp(34px, 5.5vw, 60px);
+    line-height:1.0;
+    color:var(--white);
+    letter-spacing:-0.02em;
+    text-transform:uppercase;
+  }
+  .updated{
+    margin-top:20px;
+    font-size:15px;
+    color:var(--white);
+    opacity:0.78;
+  }
+
+  /* ---------- BODY ---------- */
+  .terms-body{
+    background:var(--white);
+    padding:72px 48px 40px;
+  }
+  .content{
+    max-width:820px;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+  }
+  .intro{
+    font-size:17px;
+    line-height:1.7;
+    color:var(--olive);
+    margin-bottom:16px;
+  }
+  .disclaimer-box{
+    background:#DDE0D2;
+    border-left:4px solid var(--steel);
+    border-radius:12px;
+    padding:20px 24px;
+    margin:32px 0 48px;
+  }
+  .disclaimer-box p{
+    font-size:14.5px;
+    line-height:1.6;
+    color:var(--olive);
+  }
+  .disclaimer-box strong{color:var(--black);}
+  .clause{
+    margin-bottom:44px;
+  }
+  .clause h2{
+    font-family:'Archivo Black', sans-serif;
+    font-size:22px;
+    line-height:1.2;
+    color:var(--black);
+    margin-bottom:16px;
+    display:flex;
+    gap:14px;
+    align-items:baseline;
+  }
+  .clause h2 .num{
+    font-family:'Archivo', sans-serif;
+    font-weight:800;
+    font-size:15px;
+    color:var(--steel);
+    letter-spacing:0.04em;
+    flex-shrink:0;
+    padding-top:3px;
+  }
+  .clause h3{
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    font-weight:600;
+    color:var(--black);
+    margin:22px 0 8px;
+  }
+  .clause p{
+    font-size:15.5px;
+    line-height:1.72;
+    color:var(--olive);
+    margin-bottom:14px;
+  }
+  .clause ul{
+    margin:0 0 14px;
+    padding-left:22px;
+  }
+  .clause li{
+    font-size:15.5px;
+    line-height:1.7;
+    color:var(--olive);
+    margin-bottom:8px;
+  }
+  .clause a.inline{
+    color:var(--steel);
+    font-weight:600;
+    border-bottom:1px solid rgba(104,148,161,0.4);
+  }
+  .clause a.inline:hover{border-color:var(--steel);}
+  .fill{
+    background:rgba(104,148,161,0.16);
+    border-radius:4px;
+    padding:1px 6px;
+    font-weight:600;
+    color:var(--slate);
+  }
+  .divider{
+    height:1px;
+    background:rgba(27,31,10,0.1);
+    margin:0 0 44px;
+  }
+
+  /* ---------- CONTACT STRIP ---------- */
+  .contact-strip{
+    background:var(--olive);
+    color:var(--white);
+    padding:72px 48px;
+  }
+  .contact-strip-inner{
+    max-width:820px;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+  }
+  .contact-strip .eyebrow{color:var(--grey); opacity:1;}
+  .contact-strip h2{
+    font-family:'Archivo Black', sans-serif;
+    font-size:clamp(26px, 3.4vw, 36px);
+    line-height:1.2;
+    margin-bottom:16px;
+  }
+  .contact-strip p{
+    font-size:16px;
+    line-height:1.65;
+    opacity:0.82;
+    max-width:520px;
+    margin-bottom:28px;
+  }
+  .contact-info{display:flex; flex-direction:column; gap:16px;}
+  .contact-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    font-size:16px;
+  }
+  .contact-row .ic{
+    width:38px; height:38px;
+    border-radius:10px;
+    background:rgba(230,232,228,0.1);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .contact-row .ic svg{width:17px; height:17px;}
+
+  footer{
+    background:var(--black);
+    color:var(--grey);
+    text-align:center;
+    padding:32px 24px;
+    font-size:13px;
+  }
+  footer a{
+    color:var(--grey);
+    border-bottom:1px solid rgba(161,176,171,0.3);
+  }
+  footer a:hover{color:var(--white);}
+  .foot-links{margin-top:8px; display:flex; gap:18px; justify-content:center; flex-wrap:wrap;}
+
+  @media (max-width:860px){
+    .terms-hero{padding:32px 24px 56px;}
+    .terms-body{padding:48px 24px 32px;}
+    .contact-strip{padding:56px 24px;}
+    .topbar{margin-bottom:44px;}
+    .clause h2{flex-direction:column; gap:4px;}
+    .clause h2 .num{padding-top:0;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<section class="terms-hero">
+  <svg class="stream-bg" viewBox="0 0 1200 500" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-20,360 C 150,320 220,410 340,380 C 460,350 520,440 660,400 C 800,360 860,450 1000,410 C 1100,385 1160,410 1230,390" stroke="#E6E8E4" stroke-width="2" opacity="0.16"/>
+    <path d="M-20,410 C 140,460 240,400 360,430 C 480,460 560,390 690,425 C 820,460 900,400 1020,435 C 1110,460 1170,430 1230,450" stroke="#E6E8E4" stroke-width="1.5" opacity="0.1"/>
+    <path d="M-20,305 C 160,270 210,340 330,315 C 460,288 540,345 650,320 C 780,292 850,345 980,320 C 1080,300 1150,320 1230,305" stroke="#E6E8E4" stroke-width="1.5" opacity="0.09"/>
+  </svg>
+  <div class="hero-inner">
+    <div class="topbar">
+      <div class="wordmark"><svg class="brand-word" viewBox="-6.6 0 1874.1 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Arrosho">
+        <g transform="translate(-8,23) scale(0.9)">
+          <polygon points="222,70 278,70 391.5,430 315.5,430 250,155 184.5,430 108.5,430" fill="currentColor"></polygon>
+          <path d="M 54.62,362.98 C 60.20,357.39 66.74,335.87 88.09,329.47 C 109.43,323.07 155.75,336.56 182.67,324.57 C 209.59,312.59 222.68,269.54 249.60,257.56 C 276.52,245.57 321.69,256.48 344.19,252.66 C 368.00,248.60 381.50,219.00 392.00,204.50" fill="none" stroke="#3F9EAF" stroke-width="17.5" stroke-linecap="round"></path>
+          <path d="M 72.37,370.86 C 77.29,365.94 83.07,346.94 101.90,341.30 C 120.73,335.65 161.61,347.55 185.36,336.98 C 209.11,326.40 220.66,288.42 244.41,277.85 C 268.16,267.27 308.02,276.89 327.87,273.53 C 354.00,268.50 375.00,224.00 392.00,204.50" fill="none" stroke="#3F9EAF" stroke-width="13.75" stroke-linecap="round" opacity="0.75"></path>
+          <path d="M 89.12,378.75 C 93.39,374.48 98.39,358.02 114.71,353.12 C 131.03,348.23 166.46,358.55 187.04,349.38 C 207.63,340.22 217.64,307.30 238.22,298.13 C 258.81,288.97 293.35,297.31 310.55,294.39 C 340.00,289.00 368.00,238.00 392.00,204.50" fill="none" stroke="#3F9EAF" stroke-width="11.25" stroke-linecap="round" opacity="0.5"></path>
+        </g>
+        <g transform="translate(392,0)">
+          <polygon fill="currentColor" points="0,90 47,90 47,238 65,410 0,410"></polygon>
+          <path fill="currentColor" d="M 47,90 L 138,90 Q 196,90 196,148 L 196,180 Q 196,238 138,238 L 47,238 L 47,192 L 124,192 Q 150,192 150,164 Q 150,136 124,136 L 47,136 Z"></path>
+          <path fill="currentColor" d="M 100,220 L 149,220 L 210,410 L 145,410 Z"></path>
+        </g>
+        <g transform="translate(646,0)">
+          <polygon fill="currentColor" points="0,90 47,90 47,238 65,410 0,410"></polygon>
+          <path fill="currentColor" d="M 47,90 L 138,90 Q 196,90 196,148 L 196,180 Q 196,238 138,238 L 47,238 L 47,192 L 124,192 Q 150,192 150,164 Q 150,136 124,136 L 47,136 Z"></path>
+          <path fill="currentColor" d="M 100,220 L 149,220 L 210,410 L 145,410 Z"></path>
+        </g>
+        <g transform="translate(900,0)">
+          <path fill="currentColor" fill-rule="evenodd" d="M 0,150 Q 0,86 64,86 L 136,86 Q 200,86 200,150 L 200,350 Q 200,414 136,414 L 64,414 Q 0,414 0,350 Z M 52,163 Q 52,127 79,127 L 121,127 Q 148,127 148,163 L 148,337 Q 148,373 121,373 L 79,373 Q 52,373 52,337 Z"></path>
+        </g>
+        <g transform="translate(1146,0)">
+          <path fill="currentColor" d="M 190,163 L 143,163 Q 143,133 113,133 L 77,133 Q 47,133 47,163 L 47,197 Q 47,227 77,227 L 143,227 Q 190,227 190,274 L 190,340 Q 190,410 120,410 L 60,410 Q 0,410 0,350 L 0,320 L 47,320 L 47,347 Q 47,367 77,367 L 120,367 Q 143,367 143,337 L 143,303 Q 143,273 113,273 L 47,273 Q 0,273 0,226 L 0,160 Q 0,90 70,90 L 130,90 Q 190,90 190,150 Z"></path>
+        </g>
+        <g transform="translate(1380,0)">
+          <polygon fill="currentColor" points="0,90 47,90 65,410 0,410"></polygon>
+          <polygon fill="currentColor" points="135,90 200,90 200,410 153,410"></polygon>
+          <polygon fill="currentColor" points="52,226 145,226 148,274 55,274"></polygon>
+        </g>
+        <g transform="translate(1627,0)">
+          <path fill="currentColor" fill-rule="evenodd" d="M 0,150 Q 0,86 64,86 L 136,86 Q 200,86 200,150 L 200,350 Q 200,414 136,414 L 64,414 Q 0,414 0,350 Z M 52,163 Q 52,127 79,127 L 121,127 Q 148,127 148,163 L 148,337 Q 148,373 121,373 L 79,373 Q 52,373 52,337 Z"></path>
+        </g>
+      </svg></div>
+      <a href="/" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to home
+      </a>
+    </div>
+    <div class="eyebrow">Legal</div>
+    <h1 class="title">Terms &amp; Conditions</h1>
+    <p class="updated">Last updated: <span class="fill">July 25, 2026</span></p>
+  </div>
+</section>
+
+<!-- ===================== BODY ===================== -->
+<section class="terms-body">
+  <div class="content">
+    <p class="intro">These Terms and Conditions ("Terms") govern your access to and use of the website at arrosho.com (the "Site") and any services provided by Arrosho ("Arrosho," "we," "us," or "our"). By using the Site or engaging our services, you agree to these Terms. If you do not agree, please do not use the Site or our services.</p>
+
+    <div class="disclaimer-box">
+      <p><strong>Note:</strong> This document is a general template and not legal advice. Before publishing, have it reviewed by a licensed attorney and replace every <span class="fill">highlighted</span> placeholder with your own details. Pay particular attention to the governing law, payment, liability, and dispute-resolution sections.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">01</span>Who We Are &amp; What We Do</h2>
+      <p>Arrosho provides business development services across two tracks: (a) lead generation, including outbound email campaigns for recruitment and staffing agencies; and (b) off-market real estate sourcing for builders and developers. The specific scope, deliverables, fees, and timeline for any engagement are defined in a separate written agreement, proposal, or statement of work ("Engagement Agreement") between you and Arrosho.</p>
+      <p>Where these Terms conflict with a signed Engagement Agreement, the Engagement Agreement controls for that engagement.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">02</span>Use of the Site</h2>
+      <p>The Site is provided for general informational purposes. You agree to use it only for lawful purposes and not to:</p>
+      <ul>
+        <li>Attempt to gain unauthorized access to any part of the Site or its systems;</li>
+        <li>Use automated tools to scrape, harvest, or collect information from the Site;</li>
+        <li>Interfere with or disrupt the operation of the Site;</li>
+        <li>Submit false, misleading, or unlawful information through any contact form.</li>
+      </ul>
+      <p>We may modify, suspend, or discontinue any part of the Site at any time without notice.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">03</span>No Guarantee of Results</h2>
+      <p>Arrosho works to source qualified pipeline and off-market opportunities, but outcomes depend on many factors outside our control — including market conditions, your responsiveness, the quality of your offer, and third-party behavior. We do not guarantee any specific number of leads, meetings, deals, or revenue, and nothing on the Site or in our communications should be read as such a guarantee.</p>
+      <p>Any examples, projections, or past performance we reference are illustrative and not a promise of comparable results.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">04</span>Client Responsibilities</h2>
+      <p>To deliver our services effectively, we may rely on information, materials, and approvals you provide. You agree to:</p>
+      <ul>
+        <li>Provide accurate, complete, and timely information;</li>
+        <li>Ensure you have the right to share any materials, contact data, or lists you provide to us;</li>
+        <li>Comply with all laws that apply to your business, including anti-spam, telemarketing, real estate, and data-protection laws;</li>
+        <li>Review and approve outreach content, messaging, or deal terms where the Engagement Agreement calls for it.</li>
+      </ul>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">05</span>Outreach, Communications &amp; Compliance</h2>
+      <p>Where an engagement involves outbound email, SMS, or calling on your behalf or in coordination with you, both parties agree to comply with applicable laws governing electronic and telephone communications, which may include the CAN-SPAM Act, the Telephone Consumer Protection Act (TCPA), and state-level equivalents.</p>
+      <p>You are responsible for ensuring that your offer, brand, and any contact data you supply comply with these laws. Arrosho is not responsible for claims arising from data or content you provide, or from your instructions, that violate applicable communications laws.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">06</span>Fees &amp; Payment</h2>
+      <p>Fees, payment schedules, and any performance-based terms are set out in your Engagement Agreement. Unless stated otherwise there, invoices are due within <span class="fill">[NUMBER]</span> days of the invoice date. Late amounts may accrue interest at <span class="fill">[RATE / "the maximum rate permitted by law"]</span>.</p>
+      <p>Except where required by law or expressly stated in your Engagement Agreement, fees are non-refundable.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">07</span>Intellectual Property</h2>
+      <p>The Site, including the Arrosho name, wordmark, logo, branding, text, graphics, and design, is owned by Arrosho or its licensors and is protected by intellectual property laws. You may not copy, reproduce, or reuse this material without our prior written permission.</p>
+      <p>Ownership of deliverables produced during an engagement (such as campaign copy, lists, or sourcing materials) is governed by your Engagement Agreement.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">08</span>Confidentiality</h2>
+      <p>Each party may receive confidential information from the other during an engagement. Both parties agree to use such information only for the purpose of the engagement and to protect it with reasonable care. This does not apply to information that is publicly available, independently developed, or required to be disclosed by law.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">09</span>Third-Party Links &amp; Services</h2>
+      <p>The Site or our services may reference or rely on third-party tools, platforms, or websites. We do not control and are not responsible for third-party content, availability, or practices. Your use of any third-party service is subject to that third party's own terms.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">10</span>Disclaimers</h2>
+      <p>The Site and services are provided "as is" and "as available," without warranties of any kind, whether express or implied, including implied warranties of merchantability, fitness for a particular purpose, and non-infringement, to the fullest extent permitted by law. We do not warrant that the Site will be uninterrupted, error-free, or secure.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">11</span>Limitation of Liability</h2>
+      <p>To the fullest extent permitted by law, Arrosho will not be liable for any indirect, incidental, special, consequential, or punitive damages, or for lost profits, revenue, data, or business opportunities, arising out of or related to the Site or our services.</p>
+      <p>To the fullest extent permitted by law, Arrosho's total liability for any claim arising out of or related to an engagement will not exceed the total fees you paid to Arrosho for that engagement in the <span class="fill">[NUMBER]</span> months preceding the event giving rise to the claim.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">12</span>Indemnification</h2>
+      <p>You agree to indemnify and hold harmless Arrosho and its owner from any claims, damages, losses, or expenses (including reasonable legal fees) arising from your breach of these Terms, your violation of any law, or any content, data, or instructions you provide to us.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">13</span>Governing Law &amp; Disputes</h2>
+      <p>These Terms are governed by the laws of the State of <span class="fill">Texas</span>, without regard to its conflict-of-laws rules. Any dispute arising out of or relating to these Terms or our services will be brought exclusively in the state or federal courts located in <span class="fill">[COUNTY], Texas</span>, and you consent to the jurisdiction of those courts.</p>
+      <p><span class="fill">[Optional: If you prefer arbitration or mediation before litigation, add that here — your attorney can advise which is right for your business.]</span></p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">14</span>Changes to These Terms</h2>
+      <p>We may update these Terms from time to time. When we do, we will revise the "Last updated" date above. Your continued use of the Site or our services after changes take effect constitutes acceptance of the updated Terms.</p>
+    </div>
+
+    <div class="clause">
+      <h2><span class="num">15</span>Contact</h2>
+      <p>Questions about these Terms can be sent to <a class="inline" href="mailto:ethan@arrosho.com">ethan@arrosho.com</a>.</p>
+    </div>
+
+    <div class="divider"></div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT STRIP ===================== -->
+<section class="contact-strip">
+  <svg class="stream-bg" viewBox="0 0 1200 500" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-20,90 C 140,60 210,120 340,95 C 470,70 540,120 670,95 C 800,72 870,115 1000,95 C 1090,82 1160,92 1230,88" stroke="#E6E8E4" stroke-width="2" opacity="0.1"/>
+    <path d="M-20,420 C 160,390 240,440 380,413 C 520,387 590,433 730,407 C 860,383 930,427 1060,405 C 1130,393 1180,405 1230,399" stroke="#A1B0AB" stroke-width="2" opacity="0.12"/>
+  </svg>
+  <div class="contact-strip-inner">
+    <div class="eyebrow">Contact</div>
+    <h2>Still have questions?</h2>
+    <p>Whether it's about these terms or getting started on an engagement, it all goes to the same place.</p>
+    <div class="contact-info">
+      <div class="contact-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#E6E8E4" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m4 4 8 8 8-8"/></svg></div>
+        <span>ethan@arrosho.com</span>
+      </div>
+      <div class="contact-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#E6E8E4" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <span>(956) 379-7019</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> Arrosho. All rights reserved.
+  <div class="foot-links">
+    <a href="/">Home</a>
+    <a href="/terms">Terms &amp; Conditions</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
