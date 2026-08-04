@@ -1,0 +1,18 @@
+{
+  "id": "/wheel-of-almost-death/",
+  "name": "Wheel of Almost Death",
+  "short_name": "Almost Death",
+  "description": "Add your options. Give it a spin. Live with it.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#15100E",
+  "theme_color": "#15100E",
+  "categories": ["utilities", "entertainment"],
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

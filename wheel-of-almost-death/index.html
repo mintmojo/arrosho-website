@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wheel of Almost Death</title>
+<meta name="description" content="Add your options. Give it a spin. Live with it.">
+<meta name="theme-color" content="#15100E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Almost Death">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bevan:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15100E;
+    --ink-2:#1E1715;
+    --oxblood:#6E1F1B;
+    --bone:#EDE3D2;
+    --bone-dim:#A2968440;
+    --brass:#C9922F;
+    --teal:#2A7F7A;
+    --rule:#3A2E2A;
+    --stage: min(88vw, 400px);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ink);
+    color:var(--bone);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    font-size:16px;
+    line-height:1.45;
+    min-height:100dvh;
+    overflow-x:hidden;
+    padding:0 0 env(safe-area-inset-bottom);
+    background-image:
+      radial-gradient(120% 80% at 50% 0%, #241A17 0%, transparent 60%),
+      repeating-linear-gradient(0deg, rgba(237,227,210,.014) 0 1px, transparent 1px 3px);
+  }
+  .wrap{max-width:520px;margin:0 auto;padding:22px 20px 56px}
+
+  /* ---------- masthead ---------- */
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--brass);margin:0 0 10px;
+  }
+  h1{
+    font-family:"Bevan","Rockwell","Roboto Slab",Georgia,serif;
+    font-weight:400;
+    font-size:clamp(34px,11.5vw,52px);
+    line-height:.92;
+    letter-spacing:-.01em;
+    margin:0;
+    text-transform:uppercase;
+    color:var(--bone);
+    text-shadow:0 2px 0 #2A1E1B, 0 3px 14px rgba(0,0,0,.55);
+  }
+  h1 em{font-style:italic;color:var(--oxblood);-webkit-text-stroke:0}
+  .tagline{
+    margin:12px 0 0;font-size:14px;color:#A29684;max-width:30ch;
+  }
+  .hr{height:1px;background:var(--rule);margin:22px 0 8px}
+
+  /* ---------- stage ---------- */
+  .stage{
+    position:relative;width:var(--stage);height:var(--stage);
+    margin:14px auto 0;
+    display:grid;place-items:center;
+  }
+  .stage::before{ /* backboard */
+    content:"";position:absolute;inset:-14px;border-radius:50%;
+    background:radial-gradient(circle at 50% 42%, #2A201C 0%, #150F0D 70%);
+    box-shadow:0 24px 60px rgba(0,0,0,.6), inset 0 0 0 1px #3A2E2A;
+  }
+  #wheel{
+    position:relative;width:100%;height:100%;display:block;border-radius:50%;
+    will-change:transform;
+    box-shadow:0 0 0 6px #2A201C, 0 0 0 7px var(--brass), 0 10px 30px rgba(0,0,0,.55);
+  }
+
+  /* ticker: the brass flapper that clacks over each peg */
+  .ticker{
+    position:absolute;top:-20px;left:50%;width:26px;height:52px;
+    margin-left:-13px;transform-origin:50% 8px;
+    z-index:4;pointer-events:none;
+    filter:drop-shadow(0 3px 5px rgba(0,0,0,.7));
+    transition:transform .16s cubic-bezier(.2,1.6,.4,1);
+  }
+
+  /* hub = the spin control */
+  .hub{
+    position:absolute;z-index:5;
+    width:30%;height:30%;border-radius:50%;
+    border:1px solid var(--brass);
+    background:radial-gradient(circle at 50% 34%, #33261F 0%, #170F0D 78%);
+    color:var(--bone);
+    font-family:"Bevan","Rockwell",Georgia,serif;
+    font-size:clamp(13px,3.6vw,17px);letter-spacing:.06em;text-transform:uppercase;
+    display:grid;place-items:center;cursor:pointer;
+    box-shadow:0 6px 18px rgba(0,0,0,.6), inset 0 1px 0 rgba(237,227,210,.16);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .hub:active{transform:scale(.94)}
+  .hub:disabled{cursor:not-allowed;color:#6A5D51;border-color:#4A3B2A}
+  .hub:focus-visible{outline:2px solid var(--brass);outline-offset:4px}
+
+  /* ---------- verdict ---------- */
+  .verdict{
+    margin:30px auto 0;padding:16px 14px;text-align:center;
+    border:1px dashed var(--rule);border-radius:3px;
+    background:linear-gradient(#1B1412,#171110);
+  }
+  .verdict .label{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.28em;
+    text-transform:uppercase;color:#7C6F60;
+  }
+  .verdict .value{
+    font-family:"Bevan","Rockwell",Georgia,serif;
+    font-size:clamp(20px,6.4vw,30px);line-height:1.1;margin-top:8px;
+    text-transform:uppercase;color:#5C5045;word-break:break-word;
+  }
+  .verdict.is-set .value{
+    color:var(--bone);
+    animation:stamp .38s cubic-bezier(.2,1.5,.35,1) both;
+  }
+  .verdict.is-set{border-style:solid;border-color:var(--oxblood)}
+  @keyframes stamp{
+    0%{transform:scale(1.5) rotate(-4deg);opacity:0;filter:blur(3px)}
+    60%{opacity:1;filter:blur(0)}
+    100%{transform:scale(1) rotate(-1.2deg);opacity:1}
+  }
+
+  /* ---------- options ---------- */
+  .sec-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin:34px 0 12px;
+  }
+  .sec-head h2{
+    font-family:"IBM Plex Mono",monospace;font-weight:500;
+    font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+    color:#A29684;margin:0;
+  }
+  .count{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--brass)}
+
+  .adder{display:flex;gap:8px}
+  input[type=text]{
+    flex:1;min-width:0;
+    background:#100C0B;color:var(--bone);
+    border:1px solid var(--rule);border-radius:3px;
+    padding:13px 12px;font:inherit;font-size:16px;
+  }
+  input[type=text]::placeholder{color:#6A5D51}
+  input[type=text]:focus{outline:none;border-color:var(--brass)}
+  .btn{
+    border:1px solid var(--rule);border-radius:3px;
+    background:#241A17;color:var(--bone);
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;
+    text-transform:uppercase;padding:0 16px;cursor:pointer;
+  }
+  .btn:hover{border-color:var(--brass);color:var(--brass)}
+  .btn:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+  ul{list-style:none;margin:14px 0 0;padding:0}
+  li{
+    display:flex;align-items:center;gap:11px;
+    padding:11px 4px;border-bottom:1px solid #241C19;
+  }
+  li .swatch{width:11px;height:11px;border-radius:2px;flex:none;transform:rotate(45deg)}
+  li .name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px}
+  li .kill{
+    flex:none;width:30px;height:30px;border:0;border-radius:50%;
+    background:transparent;color:#6A5D51;font-size:17px;line-height:1;cursor:pointer;
+  }
+  li .kill:hover{color:var(--oxblood);background:#231715}
+  li .kill:focus-visible{outline:2px solid var(--brass);outline-offset:1px}
+  .empty{color:#6A5D51;font-size:14px;padding:16px 4px;border-bottom:1px solid #241C19}
+
+  .foot{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:14px;margin-top:18px;flex-wrap:wrap;
+  }
+  label.toggle{
+    display:flex;align-items:center;gap:9px;cursor:pointer;
+    font-size:13px;color:#A29684;
+  }
+  label.toggle input{accent-color:var(--oxblood);width:17px;height:17px}
+  .linkish{
+    background:none;border:0;padding:4px 0;cursor:pointer;
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:#6A5D51;
+  }
+  .linkish:hover{color:var(--oxblood)}
+  .colophon{
+    margin-top:38px;padding-top:16px;border-top:1px solid var(--rule);
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:#4E443B;display:flex;justify-content:space-between;gap:10px;
+  }
+  .colophon a{color:#4E443B;text-decoration:none}
+  .colophon a:hover{color:var(--brass)}
+  #install{display:none}
+  #install.show{display:inline-block}
+
+  @media (prefers-reduced-motion:reduce){
+    .ticker{transition:none}
+    .verdict.is-set .value{animation:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Arrosho &middot; Decision Apparatus No. 1</p>
+    <h1>Wheel of<br><em>Almost</em> Death</h1>
+    <p class="tagline">Add your options. Give it a spin. Live with it.</p>
+  </header>
+
+  <div class="hr"></div>
+
+  <div class="stage">
+    <canvas id="wheel" width="800" height="800" aria-label="Option wheel"></canvas>
+    <svg class="ticker" viewBox="0 0 26 52" aria-hidden="true">
+      <circle cx="13" cy="8" r="5.5" fill="#C9922F"/>
+      <circle cx="13" cy="8" r="2" fill="#15100E"/>
+      <path d="M8.5 10 H17.5 L13 30 Z" fill="#C9922F"/>
+      <path d="M13 10 L17.5 10 L13 30 Z" fill="#8E6415"/>
+    </svg>
+    <button class="hub" id="spin" type="button">Spin</button>
+  </div>
+
+  <div class="verdict" id="verdict">
+    <div class="label" id="verdictLabel">Awaiting fate</div>
+    <div class="value" id="verdictValue">&mdash;</div>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <h2>On the wheel</h2>
+      <span class="count" id="count">0</span>
+    </div>
+
+    <div class="adder">
+      <input type="text" id="newOption" placeholder="Add an option" maxlength="60"
+             autocomplete="off" autocapitalize="sentences" spellcheck="false">
+      <button class="btn" id="add" type="button">Add</button>
+    </div>
+
+    <ul id="list"></ul>
+
+    <div class="foot">
+      <label class="toggle">
+        <input type="checkbox" id="eliminate">
+        Remove the winner after each spin
+      </label>
+      <button class="linkish" id="clear" type="button">Clear all</button>
+    </div>
+  </section>
+
+  <div class="colophon">
+    <span><button class="linkish" id="install" type="button" style="letter-spacing:.2em">Install app</button></span>
+    <a href="https://arrosho.com">arrosho.com</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- storage (degrades to memory if blocked) ---------- */
+  var KEY = "woad.v1";
+  var mem = null;
+  function load(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(raw) return JSON.parse(raw);
+    }catch(e){}
+    return mem;
+  }
+  function save(state){
+    mem = state;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var DEFAULTS = ["Do the thing","Do it tomorrow","Ask someone smarter","Flip it and reverse it","Absolutely not","Double or nothing"];
+  var saved = load();
+  var options = (saved && Array.isArray(saved.options) && saved.options.length) ? saved.options.slice() : DEFAULTS.slice();
+  var eliminate = !!(saved && saved.eliminate);
+
+  /* ---------- palette ---------- */
+  var PALETTE = ["#6E1F1B","#C9922F","#2A7F7A","#8E4B22","#4A3D6B","#7C7A2E"];
+  function colorFor(i,n){
+    var c = PALETTE[i % PALETTE.length];
+    // avoid the last slice matching the first when the count wraps the palette
+    if(n > 1 && i === n-1 && c === PALETTE[0]) c = PALETTE[Math.floor(PALETTE.length/2)];
+    return c;
+  }
+
+  /* ---------- elements ---------- */
+  var cv = document.getElementById("wheel");
+  var ctx = cv.getContext("2d");
+  var ticker = document.querySelector(".ticker");
+  var spinBtn = document.getElementById("spin");
+  var listEl = document.getElementById("list");
+  var countEl = document.getElementById("count");
+  var input = document.getElementById("newOption");
+  var verdict = document.getElementById("verdict");
+  var vLabel = document.getElementById("verdictLabel");
+  var vValue = document.getElementById("verdictValue");
+  var elimBox = document.getElementById("eliminate");
+  elimBox.checked = eliminate;
+
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- wheel drawing ---------- */
+  var rotation = 0;      // radians, clockwise positive
+  var velocity = 0;
+  var spinning = false;
+  var lastPeg = -1;
+
+  function sizeCanvas(){
+    var rect = cv.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    var px = Math.max(240, Math.round(rect.width * dpr));
+    if(cv.width !== px){ cv.width = px; cv.height = px; }
+    draw();
+  }
+
+  function fitText(text, maxPx, startPx){
+    var size = startPx;
+    ctx.font = "500 " + size + "px 'IBM Plex Sans', system-ui, sans-serif";
+    while(ctx.measureText(text).width > maxPx && size > 9){
+      size -= 1;
+      ctx.font = "500 " + size + "px 'IBM Plex Sans', system-ui, sans-serif";
+    }
+    if(ctx.measureText(text).width > maxPx){
+      var t = text;
+      while(t.length > 1 && ctx.measureText(t + "\u2026").width > maxPx) t = t.slice(0,-1);
+      text = t + "\u2026";
+    }
+    return text;
+  }
+
+  function draw(){
+    var S = cv.width, R = S/2, cx = R, cy = R;
+    ctx.clearRect(0,0,S,S);
+    var n = options.length;
+
+    if(n === 0){
+      ctx.fillStyle = "#1E1715";
+      ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = "#6A5D51";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.font = "500 " + Math.round(S*0.038) + "px 'IBM Plex Mono', monospace";
+      ctx.fillText("EMPTY", cx, cy - S*0.10);
+      return;
+    }
+
+    var seg = (Math.PI*2)/n;
+    for(var i=0;i<n;i++){
+      var a0 = -Math.PI/2 + i*seg;
+      var a1 = a0 + seg;
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.arc(cx,cy,R,a0,a1);
+      ctx.closePath();
+      ctx.fillStyle = colorFor(i,n);
+      ctx.fill();
+      if(n > 1){
+        ctx.strokeStyle = "rgba(21,16,14,.55)";
+        ctx.lineWidth = Math.max(1, S*0.004);
+        ctx.stroke();
+      }
+
+      // label, reading outward
+      ctx.save();
+      ctx.translate(cx,cy);
+      ctx.rotate(a0 + seg/2);
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      var maxW = R * 0.62;
+      var base = Math.min(Math.round(S*0.042), Math.round(seg * R * 0.55));
+      var label = fitText(String(options[i]), maxW, Math.max(10, base));
+      ctx.fillStyle = "#F3ECE0";
+      ctx.shadowColor = "rgba(0,0,0,.45)";
+      ctx.shadowBlur = S*0.008;
+      ctx.fillText(label, R*0.86, 0);
+      ctx.restore();
+    }
+
+    // pegs at each boundary
+    for(var j=0;j<n;j++){
+      var pa = -Math.PI/2 + j*seg;
+      ctx.beginPath();
+      ctx.arc(cx + Math.cos(pa)*R*0.955, cy + Math.sin(pa)*R*0.955, Math.max(1.5,S*0.009), 0, Math.PI*2);
+      ctx.fillStyle = "#EDE3D2";
+      ctx.fill();
+    }
+
+    // inner rings
+    ctx.beginPath(); ctx.arc(cx,cy,R*0.985,0,Math.PI*2);
+    ctx.strokeStyle = "rgba(21,16,14,.5)"; ctx.lineWidth = Math.max(2,S*0.012); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx,cy,R*0.20,0,Math.PI*2);
+    ctx.fillStyle = "#15100E"; ctx.fill();
+    ctx.strokeStyle = "#C9922F"; ctx.lineWidth = Math.max(1,S*0.005); ctx.stroke();
+  }
+
+  function apply(){ cv.style.transform = "rotate(" + rotation + "rad)"; }
+
+  function pointerIndex(){
+    var n = options.length;
+    if(!n) return -1;
+    var seg = (Math.PI*2)/n;
+    var a = (-rotation) % (Math.PI*2);
+    if(a < 0) a += Math.PI*2;
+    return Math.floor(a/seg) % n;
+  }
+
+  /* ---------- clack ---------- */
+  var actx = null;
+  function clack(strength){
+    if(reduced) return;
+    ticker.style.transform = "rotate(" + (-16*Math.min(1,strength)) + "deg)";
+    setTimeout(function(){ ticker.style.transform = "rotate(0deg)"; }, 60);
+    try{
+      if(!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+      var t = actx.currentTime;
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.type = "triangle";
+      o.frequency.setValueAtTime(880 + Math.random()*120, t);
+      o.frequency.exponentialRampToValueAtTime(220, t + 0.05);
+      g.gain.setValueAtTime(0.10 * Math.min(1, strength), t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
+      o.connect(g); g.connect(actx.destination);
+      o.start(t); o.stop(t + 0.07);
+    }catch(e){}
+  }
+
+  /* ---------- spin ---------- */
+  function spin(){
+    if(spinning || options.length < 2) return;
+    spinning = true;
+    spinBtn.disabled = true;
+    spinBtn.textContent = "\u2022 \u2022 \u2022";
+    verdict.classList.remove("is-set");
+    vLabel.textContent = "Deciding";
+    vValue.textContent = "\u2014";
+
+    velocity = (reduced ? 9 : 17) + Math.random() * (reduced ? 3 : 9);
+    lastPeg = pointerIndex();
+
+    var last = performance.now();
+    var friction = reduced ? 0.9955 : 0.99875;
+
+    function step(now){
+      var dt = Math.min(48, now - last); last = now;
+      var f = Math.pow(friction, dt);
+      velocity *= f;
+      rotation += velocity * (dt/1000);
+      apply();
+
+      var p = pointerIndex();
+      if(p !== lastPeg && p !== -1){ lastPeg = p; clack(Math.min(1, velocity/8)); }
+
+      if(velocity > 0.05){
+        requestAnimationFrame(step);
+      }else{
+        settle();
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function settle(){
+    // nudge off an exact boundary so the ticker never straddles two slices
+    var n = options.length, seg = (Math.PI*2)/n;
+    var a = (-rotation) % (Math.PI*2); if(a < 0) a += Math.PI*2;
+    var within = a % seg;
+    if(within < seg*0.03 || within > seg*0.97){ rotation += seg*0.06; apply(); }
+
+    var idx = pointerIndex();
+    var winner = options[idx];
+    spinning = false;
+    spinBtn.disabled = options.length < 2;
+    spinBtn.textContent = "Spin";
+    vLabel.textContent = "The wheel says";
+    vValue.textContent = winner;
+    verdict.classList.add("is-set");
+
+    if(navigator.vibrate && !reduced){ try{ navigator.vibrate([14,40,26]); }catch(e){} }
+
+    if(elimBox.checked){
+      options.splice(idx,1);
+      persist(); render();
+    }
+  }
+
+  /* ---------- list ---------- */
+  function persist(){ save({options:options, eliminate:elimBox.checked}); }
+
+  function render(){
+    countEl.textContent = options.length;
+    listEl.innerHTML = "";
+    if(options.length === 0){
+      var li = document.createElement("li");
+      li.className = "empty";
+      li.textContent = "Nothing on the wheel. Add at least two options to spin.";
+      listEl.appendChild(li);
+    }else{
+      options.forEach(function(opt,i){
+        var li = document.createElement("li");
+        var sw = document.createElement("span");
+        sw.className = "swatch";
+        sw.style.background = colorFor(i, options.length);
+        var nm = document.createElement("span");
+        nm.className = "name"; nm.textContent = opt;
+        var kill = document.createElement("button");
+        kill.className = "kill"; kill.type = "button";
+        kill.setAttribute("aria-label", "Remove " + opt);
+        kill.textContent = "\u00d7";
+        kill.addEventListener("click", function(){
+          if(spinning) return;
+          options.splice(i,1); persist(); render();
+        });
+        li.appendChild(sw); li.appendChild(nm); li.appendChild(kill);
+        listEl.appendChild(li);
+      });
+    }
+    spinBtn.disabled = spinning || options.length < 2;
+    draw();
+  }
+
+  function addOption(){
+    var v = input.value.trim();
+    if(!v) { input.focus(); return; }
+    if(options.length >= 40){ vLabel.textContent = "Wheel is full at 40"; return; }
+    options.push(v);
+    input.value = "";
+    persist(); render();
+    input.focus();
+  }
+
+  document.getElementById("add").addEventListener("click", addOption);
+  input.addEventListener("keydown", function(e){ if(e.key === "Enter") addOption(); });
+  spinBtn.addEventListener("click", spin);
+  cv.addEventListener("click", spin);
+  elimBox.addEventListener("change", persist);
+  document.getElementById("clear").addEventListener("click", function(){
+    if(spinning) return;
+    if(!options.length || confirm("Clear every option?")){
+      options = []; persist(); render();
+      verdict.classList.remove("is-set");
+      vLabel.textContent = "Awaiting fate"; vValue.textContent = "\u2014";
+    }
+  });
+
+  window.addEventListener("resize", sizeCanvas);
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(draw); }
+
+  render();
+  sizeCanvas();
+  apply();
+
+  /* ---------- PWA ---------- */
+  var deferred = null, installBtn = document.getElementById("install");
+  window.addEventListener("beforeinstallprompt", function(e){
+    e.preventDefault(); deferred = e; installBtn.classList.add("show");
+  });
+  installBtn.addEventListener("click", function(){
+    if(!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.then(function(){ deferred = null; installBtn.classList.remove("show"); });
+  });
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", function(){
+      navigator.serviceWorker.register("./sw.js").catch(function(){});
+    });
+  }
+})();
+</script>
+</body>
+</html>
