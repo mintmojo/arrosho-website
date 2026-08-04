@@ -1,0 +1,15 @@
+Wheel of Almost Death
+
+A standalone, installable PWA. Works offline after first load.
+
+Deploy to arrosho.com/wheel-of-almost-death
+In the GitHub repo that serves arrosho.com, create a folder named exactly wheel-of-almost-death at the repo root.
+Drop index.html, manifest.webmanifest, sw.js, and the icons/ folder inside it.
+Commit and push. Live at https://arrosho.com/wheel-of-almost-death/
+
+Every path is relative, so the folder name is the only thing that has to match. If you rename the folder, update the "id" field in manifest.webmanifest to match.
+
+Notes
+Options are saved in the browser on that device. Nothing is sent anywhere.
+To ship an update, bump VERSION in sw.js (e.g. woad-v2) so installed copies pull the new files instead of serving the cached ones.
+HTTPS is required for install + offline. GitHub Pages gives you that.
