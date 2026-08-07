@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Arrosho — Stopwatch</title>
+<meta name="description" content="A count-up chess clock. Two labelled sides, tap anywhere to hand over. Works offline.">
+<meta name="theme-color" content="#23260F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Stopwatch">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Archivo+Black&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --slate:#2B3F45;
+    --steel:#6894A1;
+    --sage:#6A7062;
+    --olive:#3E442B;
+    --white:#E6E8E4;
+    --grey:#A1B0AB;
+    --black:#1B1F0A;
+    --seam:84px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html,body{height:100%; overflow:hidden;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--black);
+    color:var(--white);
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior:none;
+    touch-action:manipulation;
+  }
+
+  .board{
+    position:fixed;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .side{
+    position:relative;
+    flex:1 1 50%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    cursor:pointer;
+    border:0;
+    width:100%;
+    font:inherit;
+    color:inherit;
+    padding:env(safe-area-inset-top) calc(24px + env(safe-area-inset-right)) env(safe-area-inset-bottom) calc(24px + env(safe-area-inset-left));
+    transition:filter 0.28s ease, opacity 0.28s ease;
+  }
+  .side::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:0;
+    transition:filter 0.28s ease;
+  }
+  #sideB::before{
+    background:linear-gradient(155deg, #24343A 0%, #3A555F 42%, #6894A1 78%, #7CA0AC 100%);
+  }
+  #sideA::before{
+    background:linear-gradient(160deg, #4A5138 0%, #23260F 100%);
+  }
+  .side::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+    pointer-events:none;
+  }
+  .side.idle::before{filter:brightness(0.3) saturate(0.7);}
+  .side.idle .inner{opacity:0.4;}
+
+  .inner{
+    position:relative;
+    z-index:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    transition:opacity 0.28s ease;
+    width:100%;
+  }
+
+  .label{
+    font-family:'Archivo', sans-serif;
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--white);
+    opacity:0.7;
+    background:transparent;
+    border:0;
+    border-bottom:1px solid rgba(230,232,228,0);
+    text-align:center;
+    outline:none;
+    padding:4px 8px;
+    max-width:min(80vw, 320px);
+    width:auto;
+    font-family:'Archivo', sans-serif;
+    transition:border-color 0.2s ease, opacity 0.2s ease;
+  }
+  .label:focus{
+    border-bottom-color:rgba(230,232,228,0.5);
+    opacity:1;
+  }
+
+  .total{
+    font-family:'Archivo Black', sans-serif;
+    font-weight:400;
+    font-size:clamp(52px, 13vw, 130px);
+    line-height:0.95;
+    letter-spacing:-0.03em;
+    color:var(--white);
+    font-variant-numeric:tabular-nums;
+    text-transform:uppercase;
+  }
+
+  .turn{
+    font-family:'Inter', sans-serif;
+    font-weight:500;
+    font-size:16px;
+    letter-spacing:0.12em;
+    color:var(--white);
+    opacity:0.55;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- SEAM ---------- */
+  .seam{
+    position:absolute;
+    left:0; right:0;
+    top:50%;
+    transform:translateY(-50%);
+    height:var(--seam);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:20px;
+    z-index:5;
+    pointer-events:none;
+  }
+  .seam::before{
+    content:"";
+    position:absolute;
+    left:0; right:0; top:50%;
+    height:1px;
+    background:rgba(230,232,228,0.14);
+  }
+  .ctrl{
+    position:relative;
+    pointer-events:auto;
+    width:62px;
+    height:62px;
+    border-radius:50%;
+    border:1px solid rgba(230,232,228,0.16);
+    background:rgba(27,31,10,0.55);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    color:var(--white);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:transform 0.18s ease, background 0.18s ease, opacity 0.18s ease;
+  }
+  .ctrl:hover{transform:translateY(-2px); background:rgba(27,31,10,0.8);}
+  .ctrl:active{transform:scale(0.94);}
+  .ctrl:focus-visible{outline:2px solid var(--white); outline-offset:3px;}
+  .ctrl svg{width:26px; height:26px; display:block;}
+  .ctrl.armed{
+    border-color:rgba(230,232,228,0.7);
+    background:rgba(230,232,228,0.16);
+  }
+  .ctrl.off{opacity:0.4;}
+
+  .hint{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:calc(100% + 10px);
+    white-space:nowrap;
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    font-size:10px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--white);
+    opacity:0;
+    transition:opacity 0.2s ease;
+    pointer-events:none;
+  }
+  .hint.show{opacity:0.85;}
+
+  .startcue{
+    position:absolute;
+    z-index:1;
+    left:50%; top:calc(50% + 92px);
+    transform:translateX(-50%);
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    opacity:0.5;
+    pointer-events:none;
+    transition:opacity 0.3s ease;
+  }
+  .board.running .startcue, .board.started .startcue{opacity:0;}
+
+  /* ---------- LANDSCAPE ---------- */
+  @media (orientation:landscape){
+    .board{flex-direction:row-reverse;}
+    .seam{
+      left:50%; right:auto; top:0; bottom:0;
+      transform:translateX(-50%);
+      width:var(--seam); height:auto;
+      flex-direction:column;
+    }
+    .seam::before{
+      left:50%; top:0; bottom:0; right:auto;
+      width:1px; height:auto;
+      transform:translateX(-50%);
+    }
+    .hint{
+      bottom:auto; left:auto; right:calc(100% + 10px);
+      top:50%;
+      transform:translateY(-50%);
+    }
+    .total{font-size:clamp(44px, 9vw, 110px);}
+  }
+
+  /* ---------- INSTALL ---------- */
+  .install{
+    position:fixed;
+    z-index:20;
+    left:50%;
+    bottom:calc(18px + env(safe-area-inset-bottom));
+    transform:translateX(-50%);
+    display:none;
+    align-items:center;
+    gap:10px;
+    padding:12px 20px;
+    border-radius:18px;
+    background:linear-gradient(160deg, #4A5138 0%, #23260F 100%);
+    border:1px solid rgba(230,232,228,0.14);
+    color:var(--white);
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    cursor:pointer;
+    box-shadow:0 10px 24px rgba(0,0,0,0.32);
+  }
+  .install.show{display:inline-flex;}
+  .install svg{width:15px; height:15px;}
+  .install:active{transform:translateX(-50%) scale(0.97);}
+</style>
+</head>
+<body>
+
+<div class="board" id="board">
+
+  <button class="side idle" id="sideB" aria-label="Player B clock">
+    <div class="inner">
+      <input class="label" id="labelB" value="PLAYER B" maxlength="16" aria-label="Player B name" spellcheck="false">
+      <div class="total" id="totalB">00:00:00</div>
+      <div class="turn" id="turnB">TURN 00:00</div>
+    </div>
+  </button>
+
+  <button class="side idle" id="sideA" aria-label="Player A clock">
+    <div class="inner">
+      <input class="label" id="labelA" value="PLAYER A" maxlength="16" aria-label="Player A name" spellcheck="false">
+      <div class="total" id="totalA">00:00:00</div>
+      <div class="turn" id="turnA">TURN 00:00</div>
+    </div>
+  </button>
+
+  <div class="startcue" id="startcue">Tap a side to start</div>
+
+  <div class="seam">
+    <button class="ctrl" id="btnPause" aria-label="Pause">
+      <span class="hint" id="hintPause"></span>
+      <svg id="icoPause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="9" y1="5" x2="9" y2="19"></line><line x1="15" y1="5" x2="15" y2="19"></line>
+      </svg>
+    </button>
+
+    <button class="ctrl" id="btnReset" aria-label="Reset">
+      <span class="hint" id="hintReset"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12a9 9 0 1 0 3-6.7"></path><polyline points="3 4 3 10 9 10"></polyline>
+      </svg>
+    </button>
+
+    <button class="ctrl" id="btnSound" aria-label="Toggle sound">
+      <span class="hint" id="hintSound"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="4 9 8 9 13 5 13 19 8 15 4 15"></polygon>
+        <path d="M17 9a4 4 0 0 1 0 6" id="wave"></path>
+      </svg>
+    </button>
+  </div>
+
+</div>
+
+<button class="install" id="install">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M4 20h16"></path>
+  </svg>
+  Install
+</button>
+
+<script>
+(function(){
+  var board=document.getElementById('board');
+  var sides={A:document.getElementById('sideA'),B:document.getElementById('sideB')};
+  var totals={A:document.getElementById('totalA'),B:document.getElementById('totalB')};
+  var turns={A:document.getElementById('turnA'),B:document.getElementById('turnB')};
+  var labels={A:document.getElementById('labelA'),B:document.getElementById('labelB')};
+  var btnPause=document.getElementById('btnPause');
+  var btnReset=document.getElementById('btnReset');
+  var btnSound=document.getElementById('btnSound');
+  var icoPause=document.getElementById('icoPause');
+  var hints={pause:document.getElementById('hintPause'),reset:document.getElementById('hintReset'),sound:document.getElementById('hintSound')};
+
+  var acc={A:0,B:0};
+  var turnAcc={A:0,B:0};
+  var active=null;
+  var startedAt=0;
+  var paused=false;
+  var everStarted=false;
+  var soundOn=true;
+  var resetArmed=false;
+  var resetTimer=null;
+  var wakeLock=null;
+  var audioCtx=null;
+
+  function store(k,v){try{localStorage.setItem('arrosho.sw.'+k,v);}catch(e){}}
+  function load(k,d){try{var v=localStorage.getItem('arrosho.sw.'+k);return v===null?d:v;}catch(e){return d;}}
+
+  labels.A.value=load('labelA','PLAYER A');
+  labels.B.value=load('labelB','PLAYER B');
+  soundOn=load('sound','1')==='1';
+  paintSound();
+
+  function fitLabel(el){el.style.width=Math.max(10,el.value.length)+2+'ch';}
+  ['A','B'].forEach(function(k){
+    fitLabel(labels[k]);
+    labels[k].addEventListener('input',function(){
+      labels[k].value=labels[k].value.toUpperCase();
+      fitLabel(labels[k]);
+    });
+    labels[k].addEventListener('change',function(){store('label'+k,labels[k].value);});
+    labels[k].addEventListener('keydown',function(e){
+      e.stopPropagation();
+      if(e.key==='Enter'){labels[k].blur();}
+    });
+    labels[k].addEventListener('click',function(e){e.stopPropagation();});
+  });
+
+  function pad(n){return n<10?'0'+n:''+n;}
+  function fmtTotal(ms){
+    var s=Math.floor(ms/1000);
+    return pad(Math.floor(s/3600))+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60);
+  }
+  function fmtTurn(ms){
+    var s=Math.floor(ms/1000);
+    var h=Math.floor(s/3600);
+    if(h>0){return pad(h)+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60);}
+    return pad(Math.floor(s/60))+':'+pad(s%60);
+  }
+
+  function elapsed(k){
+    return acc[k]+(active===k&&!paused?(performance.now()-startedAt):0);
+  }
+  function elapsedTurn(k){
+    return turnAcc[k]+(active===k&&!paused?(performance.now()-startedAt):0);
+  }
+
+  function render(){
+    ['A','B'].forEach(function(k){
+      totals[k].textContent=fmtTotal(elapsed(k));
+      turns[k].textContent='TURN '+fmtTurn(elapsedTurn(k));
+      sides[k].classList.toggle('idle', active!==k || paused);
+    });
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+  function commit(){
+    if(active&&!paused){
+      var d=performance.now()-startedAt;
+      acc[active]+=d;
+      turnAcc[active]+=d;
+    }
+  }
+
+  function click(){
+    if(!soundOn) return;
+    try{
+      audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+      var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type='square'; o.frequency.value=880;
+      g.gain.setValueAtTime(0.05,audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.04);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(); o.stop(audioCtx.currentTime+0.04);
+    }catch(e){}
+    if(navigator.vibrate){try{navigator.vibrate(15);}catch(e){}}
+  }
+
+  async function lockScreen(){
+    if(!('wakeLock' in navigator)) return;
+    try{wakeLock=await navigator.wakeLock.request('screen');}catch(e){}
+  }
+  function releaseScreen(){
+    if(wakeLock){try{wakeLock.release();}catch(e){} wakeLock=null;}
+  }
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState==='visible'&&active&&!paused) lockScreen();
+  });
+
+  function handOver(tapped){
+    if(paused) return;
+    if(active===null){
+      active=tapped;
+      turnAcc[tapped]=0;
+      startedAt=performance.now();
+      everStarted=true;
+      board.classList.add('started');
+      lockScreen(); click();
+      return;
+    }
+    commit();
+    var other=active==='A'?'B':'A';
+    active=other;
+    turnAcc[other]=0;
+    startedAt=performance.now();
+    click();
+  }
+
+  sides.A.addEventListener('click',function(){handOver('A');});
+  sides.B.addEventListener('click',function(){handOver('B');});
+
+  function paintPause(){
+    icoPause.innerHTML = paused
+      ? '<polygon points="6 4 20 12 6 20" fill="currentColor" stroke="none"></polygon>'
+      : '<line x1="9" y1="5" x2="9" y2="19"></line><line x1="15" y1="5" x2="15" y2="19"></line>';
+    btnPause.setAttribute('aria-label', paused?'Resume':'Pause');
+  }
+  function togglePause(){
+    if(!everStarted) return;
+    if(!paused){ commit(); paused=true; releaseScreen(); }
+    else { paused=false; startedAt=performance.now(); lockScreen(); }
+    paintPause();
+    flash(hints.pause, paused?'Paused':'Running');
+  }
+  btnPause.addEventListener('click',function(e){e.stopPropagation();togglePause();});
+
+  function flash(el,msg){
+    el.textContent=msg;
+    el.classList.add('show');
+    clearTimeout(el._t);
+    el._t=setTimeout(function(){el.classList.remove('show');},1600);
+  }
+
+  function doReset(){
+    if(!resetArmed){
+      resetArmed=true;
+      btnReset.classList.add('armed');
+      flash(hints.reset,'Tap again');
+      clearTimeout(resetTimer);
+      resetTimer=setTimeout(function(){
+        resetArmed=false;
+        btnReset.classList.remove('armed');
+      },3000);
+      return;
+    }
+    clearTimeout(resetTimer);
+    resetArmed=false;
+    btnReset.classList.remove('armed');
+    acc={A:0,B:0}; turnAcc={A:0,B:0};
+    active=null; paused=false; everStarted=false;
+    board.classList.remove('started');
+    releaseScreen();
+    paintPause();
+    flash(hints.reset,'Reset');
+  }
+  btnReset.addEventListener('click',function(e){e.stopPropagation();doReset();});
+
+  function paintSound(){
+    btnSound.classList.toggle('off',!soundOn);
+    btnSound.setAttribute('aria-label', soundOn?'Mute':'Unmute');
+  }
+  btnSound.addEventListener('click',function(e){
+    e.stopPropagation();
+    soundOn=!soundOn;
+    store('sound',soundOn?'1':'0');
+    paintSound();
+    flash(hints.sound, soundOn?'Sound on':'Muted');
+    if(soundOn) click();
+  });
+
+  document.addEventListener('keydown',function(e){
+    if(e.target.tagName==='INPUT') return;
+    var k=e.key.toLowerCase();
+    if(e.code==='Space'){
+      e.preventDefault();
+      handOver(active===null?'A':active);
+    } else if(k==='p'){ e.preventDefault(); togglePause(); }
+    else if(k==='r'){ e.preventDefault(); doReset(); }
+  });
+
+  paintPause();
+
+  // ---------- INSTALL ----------
+  var installBtn=document.getElementById('install');
+  var deferred=null;
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault();
+    deferred=e;
+    if(load('dismissed','0')!=='1') installBtn.classList.add('show');
+  });
+  installBtn.addEventListener('click',async function(e){
+    e.stopPropagation();
+    if(!deferred) return;
+    installBtn.classList.remove('show');
+    deferred.prompt();
+    try{ await deferred.userChoice; }catch(err){}
+    deferred=null;
+    store('dismissed','1');
+  });
+  window.addEventListener('appinstalled',function(){
+    installBtn.classList.remove('show');
+    store('dismissed','1');
+  });
+
+  // ---------- SERVICE WORKER ----------
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    });
+  }
+})();
+</script>
+</body>
+</html>
