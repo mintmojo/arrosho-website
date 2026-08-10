@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>Arrosho — Stopwatch</title>
-<meta name="description" content="A count-up chess clock. Two labelled sides, tap anywhere to hand over. Works offline.">
+<meta name="description" content="A count-up focus clock and a count-down chess clock. Two labelled sides, tap anywhere to hand over. Works offline.">
 <meta name="theme-color" content="#23260F">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -25,13 +25,18 @@
     --white:#E6E8E4;
     --grey:#A1B0AB;
     --black:#1B1F0A;
+    --flag:#D2553F;
     --seam:84px;
+    /* Real height of the visible viewport. JS keeps this honest on iOS. */
+    --app-h:100vh;
   }
+  @supports (height:100dvh){ :root{ --app-h:100dvh; } }
+
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   html,body{height:100%; overflow:hidden;}
   body{
     font-family:'Inter', sans-serif;
-    background:var(--black);
+    background:#23260F;
     color:var(--white);
     -webkit-font-smoothing:antialiased;
     overscroll-behavior:none;
@@ -40,7 +45,10 @@
 
   .board{
     position:fixed;
-    inset:0;
+    left:0;
+    top:0;
+    width:100%;
+    height:var(--app-h);
     display:flex;
     flex-direction:column;
   }
@@ -58,7 +66,9 @@
     width:100%;
     font:inherit;
     color:inherit;
-    padding:env(safe-area-inset-top) calc(24px + env(safe-area-inset-right)) env(safe-area-inset-bottom) calc(24px + env(safe-area-inset-left));
+    /* Horizontal safe-area only — vertical padding would shove the halves
+       off-centre and is not needed, the content sits nowhere near the edges. */
+    padding:0 calc(24px + env(safe-area-inset-right)) 0 calc(24px + env(safe-area-inset-left));
     transition:filter 0.28s ease, opacity 0.28s ease;
   }
   .side::before{
@@ -85,6 +95,8 @@
   }
   .side.idle::before{filter:brightness(0.3) saturate(0.7);}
   .side.idle .inner{opacity:0.4;}
+  .side.flagged::before{filter:brightness(0.42) saturate(0.5);}
+  .side.flagged .total{color:var(--flag);}
 
   .inner{
     position:relative;
@@ -96,6 +108,8 @@
     transition:opacity 0.28s ease;
     width:100%;
   }
+  /* Chess: the green side faces the opponent. */
+  .board.chess #sideA .inner{transform:rotate(180deg);}
 
   .label{
     font-family:'Archivo', sans-serif;
@@ -111,14 +125,26 @@
     text-align:center;
     outline:none;
     padding:4px 8px;
-    max-width:min(80vw, 320px);
+    max-width:min(84vw, 340px);
     width:auto;
-    font-family:'Archivo', sans-serif;
     transition:border-color 0.2s ease, opacity 0.2s ease;
   }
   .label:focus{
     border-bottom-color:rgba(230,232,228,0.5);
     opacity:1;
+  }
+  /* Off-screen twin used to measure real text width (ch units ignore
+     letter-spacing, which is what was clipping the labels). */
+  .mirror{
+    position:absolute;
+    left:-9999px;
+    top:0;
+    width:auto !important;
+    max-width:none;
+    padding:0;
+    white-space:pre;
+    visibility:hidden;
+    pointer-events:none;
   }
 
   .total{
@@ -130,6 +156,7 @@
     color:var(--white);
     font-variant-numeric:tabular-nums;
     text-transform:uppercase;
+    transition:color 0.2s ease;
   }
 
   .turn{
@@ -150,9 +177,10 @@
     transform:translateY(-50%);
     height:var(--seam);
     display:flex;
+    flex-wrap:nowrap;
     align-items:center;
     justify-content:center;
-    gap:20px;
+    gap:16px;
     z-index:5;
     pointer-events:none;
   }
@@ -165,9 +193,10 @@
   }
   .ctrl{
     position:relative;
+    flex:0 0 auto;
     pointer-events:auto;
-    width:62px;
-    height:62px;
+    width:56px;
+    height:56px;
     border-radius:50%;
     border:1px solid rgba(230,232,228,0.16);
     background:rgba(27,31,10,0.55);
@@ -183,7 +212,7 @@
   .ctrl:hover{transform:translateY(-2px); background:rgba(27,31,10,0.8);}
   .ctrl:active{transform:scale(0.94);}
   .ctrl:focus-visible{outline:2px solid var(--white); outline-offset:3px;}
-  .ctrl svg{width:26px; height:26px; display:block;}
+  .ctrl svg{width:24px; height:24px; display:block;}
   .ctrl.armed{
     border-color:rgba(230,232,228,0.7);
     background:rgba(230,232,228,0.16);
@@ -211,8 +240,11 @@
   .startcue{
     position:absolute;
     z-index:1;
-    left:50%; top:calc(50% + 92px);
+    left:50%; top:calc(50% + 88px);
     transform:translateX(-50%);
+    display:flex;
+    align-items:center;
+    gap:10px;
     font-family:'Archivo', sans-serif;
     font-weight:700;
     font-size:11px;
@@ -223,6 +255,142 @@
     transition:opacity 0.3s ease;
   }
   .board.running .startcue, .board.started .startcue{opacity:0;}
+  .tcchip{
+    pointer-events:auto;
+    display:none;
+    font:inherit;
+    letter-spacing:0.16em;
+    color:var(--white);
+    background:rgba(230,232,228,0.1);
+    border:1px solid rgba(230,232,228,0.22);
+    border-radius:999px;
+    padding:5px 11px;
+    cursor:pointer;
+  }
+  .board.chess .tcchip{display:inline-block;}
+  .board.started .tcchip{pointer-events:none;}
+
+  /* ---------- TIME CONTROL SHEET ---------- */
+  .sheet{
+    position:fixed;
+    inset:0;
+    z-index:30;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:rgba(12,14,6,0.72);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+  }
+  .sheet.show{display:flex;}
+  .sheetcard{
+    width:100%;
+    max-width:360px;
+    padding:24px 22px 18px;
+    border-radius:22px;
+    background:linear-gradient(160deg, #4A5138 0%, #23260F 100%);
+    border:1px solid rgba(230,232,228,0.14);
+    box-shadow:0 18px 40px rgba(0,0,0,0.45);
+  }
+  .sheettitle{
+    font-family:'Archivo', sans-serif;
+    font-weight:800;
+    font-size:12px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    opacity:0.65;
+    text-align:center;
+    margin-bottom:18px;
+  }
+  .presets{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:10px;
+  }
+  .preset{
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.06em;
+    color:var(--white);
+    background:rgba(230,232,228,0.08);
+    border:1px solid rgba(230,232,228,0.16);
+    border-radius:14px;
+    padding:14px 4px;
+    cursor:pointer;
+    transition:background 0.15s ease, transform 0.15s ease;
+  }
+  .preset:hover{background:rgba(230,232,228,0.16);}
+  .preset:active{transform:scale(0.96);}
+  .customrow{
+    display:flex;
+    align-items:flex-end;
+    gap:10px;
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px solid rgba(230,232,228,0.12);
+  }
+  .customrow label{
+    flex:1 1 0;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    font-size:10px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    opacity:0.6;
+  }
+  .customrow input{
+    width:100%;
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    font-size:16px;
+    color:var(--white);
+    background:rgba(230,232,228,0.08);
+    border:1px solid rgba(230,232,228,0.16);
+    border-radius:12px;
+    padding:11px 10px;
+    text-align:center;
+    outline:none;
+    -moz-appearance:textfield;
+  }
+  .customrow input::-webkit-outer-spin-button,
+  .customrow input::-webkit-inner-spin-button{-webkit-appearance:none; margin:0;}
+  .customrow input:focus{border-color:rgba(230,232,228,0.5);}
+  .sheetbtn{
+    flex:0 0 auto;
+    font-family:'Archivo', sans-serif;
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--black);
+    background:var(--white);
+    border:0;
+    border-radius:12px;
+    padding:13px 16px;
+    cursor:pointer;
+  }
+  .sheetbtn:active{transform:scale(0.96);}
+  .sheetcancel{
+    display:block;
+    width:100%;
+    margin-top:14px;
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    font-size:10px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--white);
+    opacity:0.5;
+    background:transparent;
+    border:0;
+    padding:8px;
+    cursor:pointer;
+  }
 
   /* ---------- LANDSCAPE ---------- */
   @media (orientation:landscape){
@@ -244,6 +412,7 @@
       transform:translateY(-50%);
     }
     .total{font-size:clamp(44px, 9vw, 110px);}
+    .startcue{top:auto; bottom:calc(16px + env(safe-area-inset-bottom));}
   }
 
   /* ---------- INSTALL ---------- */
@@ -278,29 +447,40 @@
 
 <div class="board" id="board">
 
-  <button class="side idle" id="sideB" aria-label="Player B clock">
+  <button class="side idle" id="sideB" aria-label="Blue clock">
     <div class="inner">
-      <input class="label" id="labelB" value="PLAYER B" maxlength="16" aria-label="Player B name" spellcheck="false">
+      <input class="label" id="labelB" value="FOCUSED" maxlength="16" aria-label="Blue side name" spellcheck="false">
       <div class="total" id="totalB">00:00:00</div>
       <div class="turn" id="turnB">TURN 00:00</div>
     </div>
   </button>
 
-  <button class="side idle" id="sideA" aria-label="Player A clock">
+  <button class="side idle" id="sideA" aria-label="Green clock">
     <div class="inner">
-      <input class="label" id="labelA" value="PLAYER A" maxlength="16" aria-label="Player A name" spellcheck="false">
+      <input class="label" id="labelA" value="DISTRACTED" maxlength="16" aria-label="Green side name" spellcheck="false">
       <div class="total" id="totalA">00:00:00</div>
       <div class="turn" id="turnA">TURN 00:00</div>
     </div>
   </button>
 
-  <div class="startcue" id="startcue">Tap a side to start</div>
+  <span class="label mirror" id="mirror" aria-hidden="true"></span>
+
+  <div class="startcue" id="startcue">
+    <button class="tcchip" id="tcchip" aria-label="Change time control">5+0</button>
+    <span id="cuetext">Tap a side to start</span>
+  </div>
 
   <div class="seam">
-    <button class="ctrl" id="btnPause" aria-label="Pause">
-      <span class="hint" id="hintPause"></span>
-      <svg id="icoPause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="9" y1="5" x2="9" y2="19"></line><line x1="15" y1="5" x2="15" y2="19"></line>
+    <button class="ctrl" id="btnMode" aria-label="Switch to chess clock">
+      <span class="hint" id="hintMode"></span>
+      <svg id="icoMode" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></svg>
+    </button>
+
+    <button class="ctrl" id="btnSound" aria-label="Toggle sound">
+      <span class="hint" id="hintSound"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="4 9 8 9 13 5 13 19 8 15 4 15"></polygon>
+        <path d="M17 9a4 4 0 0 1 0 6"></path>
       </svg>
     </button>
 
@@ -311,15 +491,27 @@
       </svg>
     </button>
 
-    <button class="ctrl" id="btnSound" aria-label="Toggle sound">
-      <span class="hint" id="hintSound"></span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="4 9 8 9 13 5 13 19 8 15 4 15"></polygon>
-        <path d="M17 9a4 4 0 0 1 0 6" id="wave"></path>
+    <button class="ctrl" id="btnPause" aria-label="Pause">
+      <span class="hint" id="hintPause"></span>
+      <svg id="icoPause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="9" y1="5" x2="9" y2="19"></line><line x1="15" y1="5" x2="15" y2="19"></line>
       </svg>
     </button>
   </div>
 
+</div>
+
+<div class="sheet" id="sheet">
+  <div class="sheetcard">
+    <div class="sheettitle">Time control</div>
+    <div class="presets" id="presets"></div>
+    <div class="customrow">
+      <label>Min<input type="number" id="cMin" min="1" max="180" step="1" value="5" inputmode="numeric"></label>
+      <label>Inc<input type="number" id="cInc" min="0" max="60" step="1" value="0" inputmode="numeric"></label>
+      <button class="sheetbtn" id="cGo">Set</button>
+    </div>
+    <button class="sheetcancel" id="sheetCancel">Cancel</button>
+  </div>
 </div>
 
 <button class="install" id="install">
@@ -331,56 +523,122 @@
 
 <script>
 (function(){
+  /* iOS audio session. 'ambient' mixes with whatever else is playing — your
+     music keeps going — but iOS silences it when the ringer switch is off.
+     Swap to 'playback' to override the ringer switch instead, at the cost of
+     interrupting other audio on every tap. */
+  var AUDIO_SESSION='ambient';
+
+  var PRESETS=[[1,0],[3,2],[5,0],[5,3],[10,0],[15,10]];
+
+  var DEFAULTS={
+    stopwatch:{A:'DISTRACTED', B:'FOCUSED', sound:'1'},
+    chess:{A:'BLACK', B:'WHITE', sound:'0'}
+  };
+
   var board=document.getElementById('board');
   var sides={A:document.getElementById('sideA'),B:document.getElementById('sideB')};
   var totals={A:document.getElementById('totalA'),B:document.getElementById('totalB')};
   var turns={A:document.getElementById('turnA'),B:document.getElementById('turnB')};
   var labels={A:document.getElementById('labelA'),B:document.getElementById('labelB')};
-  var btnPause=document.getElementById('btnPause');
-  var btnReset=document.getElementById('btnReset');
+  var mirror=document.getElementById('mirror');
+  var btnMode=document.getElementById('btnMode');
   var btnSound=document.getElementById('btnSound');
+  var btnReset=document.getElementById('btnReset');
+  var btnPause=document.getElementById('btnPause');
+  var icoMode=document.getElementById('icoMode');
   var icoPause=document.getElementById('icoPause');
-  var hints={pause:document.getElementById('hintPause'),reset:document.getElementById('hintReset'),sound:document.getElementById('hintSound')};
+  var hints={mode:document.getElementById('hintMode'),sound:document.getElementById('hintSound'),reset:document.getElementById('hintReset'),pause:document.getElementById('hintPause')};
+  var startcue=document.getElementById('startcue');
+  var cuetext=document.getElementById('cuetext');
+  var tcchip=document.getElementById('tcchip');
+  var sheet=document.getElementById('sheet');
+  var presetsEl=document.getElementById('presets');
+  var cMin=document.getElementById('cMin');
+  var cInc=document.getElementById('cInc');
 
+  var mode='stopwatch';
   var acc={A:0,B:0};
   var turnAcc={A:0,B:0};
+  var moves={A:0,B:0};
   var active=null;
   var startedAt=0;
   var paused=false;
   var everStarted=false;
+  var over=false;
+  var flagged=null;
   var soundOn=true;
   var resetArmed=false;
   var resetTimer=null;
   var wakeLock=null;
   var audioCtx=null;
+  var base=300000;
+  var inc=0;
 
-  function store(k,v){try{localStorage.setItem('arrosho.sw.'+k,v);}catch(e){}}
-  function load(k,d){try{var v=localStorage.getItem('arrosho.sw.'+k);return v===null?d:v;}catch(e){return d;}}
+  function store(k,v){try{localStorage.setItem('arrosho.sw2.'+k,v);}catch(e){}}
+  function load(k,d){try{var v=localStorage.getItem('arrosho.sw2.'+k);return v===null?d:v;}catch(e){return d;}}
 
-  labels.A.value=load('labelA','PLAYER A');
-  labels.B.value=load('labelB','PLAYER B');
-  soundOn=load('sound','1')==='1';
-  paintSound();
+  // ---------- VIEWPORT ----------
+  // iOS lies about viewport height in a few states (collapsed toolbar, a home
+  // screen icon installed before viewport-fit=cover existed). Pin it ourselves.
+  var lastW=0, lastH=0, appH=0;
+  function sizeBoard(){
+    var w=window.innerWidth, h=window.innerHeight;
+    // A transient 0 during orientation change would otherwise pin the board at
+    // zero height forever, since this inline value beats the 100dvh fallback.
+    if(!(h>0)) return;
+    // A soft keyboard shrinks the height without touching the width — that must
+    // not resize the board. Rotating always changes the width, so it still wins.
+    if(w===lastW && h<lastH && document.activeElement && document.activeElement.tagName==='INPUT') return;
+    lastW=w; lastH=h;
+    if(h===appH) return;
+    appH=h;
+    document.documentElement.style.setProperty('--app-h', h+'px');
+  }
+  sizeBoard();
+  window.addEventListener('resize', sizeBoard);
+  window.addEventListener('orientationchange', function(){setTimeout(sizeBoard,120);});
+  if(window.visualViewport) window.visualViewport.addEventListener('resize', sizeBoard);
 
-  function fitLabel(el){el.style.width=Math.max(10,el.value.length)+2+'ch';}
+  // ---------- LABELS ----------
+  function fitLabel(el){
+    mirror.textContent=el.value||' ';
+    // 16px of padding plus the trailing letter-space and caret room.
+    el.style.width=Math.ceil(mirror.getBoundingClientRect().width+22)+'px';
+  }
+  function fitAll(){fitLabel(labels.A); fitLabel(labels.B);}
+
   ['A','B'].forEach(function(k){
-    fitLabel(labels[k]);
     labels[k].addEventListener('input',function(){
       labels[k].value=labels[k].value.toUpperCase();
       fitLabel(labels[k]);
     });
-    labels[k].addEventListener('change',function(){store('label'+k,labels[k].value);});
+    labels[k].addEventListener('change',function(){store(mode+'.label'+k,labels[k].value);});
+    labels[k].addEventListener('blur',function(){store(mode+'.label'+k,labels[k].value); sizeBoard();});
     labels[k].addEventListener('keydown',function(e){
       e.stopPropagation();
       if(e.key==='Enter'){labels[k].blur();}
     });
     labels[k].addEventListener('click',function(e){e.stopPropagation();});
   });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
+  window.addEventListener('resize', fitAll);
 
+  // ---------- FORMATTING ----------
   function pad(n){return n<10?'0'+n:''+n;}
   function fmtTotal(ms){
     var s=Math.floor(ms/1000);
     return pad(Math.floor(s/3600))+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60);
+  }
+  function fmtClock(ms){
+    // Under 20 seconds a chess clock shows tenths.
+    if(ms<20000) return (Math.floor(ms/100)/10).toFixed(1);
+    // Counting down rounds up, so a fresh 3+2 reads 03:00 for its first second
+    // instead of snapping to 02:59 the moment you tap.
+    var s=Math.ceil(ms/1000);
+    var h=Math.floor(s/3600);
+    if(h>0) return pad(h)+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60);
+    return pad(Math.floor(s/60))+':'+pad(s%60);
   }
   function fmtTurn(ms){
     var s=Math.floor(ms/1000);
@@ -388,20 +646,31 @@
     if(h>0){return pad(h)+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60);}
     return pad(Math.floor(s/60))+':'+pad(s%60);
   }
+  function tcLabel(){return (base/60000)+'+'+(inc/1000);}
 
+  // ---------- CLOCKS ----------
   function elapsed(k){
     return acc[k]+(active===k&&!paused?(performance.now()-startedAt):0);
   }
   function elapsedTurn(k){
     return turnAcc[k]+(active===k&&!paused?(performance.now()-startedAt):0);
   }
+  function remaining(k){
+    return base+inc*moves[k]-elapsed(k);
+  }
 
   function render(){
+    // Polled rather than left to resize/orientationchange alone: a missed event
+    // would otherwise strand the board at a stale height. Writes only on change.
+    sizeBoard();
     ['A','B'].forEach(function(k){
-      totals[k].textContent=fmtTotal(elapsed(k));
+      totals[k].textContent = mode==='chess'
+        ? fmtClock(Math.max(0, remaining(k)))
+        : fmtTotal(elapsed(k));
       turns[k].textContent='TURN '+fmtTurn(elapsedTurn(k));
-      sides[k].classList.toggle('idle', active!==k || paused);
+      sides[k].classList.toggle('idle', over ? k!==flagged : (active!==k||paused));
     });
+    if(mode==='chess'&&active&&!paused&&!over&&remaining(active)<=0) doFlag(active);
     requestAnimationFrame(render);
   }
   requestAnimationFrame(render);
@@ -414,33 +683,8 @@
     }
   }
 
-  function click(){
-    if(!soundOn) return;
-    try{
-      audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-      var o=audioCtx.createOscillator(), g=audioCtx.createGain();
-      o.type='square'; o.frequency.value=880;
-      g.gain.setValueAtTime(0.05,audioCtx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.04);
-      o.connect(g); g.connect(audioCtx.destination);
-      o.start(); o.stop(audioCtx.currentTime+0.04);
-    }catch(e){}
-    if(navigator.vibrate){try{navigator.vibrate(15);}catch(e){}}
-  }
-
-  async function lockScreen(){
-    if(!('wakeLock' in navigator)) return;
-    try{wakeLock=await navigator.wakeLock.request('screen');}catch(e){}
-  }
-  function releaseScreen(){
-    if(wakeLock){try{wakeLock.release();}catch(e){} wakeLock=null;}
-  }
-  document.addEventListener('visibilitychange',function(){
-    if(document.visibilityState==='visible'&&active&&!paused) lockScreen();
-  });
-
   function handOver(tapped){
-    if(paused) return;
+    if(paused||over) return;
     if(active===null){
       active=tapped;
       turnAcc[tapped]=0;
@@ -451,7 +695,10 @@
       return;
     }
     commit();
+    var mover=active;
     var other=active==='A'?'B':'A';
+    // Fischer: the increment lands after the move is completed.
+    if(mode==='chess') moves[mover]+=1;
     active=other;
     turnAcc[other]=0;
     startedAt=performance.now();
@@ -461,6 +708,84 @@
   sides.A.addEventListener('click',function(){handOver('A');});
   sides.B.addEventListener('click',function(){handOver('B');});
 
+  function doFlag(k){
+    commit();
+    acc[k]=base+inc*moves[k];   // land exactly on zero
+    over=true;
+    flagged=k;
+    paused=true;
+    releaseScreen();
+    paintPause();
+    sides[k].classList.add('flagged');
+    flash(hints.pause, 'Flag — '+labels[k].value);
+    click();
+  }
+
+  function clearClocks(){
+    acc={A:0,B:0}; turnAcc={A:0,B:0}; moves={A:0,B:0};
+    active=null; paused=false; everStarted=false;
+    over=false;
+    if(flagged) sides[flagged].classList.remove('flagged');
+    flagged=null;
+    board.classList.remove('started');
+    releaseScreen();
+    paintPause();
+  }
+
+  // ---------- SOUND ----------
+  function audioSession(){
+    try{ if(navigator.audioSession) navigator.audioSession.type=AUDIO_SESSION; }catch(e){}
+  }
+  audioSession();
+
+  function click(){
+    // Haptics stay on even when the click is muted — on a silenced phone they
+    // are the only confirmation you get. (iOS Safari has no vibrate API.)
+    if(navigator.vibrate){try{navigator.vibrate(15);}catch(e){}}
+    if(!soundOn) return;
+    try{
+      audioSession();
+      audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
+      if(audioCtx.state==='suspended') audioCtx.resume();
+      var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type='square'; o.frequency.value=880;
+      g.gain.setValueAtTime(0.05,audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.04);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(); o.stop(audioCtx.currentTime+0.04);
+    }catch(e){}
+  }
+
+  function paintSound(){
+    btnSound.classList.toggle('off',!soundOn);
+    btnSound.setAttribute('aria-label', soundOn?'Mute':'Unmute');
+  }
+  btnSound.addEventListener('click',function(e){
+    e.stopPropagation();
+    soundOn=!soundOn;
+    store(mode+'.sound',soundOn?'1':'0');
+    paintSound();
+    flash(hints.sound, soundOn?'Sound on':'Muted');
+    if(soundOn) click();
+  });
+
+  // ---------- SCREEN ----------
+  async function lockScreen(){
+    if(!('wakeLock' in navigator)) return;
+    try{wakeLock=await navigator.wakeLock.request('screen');}catch(e){}
+  }
+  function releaseScreen(){
+    if(wakeLock){try{wakeLock.release();}catch(e){} wakeLock=null;}
+  }
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState!=='visible') return;
+    sizeBoard();
+    audioSession();
+    if(audioCtx&&audioCtx.state==='suspended'){try{audioCtx.resume();}catch(e){}}
+    if(active&&!paused) lockScreen();
+  });
+
+  // ---------- PAUSE / RESET ----------
   function paintPause(){
     icoPause.innerHTML = paused
       ? '<polygon points="6 4 20 12 6 20" fill="currentColor" stroke="none"></polygon>'
@@ -468,7 +793,7 @@
     btnPause.setAttribute('aria-label', paused?'Resume':'Pause');
   }
   function togglePause(){
-    if(!everStarted) return;
+    if(!everStarted||over) return;
     if(!paused){ commit(); paused=true; releaseScreen(); }
     else { paused=false; startedAt=performance.now(); lockScreen(); }
     paintPause();
@@ -498,28 +823,100 @@
     clearTimeout(resetTimer);
     resetArmed=false;
     btnReset.classList.remove('armed');
-    acc={A:0,B:0}; turnAcc={A:0,B:0};
-    active=null; paused=false; everStarted=false;
-    board.classList.remove('started');
-    releaseScreen();
-    paintPause();
+    clearClocks();
     flash(hints.reset,'Reset');
   }
   btnReset.addEventListener('click',function(e){e.stopPropagation();doReset();});
 
-  function paintSound(){
-    btnSound.classList.toggle('off',!soundOn);
-    btnSound.setAttribute('aria-label', soundOn?'Mute':'Unmute');
+  // ---------- MODE ----------
+  var PAWN='<circle cx="12" cy="5.6" r="2.9"></circle>'+
+           '<path d="M10.2 9.7c.4 2.5-.8 3.9-1.9 5.2h7.4c-1.1-1.3-2.3-2.7-1.9-5.2"></path>'+
+           '<path d="M8.3 14.9c-.3 2.2-1.2 3.8-2.3 5.1h12c-1.1-1.3-2-2.9-2.3-5.1"></path>'+
+           '<path d="M4.8 20h14.4"></path>';
+  var WATCH='<circle cx="12" cy="13.8" r="7.6"></circle>'+
+            '<path d="M12 10v3.8"></path>'+
+            '<path d="M9.4 2.6h5.2"></path>'+
+            '<path d="M12 2.6v3.6"></path>'+
+            '<path d="M18.5 8.1l1.6-1.6"></path>';
+
+  function paintMode(){
+    board.classList.toggle('chess', mode==='chess');
+    // The icon shows the mode you are one tap away from.
+    icoMode.innerHTML = mode==='chess' ? WATCH : PAWN;
+    btnMode.setAttribute('aria-label', mode==='chess'?'Switch to stopwatch':'Switch to chess clock');
+    tcchip.textContent=tcLabel();
+    cuetext.textContent='Tap a side to start';
+    fitAll();
   }
-  btnSound.addEventListener('click',function(e){
-    e.stopPropagation();
-    soundOn=!soundOn;
-    store('sound',soundOn?'1':'0');
+
+  function applyMode(next){
+    // Labels and the mute setting are remembered per mode.
+    store(mode+'.labelA',labels.A.value);
+    store(mode+'.labelB',labels.B.value);
+    mode=next;
+    store('mode',mode);
+    labels.A.value=load(mode+'.labelA', DEFAULTS[mode].A);
+    labels.B.value=load(mode+'.labelB', DEFAULTS[mode].B);
+    soundOn=load(mode+'.sound', DEFAULTS[mode].sound)==='1';
     paintSound();
-    flash(hints.sound, soundOn?'Sound on':'Muted');
-    if(soundOn) click();
+    clearClocks();
+    paintMode();
+  }
+
+  btnMode.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(mode==='chess'){
+      applyMode('stopwatch');
+      flash(hints.mode,'Stopwatch');
+    } else {
+      openSheet(true);
+    }
   });
 
+  // ---------- TIME CONTROL SHEET ----------
+  var sheetEntering=false;
+
+  PRESETS.forEach(function(p){
+    var b=document.createElement('button');
+    b.className='preset';
+    b.type='button';
+    b.textContent=p[0]+'+'+p[1];
+    b.addEventListener('click',function(){setTC(p[0],p[1]);});
+    presetsEl.appendChild(b);
+  });
+
+  function openSheet(entering){
+    sheetEntering=!!entering;
+    cMin.value=Math.round(base/60000);
+    cInc.value=Math.round(inc/1000);
+    sheet.classList.add('show');
+  }
+  function closeSheet(){
+    sheet.classList.remove('show');
+  }
+  function setTC(min,sec){
+    min=Math.min(180,Math.max(1, Math.round(min)||1));
+    sec=Math.min(60, Math.max(0, Math.round(sec)||0));
+    base=min*60000;
+    inc=sec*1000;
+    store('base',base); store('inc',inc);
+    closeSheet();
+    if(sheetEntering) applyMode('chess');
+    else { clearClocks(); paintMode(); }
+    flash(hints.mode, 'Chess '+tcLabel());
+  }
+  document.getElementById('cGo').addEventListener('click',function(){
+    setTC(parseInt(cMin.value,10), parseInt(cInc.value,10));
+  });
+  document.getElementById('sheetCancel').addEventListener('click',function(){closeSheet();});
+  sheet.addEventListener('click',function(e){ if(e.target===sheet) closeSheet(); });
+  tcchip.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(everStarted) return;
+    openSheet(false);
+  });
+
+  // ---------- KEYS ----------
   document.addEventListener('keydown',function(e){
     if(e.target.tagName==='INPUT') return;
     var k=e.key.toLowerCase();
@@ -528,9 +925,21 @@
       handOver(active===null?'A':active);
     } else if(k==='p'){ e.preventDefault(); togglePause(); }
     else if(k==='r'){ e.preventDefault(); doReset(); }
+    else if(k==='c'){ e.preventDefault(); btnMode.click(); }
+    else if(k==='escape'){ closeSheet(); }
   });
 
+  // ---------- BOOT ----------
+  base=parseInt(load('base','300000'),10)||300000;
+  inc=parseInt(load('inc','0'),10)||0;
+  mode=load('mode','stopwatch')==='chess'?'chess':'stopwatch';
+  labels.A.value=load(mode+'.labelA', DEFAULTS[mode].A);
+  labels.B.value=load(mode+'.labelB', DEFAULTS[mode].B);
+  soundOn=load(mode+'.sound', DEFAULTS[mode].sound)==='1';
+  paintSound();
   paintPause();
+  paintMode();
+  fitAll();
 
   // ---------- INSTALL ----------
   var installBtn=document.getElementById('install');

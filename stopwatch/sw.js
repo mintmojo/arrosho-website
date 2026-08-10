@@ -1,11 +1,17 @@
-const VERSION = 'arrosho-stopwatch-v1';
+const VERSION = 'arrosho-stopwatch-v2';
 const SHELL = VERSION + '-shell';
 const FONTS = VERSION + '-fonts';
 
+// Must land or the app is not usable offline.
 const PRECACHE = [
   './',
   'index.html',
-  'manifest.json',
+  'manifest.json'
+];
+
+// Nice to have. addAll() rejects the whole install if any one entry 404s,
+// so these are fetched individually and allowed to fail.
+const PRECACHE_OPTIONAL = [
   'icons/icon-192.png',
   'icons/icon-512.png',
   'icons/maskable-192.png',
@@ -19,7 +25,9 @@ const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(SHELL)
-      .then(cache => cache.addAll(PRECACHE))
+      .then(cache => cache.addAll(PRECACHE).then(() => Promise.all(
+        PRECACHE_OPTIONAL.map(url => cache.add(url).catch(() => {}))
+      )))
       .then(() => self.skipWaiting())
   );
 });

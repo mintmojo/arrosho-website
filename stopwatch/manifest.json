@@ -1,7 +1,7 @@
 {
   "name": "Arrosho Stopwatch",
   "short_name": "Stopwatch",
-  "description": "A count-up chess clock. Two labelled sides, tap anywhere to hand over. Works offline.",
+  "description": "A count-up focus clock and a count-down chess clock. Two labelled sides, tap anywhere to hand over. Works offline.",
   "id": "/stopwatch/",
   "start_url": "./",
   "scope": "./",
