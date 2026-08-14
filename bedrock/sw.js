@@ -2,11 +2,18 @@
 // returning visitors keep the old files forever — which is exactly what
 // happened between v1 and v8 when this was being patched after copying
 // instead of at the source.
-const CACHE = 'bedrock-v9';
+const CACHE = 'bedrock-v10';
 const ASSETS = ['./', './index.html', './lessons.json', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+  // deliberately NOT skipWaiting here — the page shows an update banner and
+  // the user decides when to swap, so a reload never lands mid-lesson
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+});
+
+// the banner's Reload button sends this
+self.addEventListener('message', e => {
+  if (e.data === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('activate', e => {

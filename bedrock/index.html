@@ -116,6 +116,11 @@ header #help{margin-left:auto;width:1.9rem;height:1.9rem;padding:0;border-radius
   border-radius:.5rem;padding:.75rem .9rem;margin:1rem 0 0;font-size:.9rem}
 .other{color:var(--muted);font-size:.88rem}
 .other summary{cursor:pointer;padding:.5rem 0}
+.upd{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;
+  align-items:center;justify-content:space-between;gap:.8rem;
+  padding:.85rem 1rem;background:var(--card);border-top:1px solid var(--accent);
+  font-size:.92rem}
+.upd button{padding:.5rem .9rem;border-color:var(--accent);color:var(--accent)}
 footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padding-top:.9rem}
 .hidden{display:none}
 </style>
@@ -645,6 +650,16 @@ function showHelp(){
     (installPrompt?`<div class="row" style="margin-top:1rem">
        <button class="ok" id="do-install">Install it for me</button></div>`:'')+
     `<details class="other"><summary>Other devices</summary>${rest}</details>`;
+  $('#how').innerHTML+=`<h3>Not seeing a change?</h3>
+    <p class="other">Installed copies keep their own cache, so an update can
+      sit unnoticed. It checks every time you open the app, and shows a banner
+      when there's one waiting.</p>
+    <div class="row"><button id="chk">Check for updates now</button></div>`;
+  $('#chk').onclick=async()=>{
+    $('#chk').textContent='Checking…';
+    try{await swReg?.update();}catch(e){}
+    setTimeout(()=>{$('#chk').textContent=$('#upd')?'Update found':'Already up to date';},900);
+  };
   $('#already').textContent=installed
     ? 'Looks like you already have it installed — nothing more to do.' : '';
   $('#why').innerHTML=installed
@@ -662,7 +677,40 @@ $('#sheet-x').onclick=()=>$('#sheet').classList.add('hidden');
 $('#sheet').onclick=e=>{if(e.target===$('#sheet'))$('#sheet').classList.add('hidden');};
 addEventListener('keydown',e=>{if(e.key==='Escape')$('#sheet').classList.add('hidden');});
 
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
+// ---------- updates ----------
+// A cache-first PWA will happily serve last month's files forever unless it's
+// told to look. Check on load and whenever the app regains focus, then let the
+// user decide when to swap.
+let swReg=null;
+function updateBanner(){
+  if($('#upd'))return;
+  const d=document.createElement('div');
+  d.id='upd';d.className='upd';
+  d.innerHTML=`<span>A newer version is ready.</span><button id="upd-go">Reload</button>`;
+  document.body.appendChild(d);
+  $('#upd-go').onclick=()=>{
+    if(swReg?.waiting)swReg.waiting.postMessage('SKIP_WAITING');
+    else location.reload();
+  };
+}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').then(reg=>{
+    swReg=reg;
+    if(reg.waiting&&navigator.serviceWorker.controller)updateBanner();
+    reg.addEventListener('updatefound',()=>{
+      const nw=reg.installing;
+      nw&&nw.addEventListener('statechange',()=>{
+        if(nw.state==='installed'&&navigator.serviceWorker.controller)updateBanner();
+      });
+    });
+    reg.update().catch(()=>{});
+    addEventListener('focus',()=>reg.update().catch(()=>{}));
+  }).catch(()=>{});
+  let reloading=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    if(reloading)return;reloading=true;location.reload();
+  });
+}
 </script>
 </body>
 </html>
