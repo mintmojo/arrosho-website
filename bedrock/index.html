@@ -151,7 +151,10 @@ fetch('lessons.json').then(r=>r.json()).then(d=>{LESSONS=d.lessons;home();});
 function home(){
   const st=derive();
   $('#s-streak').textContent=st.streak;
-  $('#s-done').textContent=st.done.size+'/'+LESSONS.length;
+  // the how-to-learn lesson is orientation, not a graded lesson
+  const graded=LESSONS.filter(l=>l.id!=='how');
+  const gradedDone=graded.filter(l=>st.done.has(l.id)).length;
+  $('#s-done').textContent=gradedDone+'/'+graded.length;
   $('#s-acc').textContent=st.acc===null?'–':st.acc+'%';
   $('#list').innerHTML='';
   LESSONS.forEach(l=>{
