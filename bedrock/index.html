@@ -86,6 +86,13 @@ mark{background:#f2d97a;color:#1c1a17;padding:0 .18em;border-radius:.15em}
 .srs b{font-weight:600}
 .srs small{color:var(--muted);font-size:.78rem;display:block;margin-top:.1rem}
 .srs .cnt{color:var(--accent);font-size:1.35rem;font-weight:600;flex:0 0 auto}
+.srs.clear{border-color:var(--line)}
+.srs.clear .cnt{color:var(--ok);font-size:1.1rem}
+textarea{width:100%;font:.85rem/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;
+  padding:.7rem;border:1px solid var(--line);border-radius:.5rem;
+  background:var(--card);color:var(--fg);resize:vertical;margin-bottom:.5rem}
+code{font:.85em ui-monospace,SFMono-Regular,Menlo,monospace;
+  background:var(--card);padding:.1em .3em;border-radius:.2em}
 footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padding-top:.9rem}
 .hidden{display:none}
 </style>
@@ -101,9 +108,23 @@ footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid 
       <div class="stat"><b id="s-done">0</b><span>lessons</span></div>
       <div class="stat"><b id="s-known">0</b><span>words</span></div>
     </div>
-    <button id="srs-btn" class="srs hidden"></button>
+    <button id="srs-btn" class="srs"></button>
     <div id="list"></div>
     <button class="link" id="review-btn">Review lesson prompts I missed</button>
+    <button class="link" id="import-btn">Add your own words</button>
+
+    <div id="importer" class="hidden">
+      <p class="teach">Paste a word list — <b>CSV</b> (one per line:
+        <code>spanish,english,pronunciation</code>) or a <b>JSON</b> array of
+        <code>{"es","en","p"}</code>. Pronunciation is optional.</p>
+      <textarea id="import-text" rows="8" placeholder="quiero,I want,kee-EH-roh
+puedo,I can,PWEH-doh"></textarea>
+      <p id="import-msg" class="hint"></p>
+      <div class="row">
+        <button id="import-cancel">Cancel</button>
+        <button class="ok" id="import-go">Add them</button>
+      </div>
+    </div>
     <footer>
       Everything stays on this device. Nothing is sent anywhere.
       <button class="link" id="export">Export my data</button> ·
@@ -154,12 +175,19 @@ function derive(){
 // change to this one function, not a data migration.
 const LEITNER=[1,2,4,8,16,32,64], NEW_PER_DAY=15, DAY=864e5;
 
+const DECK_KEY='bedrock.deck.v1';
+const loadDeck=()=>{try{return JSON.parse(localStorage.getItem(DECK_KEY))||[]}catch(e){return[]}};
+
 function srs(){
   const st=derive(), cards={};
   // a word is only unlocked once the lesson that teaches it is finished
   LESSONS.forEach(l=>{
     if(!st.done.has(l.id)||!l.vocab)return;
     l.vocab.forEach(v=>cards[v.es]={...v,lesson:l.id,level:0,last:null,seen:0});
+  });
+  // imported words have no lesson gating them, so they're available immediately
+  loadDeck().forEach(v=>{
+    if(!cards[v.es])cards[v.es]={...v,lesson:'imported',level:0,last:null,seen:0};
   });
   for(const e of events){
     if(e.type!=='review')continue;
@@ -195,15 +223,23 @@ function home(){
   $('#s-done').textContent=gradedDone+'/'+graded.length;
   const s=srs();
   $('#s-known').textContent=s.known+'/'+s.all.length;
+  // vocabulary review is always on screen, even when there's nothing to do —
+  // it's a foundation, not a feature that appears when convenient
   const btn=$('#srs-btn');
+  const nNew=s.queue.filter(c=>!c.last).length, nDue=s.queue.length-nNew;
   if(s.queue.length){
-    btn.classList.remove('hidden');
-    const nNew=s.queue.filter(c=>!c.last).length, nDue=s.queue.length-nNew;
+    btn.classList.remove('clear');btn.disabled=false;
     btn.innerHTML=`<span><b>Review vocabulary</b><small>${
       nDue?nDue+' due':''}${nDue&&nNew?' · ':''}${nNew?nNew+' new':''}</small></span>
       <span class="cnt">${s.queue.length}</span>`;
   }else{
-    btn.classList.add('hidden');
+    btn.classList.add('clear');btn.disabled=true;
+    const next=s.all.filter(c=>c.due).sort((a,b)=>a.due-b.due)[0];
+    const when=next?'next in '+Math.max(1,Math.round((next.due-Date.now())/DAY))+'d'
+                   :'finish a lesson to unlock words';
+    btn.innerHTML=`<span><b>Vocabulary</b><small>${
+      s.all.length?'all caught up · '+when:'nothing yet · '+when}</small></span>
+      <span class="cnt">✓</span>`;
   }
   $('#list').innerHTML='';
   LESSONS.forEach(l=>{
@@ -296,6 +332,46 @@ $('#review-btn').onclick=()=>{
   if(!items.length)return alert('Nothing to review yet — miss a few first.');
   cur={id:'review',title:'Review',blocks:items.map(x=>LESSONS.find(l=>l.id===x.lesson).blocks[x.i])};
   step=0;$('#home').classList.add('hidden');$('#play').classList.remove('hidden');render();
+};
+
+// ---------- import ----------
+// CSV or JSON, pasted. Deliberately not .apkg — see the spec: CSV needs the
+// same mapping logic, costs a fraction, and is the escape hatch when a
+// binary parser chokes.
+function parseImport(raw){
+  const t=raw.trim(); if(!t)return{err:'Nothing pasted.'};
+  let rows;
+  if(t[0]==='['||t[0]==='{'){
+    try{ const j=JSON.parse(t); rows=Array.isArray(j)?j:(j.cards||j.words||[]); }
+    catch(e){ return {err:'That looks like JSON but it did not parse.'}; }
+    rows=rows.map(r=>({es:(r.es||r.spanish||r.target||r.front||'').trim(),
+                       en:(r.en||r.english||r.native||r.back||'').trim(),
+                       p:(r.p||r.pron||r.pronunciation||'').trim()}));
+  }else{
+    rows=t.split(/\r?\n/).map(line=>{
+      const c=line.split(line.includes('\t')?'\t':',').map(s=>s.trim().replace(/^"|"$/g,''));
+      return {es:c[0]||'',en:c[1]||'',p:c[2]||''};
+    });
+  }
+  rows=rows.filter(r=>r.es&&r.en);
+  if(!rows.length)return{err:'No rows had both a Spanish and an English side.'};
+  return {rows};
+}
+
+$('#import-btn').onclick=()=>{$('#importer').classList.toggle('hidden');};
+$('#import-cancel').onclick=()=>{$('#importer').classList.add('hidden');$('#import-msg').textContent='';};
+$('#import-go').onclick=()=>{
+  const {rows,err}=parseImport($('#import-text').value);
+  if(err){$('#import-msg').textContent=err;return;}
+  const deck=loadDeck(), have=new Set(deck.map(d=>d.es));
+  const lessonWords=new Set(LESSONS.flatMap(l=>(l.vocab||[]).map(v=>v.es)));
+  const fresh=rows.filter(r=>!have.has(r.es)&&!lessonWords.has(r.es));
+  localStorage.setItem(DECK_KEY,JSON.stringify([...deck,...fresh]));
+  const skipped=rows.length-fresh.length;
+  $('#import-msg').textContent=`Added ${fresh.length}.`+
+    (skipped?` Skipped ${skipped} already known.`:'');
+  $('#import-text').value='';
+  home();
 };
 
 // ---------- vocabulary review ----------
