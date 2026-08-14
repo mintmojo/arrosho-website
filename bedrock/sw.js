@@ -2,8 +2,8 @@
 // returning visitors keep the old files forever — which is exactly what
 // happened between v1 and v8 when this was being patched after copying
 // instead of at the source.
-const CACHE = 'bedrock-v10';
-const ASSETS = ['./', './index.html', './lessons.json', './manifest.webmanifest', './icon.svg'];
+const CACHE = 'bedrock-v11';
+const ASSETS = ['./', './index.html', './lessons.json', './starter.json', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {
   // deliberately NOT skipWaiting here — the page shows an update banner and

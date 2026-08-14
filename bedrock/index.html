@@ -266,15 +266,17 @@ const LEITNER=[1,2,4,8,16,32,64], NEW_PER_DAY=15, DAY=864e5, LEECH_AT=3;
 
 function srs(){
   const st=derive(), cards={};
-  // a word is only unlocked once the lesson that teaches it is finished
+  const blank={level:0,last:null,seen:0,lapses:0};
+  // Lesson words go in first and win every collision — a word you were taught
+  // keeps the lesson's gloss and pronunciation, not a generic one.
   LESSONS.forEach(l=>{
     if(!st.done.has(l.id)||!l.vocab)return;
-    l.vocab.forEach(v=>cards[v.es]={...v,lesson:l.id,level:0,last:null,seen:0,lapses:0});
+    l.vocab.forEach(v=>cards[v.es]={...v,...blank,src:'lesson',lesson:l.id});
   });
-  // imported words have no lesson gating them, so they're available immediately
-  loadDeck().forEach(v=>{
-    if(!cards[v.es])cards[v.es]={...v,lesson:'imported',level:0,last:null,seen:0,lapses:0};
-  });
+  // then the bundled core deck, then anything pasted in — first writer wins,
+  // so nothing is ever duplicated across the three sources
+  STARTER.forEach(v=>{if(!cards[v.es])cards[v.es]={...v,...blank,src:'starter'};});
+  loadDeck().forEach(v=>{if(!cards[v.es])cards[v.es]={...v,...blank,src:'imported'};});
   for(const e of events){
     if(e.type!=='review')continue;
     const c=cards[e.card]; if(!c)continue;
@@ -290,8 +292,13 @@ function srs(){
   all.forEach(c=>c.due=c.last
     ? new Date(c.last).getTime()+LEITNER[Math.min(6,Math.max(0,c.level-1))]*DAY
     : 0);
-  const fresh=all.filter(c=>!c.last);
-  const due=all.filter(c=>c.last&&c.due<=now);
+  // Words you were actually taught come before words from the bundled deck.
+  // Meeting a word in a lesson and then reviewing it is the whole point;
+  // reviewing a generic word you've never seen is just a flashcard app.
+  const rank={lesson:0,starter:1,imported:2};
+  const byOrigin=(a,b)=>(rank[a.src]??3)-(rank[b.src]??3);
+  const fresh=all.filter(c=>!c.last).sort(byOrigin);
+  const due=all.filter(c=>c.last&&c.due<=now).sort((a,b)=>a.due-b.due||byOrigin(a,b));
   // cap new introductions per day so review load stays survivable
   const room=Math.max(0,NEW_PER_DAY-introducedToday);
   return {all,due,fresh,queue:[...due,...fresh.slice(0,room)],
@@ -301,7 +308,7 @@ function srs(){
 }
 
 // ---------- app ----------
-let LESSONS=[],cur=null,step=0,srsQueue=[],srsCard=null;
+let LESSONS=[],STARTER=[],cur=null,step=0,srsQueue=[],srsCard=null;
 const $=s=>document.querySelector(s);
 
 (async()=>{
@@ -321,6 +328,7 @@ const $=s=>document.querySelector(s);
   }
   const d=await (await fetch('lessons.json')).json();
   LESSONS=d.lessons;
+  try{STARTER=(await (await fetch('starter.json')).json()).words||[];}catch(e){STARTER=[];}
   home();
 })();
 
