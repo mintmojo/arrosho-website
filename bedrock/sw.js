@@ -1,4 +1,8 @@
-const CACHE = 'bedrock-v1';
+// Bump this on every deploy. The worker is cache-first, so a stale name means
+// returning visitors keep the old files forever — which is exactly what
+// happened between v1 and v8 when this was being patched after copying
+// instead of at the source.
+const CACHE = 'bedrock-v8';
 const ASSETS = ['./', './index.html', './lessons.json', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {

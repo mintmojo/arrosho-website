@@ -93,6 +93,9 @@ textarea{width:100%;font:.85rem/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;
   background:var(--card);color:var(--fg);resize:vertical;margin-bottom:.5rem}
 code{font:.85em ui-monospace,SFMono-Regular,Menlo,monospace;
   background:var(--card);padding:.1em .3em;border-radius:.2em}
+.cardimg{max-width:100%;max-height:11rem;border-radius:.45rem;margin:.9rem auto 0;display:block}
+.hook{font-size:.9rem;color:var(--muted);font-style:italic;margin:.7rem 0 0}
+input[type=file]{font:inherit;font-size:.85rem;color:var(--muted);width:100%}
 footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padding-top:.9rem}
 .hidden{display:none}
 </style>
@@ -144,12 +147,59 @@ puedo,I can,PWEH-doh"></textarea>
 </div>
 
 <script>
+// ---------- storage: IndexedDB ----------
+// Moved off localStorage because media needs blobs and real space. Kept as a
+// thin wrapper rather than pulling in Dexie: with no build step Dexie means
+// vendoring ~100KB to wrap four object stores. Swap it in when there's a
+// bundler — the call sites below are the only thing that would change.
+const DB_NAME='bedrock', DB_VERSION=1, LS_EVENTS='bedrock.events.v1', LS_DECK='bedrock.deck.v1';
+let _db=null;
+
+function openDB(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(DB_NAME,DB_VERSION);
+    r.onupgradeneeded=e=>{
+      const d=e.target.result;
+      // every schema change gets a version bump and an explicit upgrade path
+      if(!d.objectStoreNames.contains('events'))d.createObjectStore('events',{keyPath:'id',autoIncrement:true});
+      if(!d.objectStoreNames.contains('deck'))  d.createObjectStore('deck',  {keyPath:'es'});
+      if(!d.objectStoreNames.contains('media')) d.createObjectStore('media', {keyPath:'card'});
+      if(!d.objectStoreNames.contains('meta'))  d.createObjectStore('meta',  {keyPath:'k'});
+    };
+    r.onsuccess=()=>{_db=r.result;res(_db);};
+    r.onerror=()=>rej(r.error);
+  });
+}
+const store=(s,m)=>_db.transaction(s,m).objectStore(s);
+const idbAll=s=>new Promise(r=>{const q=store(s,'readonly').getAll();q.onsuccess=()=>r(q.result||[]);q.onerror=()=>r([]);});
+const idbGet=(s,k)=>new Promise(r=>{const q=store(s,'readonly').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r(null);});
+const idbPut=(s,v)=>new Promise(r=>{const q=store(s,'readwrite').put(v);q.onsuccess=()=>r(true);q.onerror=()=>r(false);});
+const idbDel=(s,k)=>new Promise(r=>{const q=store(s,'readwrite').delete(k);q.onsuccess=()=>r(true);q.onerror=()=>r(false);});
+const idbClear=s=>new Promise(r=>{const q=store(s,'readwrite').clear();q.onsuccess=()=>r(true);q.onerror=()=>r(false);});
+
+// one-time lift from localStorage. The old keys are deliberately NOT deleted —
+// losing data is the only unrecoverable bug, so the backup stays.
+async function migrateFromLocalStorage(){
+  if(await idbGet('meta','migrated'))return null;
+  let moved={events:0,deck:0};
+  try{
+    for(const e of JSON.parse(localStorage.getItem(LS_EVENTS)||'[]')){
+      await idbPut('events',e); moved.events++;
+    }
+    for(const d of JSON.parse(localStorage.getItem(LS_DECK)||'[]')){
+      await idbPut('deck',d); moved.deck++;
+    }
+    await idbPut('meta',{k:'migrated',at:new Date().toISOString(),...moved});
+  }catch(err){
+    await idbPut('meta',{k:'migrated',at:new Date().toISOString(),error:String(err)});
+  }
+  return moved;
+}
+
 // ---------- append-only event log ----------
-const KEY='bedrock.events.v1';
-const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return[]}};
-let events=load();
-function log(e){events.push({...e,t:new Date().toISOString()});
-  localStorage.setItem(KEY,JSON.stringify(events));}
+let events=[], deck=[];
+function log(e){const rec={...e,t:new Date().toISOString()};events.push(rec);idbPut('events',rec);}
+const loadDeck=()=>deck;
 
 // state is DERIVED from the log, never stored
 function derive(){
@@ -173,46 +223,67 @@ function derive(){
 // Levels 1-7, intervals double. A miss resets to 1. Nothing is stored as
 // state — replaying reviews reproduces it, so swapping in FSRS later is a
 // change to this one function, not a data migration.
-const LEITNER=[1,2,4,8,16,32,64], NEW_PER_DAY=15, DAY=864e5;
-
-const DECK_KEY='bedrock.deck.v1';
-const loadDeck=()=>{try{return JSON.parse(localStorage.getItem(DECK_KEY))||[]}catch(e){return[]}};
+const LEITNER=[1,2,4,8,16,32,64], NEW_PER_DAY=15, DAY=864e5, LEECH_AT=3;
 
 function srs(){
   const st=derive(), cards={};
   // a word is only unlocked once the lesson that teaches it is finished
   LESSONS.forEach(l=>{
     if(!st.done.has(l.id)||!l.vocab)return;
-    l.vocab.forEach(v=>cards[v.es]={...v,lesson:l.id,level:0,last:null,seen:0});
+    l.vocab.forEach(v=>cards[v.es]={...v,lesson:l.id,level:0,last:null,seen:0,lapses:0});
   });
   // imported words have no lesson gating them, so they're available immediately
   loadDeck().forEach(v=>{
-    if(!cards[v.es])cards[v.es]={...v,lesson:'imported',level:0,last:null,seen:0};
+    if(!cards[v.es])cards[v.es]={...v,lesson:'imported',level:0,last:null,seen:0,lapses:0};
   });
   for(const e of events){
     if(e.type!=='review')continue;
     const c=cards[e.card]; if(!c)continue;
-    c.level=e.result==='ok'?Math.min(7,c.level+1):1;
+    if(e.result==='ok'){c.level=Math.min(7,c.level+1);}
+    else{c.level=1;c.lapses++;}
     c.last=e.t; c.seen++;
   }
   const now=Date.now(), today=new Date().toISOString().slice(0,10);
   const introducedToday=new Set(events.filter(e=>e.type==='review'
     &&e.t.slice(0,10)===today&&e.first).map(e=>e.card)).size;
   const all=Object.values(cards);
-  all.forEach(c=>c.due=c.last?new Date(c.last).getTime()+LEITNER[c.level-1]*DAY:0);
+  // level is 1-7 once reviewed; clamp so a malformed event can't produce NaN
+  all.forEach(c=>c.due=c.last
+    ? new Date(c.last).getTime()+LEITNER[Math.min(6,Math.max(0,c.level-1))]*DAY
+    : 0);
   const fresh=all.filter(c=>!c.last);
   const due=all.filter(c=>c.last&&c.due<=now);
   // cap new introductions per day so review load stays survivable
   const room=Math.max(0,NEW_PER_DAY-introducedToday);
   return {all,due,fresh,queue:[...due,...fresh.slice(0,room)],
-          known:all.filter(c=>c.level>=3).length,capped:fresh.length>room};
+          known:all.filter(c=>c.level>=3).length,
+          capped:fresh.length>0&&room===0,
+          leeches:all.filter(c=>c.lapses>=LEECH_AT&&!c.media)};
 }
 
 // ---------- app ----------
 let LESSONS=[],cur=null,step=0,srsQueue=[],srsCard=null;
 const $=s=>document.querySelector(s);
 
-fetch('lessons.json').then(r=>r.json()).then(d=>{LESSONS=d.lessons;home();});
+(async()=>{
+  try{
+    await openDB();
+    const moved=await migrateFromLocalStorage();
+    if(moved&&(moved.events||moved.deck))
+      console.info('Bedrock: moved',moved.events,'events and',moved.deck,'words to IndexedDB');
+    events=await idbAll('events');
+    deck=await idbAll('deck');
+  }catch(err){
+    // IndexedDB blocked (private browsing, old Safari) — fall back to the old
+    // store rather than losing the session entirely
+    console.warn('Bedrock: IndexedDB unavailable, using localStorage',err);
+    try{events=JSON.parse(localStorage.getItem(LS_EVENTS)||'[]');
+        deck=JSON.parse(localStorage.getItem(LS_DECK)||'[]');}catch(e){}
+  }
+  const d=await (await fetch('lessons.json')).json();
+  LESSONS=d.lessons;
+  home();
+})();
 
 function home(){
   const st=derive();
@@ -234,11 +305,20 @@ function home(){
       <span class="cnt">${s.queue.length}</span>`;
   }else{
     btn.classList.add('clear');btn.disabled=true;
-    const next=s.all.filter(c=>c.due).sort((a,b)=>a.due-b.due)[0];
-    const when=next?'next in '+Math.max(1,Math.round((next.due-Date.now())/DAY))+'d'
-                   :'finish a lesson to unlock words';
-    btn.innerHTML=`<span><b>Vocabulary</b><small>${
-      s.all.length?'all caught up · '+when:'nothing yet · '+when}</small></span>
+    let msg;
+    if(s.capped){
+      msg='daily limit reached · '+s.fresh.length+' waiting for tomorrow';
+    }else if(!s.all.length){
+      // lessons 1-2 teach rules, not words, so finishing them unlocks nothing.
+      // Saying "finish a lesson" there would read as broken.
+      msg=gradedDone?'the lessons so far teach rules, not words — lesson 3 has the first':
+                     'finish a lesson to unlock words';
+    }else{
+      const next=s.all.filter(c=>c.last).sort((a,b)=>a.due-b.due)[0];
+      msg='all caught up'+(next?' · next in '+
+        Math.max(1,Math.round((next.due-Date.now())/DAY))+'d':'');
+    }
+    btn.innerHTML=`<span><b>Vocabulary</b><small>${msg}</small></span>
       <span class="cnt">✓</span>`;
   }
   $('#list').innerHTML='';
@@ -363,10 +443,10 @@ $('#import-cancel').onclick=()=>{$('#importer').classList.add('hidden');$('#impo
 $('#import-go').onclick=()=>{
   const {rows,err}=parseImport($('#import-text').value);
   if(err){$('#import-msg').textContent=err;return;}
-  const deck=loadDeck(), have=new Set(deck.map(d=>d.es));
+  const have=new Set(deck.map(d=>d.es));
   const lessonWords=new Set(LESSONS.flatMap(l=>(l.vocab||[]).map(v=>v.es)));
   const fresh=rows.filter(r=>!have.has(r.es)&&!lessonWords.has(r.es));
-  localStorage.setItem(DECK_KEY,JSON.stringify([...deck,...fresh]));
+  fresh.forEach(r=>{deck.push(r);idbPut('deck',r);});
   const skipped=rows.length-fresh.length;
   $('#import-msg').textContent=`Added ${fresh.length}.`+
     (skipped?` Skipped ${skipped} already known.`:'');
@@ -391,10 +471,13 @@ function nextSrs(){
       ${isNew?'<p class="hint">new word</p>':''}
       <p class="en">${c.en}</p><p class="hint">say it in Spanish out loud, then check</p></div>
     <div class="row"><button id="show">Show me</button></div>`;
-  $('#show').onclick=()=>{
+  $('#show').onclick=async()=>{
+    const m=await idbGet('media',c.es);
+    const extra=(m?.img?`<img class="cardimg" src="${URL.createObjectURL(m.img)}" alt="">`:'')
+      +(m?.note?`<p class="hook">${m.note}</p>`:'');
     $('#stage').innerHTML=`<div class="card">
         <p class="en">${c.en}</p><p class="es">${c.es}</p>
-        <p class="pron">${c.p||''}</p></div>
+        <p class="pron">${c.p||''}</p>${extra}</div>
       <div class="row">
         <button class="miss" id="m">Missed it</button>
         <button class="ok" id="o">Got it</button></div>`;
@@ -404,20 +487,83 @@ function nextSrs(){
   guard();
 }
 
+// ---------- leech repair: media, offered only where a card keeps failing ----------
+// Never a queue. This appears on the few cards actually causing trouble, at the
+// moment you're motivated to fix them, and nowhere else.
+async function offerRepair(card){
+  const existing=await idbGet('media',card.es);
+  $('#stage').innerHTML=`<p class="teach">
+      <b>${card.es}</b> keeps slipping — that's ${card.lapses} misses now.
+      Want to make it stick?</p>
+    <p class="ctx">A picture you chose yourself, or one odd line about why it
+      reminds you of something, beats anything that came bundled with a deck.
+      Whatever's weirdest works best.</p>
+    <input type="file" id="rep-img" accept="image/*" style="margin-bottom:.6rem">
+    <textarea id="rep-note" rows="2"
+      placeholder="sounds like… / reminds me of…">${existing?.note||''}</textarea>
+    <div class="row">
+      <button id="rep-skip">Not now</button>
+      <button class="ok" id="rep-save">Save</button>
+    </div>`;
+  $('#rep-skip').onclick=()=>{log({type:'repair_skip',card:card.es});nextSrs();};
+  $('#rep-save').onclick=async()=>{
+    const f=$('#rep-img').files[0];
+    const rec={card:card.es,note:$('#rep-note').value.trim()||null,img:null};
+    if(f)rec.img=await shrink(f);
+    await idbPut('media',rec);
+    log({type:'repair',card:card.es,img:!!rec.img,note:!!rec.note});
+    nextSrs();
+  };
+  guard();
+}
+
+// resize before storing — a phone photo is several MB and a card needs ~40KB
+function shrink(file){
+  return new Promise(res=>{
+    const img=new Image();
+    img.onload=()=>{
+      const max=600, sc=Math.min(1,max/Math.max(img.width,img.height));
+      const cv=document.createElement('canvas');
+      cv.width=img.width*sc; cv.height=img.height*sc;
+      cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+      cv.toBlob(b=>res(b),'image/webp',0.75);
+    };
+    img.onerror=()=>res(null);
+    img.src=URL.createObjectURL(file);
+  });
+}
+
 function gradeSrs(r){
   log({type:'review',card:srsCard.es,result:r,first:!srsCard.last});
+  // A miss schedules the card for tomorrow, which would mean getting it wrong
+  // and never seeing it again this session. Put it back a few places instead —
+  // that's what makes a lapse feel like a correction rather than a dead end.
+  if(r==='miss'){
+    const c={...srsCard,last:new Date().toISOString(),lapses:(srsCard.lapses||0)+1};
+    srsQueue.splice(Math.min(3,srsQueue.length),0,c);
+    // offered once, only after it's genuinely a problem, and never again if
+    // it's already been repaired or explicitly declined
+    const declined=events.some(e=>e.type==='repair_skip'&&e.card===c.es);
+    const repaired=events.some(e=>e.type==='repair'&&e.card===c.es);
+    if(c.lapses>=LEECH_AT&&!declined&&!repaired)return offerRepair(c);
+  }
   nextSrs();
 }
 
 $('#prev').onclick=()=>{if(step>0){step--;render();}};
 $('#quit').onclick=home;
 $('#export').onclick=()=>{
+  const payload={schema:1,exported:new Date().toISOString(),events,deck};
   const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([JSON.stringify(events,null,2)],{type:'application/json'}));
-  a.download='bedrock-events.json';a.click();
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
+  a.download='bedrock-export.json';a.click();
 };
-$('#reset').onclick=()=>{if(confirm('Delete all progress on this device?')){
-  localStorage.removeItem(KEY);events=[];home();}};
+$('#reset').onclick=async()=>{
+  if(!confirm('Delete all progress on this device? Export first if you want a copy.'))return;
+  try{await idbClear('events');await idbClear('deck');await idbClear('media');}catch(e){}
+  localStorage.removeItem(LS_EVENTS);localStorage.removeItem(LS_DECK);
+  events=[];deck=[];home();
+};
 
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 </script>
