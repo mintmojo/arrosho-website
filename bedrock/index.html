@@ -121,6 +121,14 @@ header #help{margin-left:auto;width:1.9rem;height:1.9rem;padding:0;border-radius
   padding:.85rem 1rem;background:var(--card);border-top:1px solid var(--accent);
   font-size:.92rem}
 .upd button{padding:.5rem .9rem;border-color:var(--accent);color:var(--accent)}
+.picks{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr));
+  gap:.4rem;margin-top:1rem}
+.pick{padding:.55rem .7rem;text-align:left;line-height:1.25;border-color:var(--accent)}
+.pick .pk{display:block;color:var(--accent);font-weight:600}
+.pick .pn{display:block;color:var(--muted);font-size:.78rem}
+.pick.off{border-color:var(--line);opacity:.45}
+.pick.off .pk{color:var(--muted);text-decoration:line-through}
+#p-done{position:sticky;top:0;z-index:2}
 footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padding-top:.9rem}
 .hidden{display:none}
 </style>
@@ -154,6 +162,7 @@ footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid 
     <div id="list"></div>
     <button class="link" id="review-btn">Review lesson prompts I missed</button>
     <button class="link" id="import-btn">Add your own words</button>
+    <button class="link hidden" id="deck-btn">Change which core words I'm learning</button>
 
     <div id="importer" class="hidden">
       <p class="teach">Paste a word list — <b>CSV</b> (one per line:
@@ -264,6 +273,15 @@ function derive(){
 // change to this one function, not a data migration.
 const LEITNER=[1,2,4,8,16,32,64], NEW_PER_DAY=15, DAY=864e5, LEECH_AT=3;
 
+// Whether the bundled deck is in play, and which of it the user already knows.
+// Stored as an event so it rides the same append-only log as everything else.
+function deckPref(){
+  let p=null;
+  for(const e of events)if(e.type==='deck_pref')p=e;
+  return p?{mode:p.mode,skip:new Set(p.skip||[]),set:true}
+          :{mode:'all',skip:new Set(),set:false};
+}
+
 function srs(){
   const st=derive(), cards={};
   const blank={level:0,last:null,seen:0,lapses:0};
@@ -275,7 +293,11 @@ function srs(){
   });
   // then the bundled core deck, then anything pasted in — first writer wins,
   // so nothing is ever duplicated across the three sources
-  STARTER.forEach(v=>{if(!cards[v.es])cards[v.es]={...v,...blank,src:'starter'};});
+  const pref=deckPref();
+  if(pref.mode!=='none')STARTER.forEach(v=>{
+    if(pref.skip.has(v.es))return;
+    if(!cards[v.es])cards[v.es]={...v,...blank,src:'starter'};
+  });
   loadDeck().forEach(v=>{if(!cards[v.es])cards[v.es]={...v,...blank,src:'imported'};});
   for(const e of events){
     if(e.type!=='review')continue;
@@ -368,6 +390,8 @@ function home(){
     btn.innerHTML=`<span><b>Vocabulary</b><small>${msg}</small></span>
       <span class="cnt">✓</span>`;
   }
+  // only offer to change it once there's actually a choice recorded
+  $('#deck-btn').classList.toggle('hidden',!deckPref().set||!STARTER.length);
   $('#list').innerHTML='';
   LESSONS.forEach(l=>{
     const b=document.createElement('button');
@@ -486,6 +510,10 @@ function parseImport(raw){
 }
 
 $('#import-btn').onclick=()=>{$('#importer').classList.toggle('hidden');};
+$('#deck-btn').onclick=()=>{
+  $('#home').classList.add('hidden');$('#play').classList.remove('hidden');
+  $('#prev').disabled=true;askDeck();
+};
 $('#import-cancel').onclick=()=>{$('#importer').classList.add('hidden');$('#import-msg').textContent='';};
 $('#import-go').onclick=()=>{
   const {rows,err}=parseImport($('#import-text').value);
@@ -503,11 +531,59 @@ $('#import-go').onclick=()=>{
 
 // ---------- vocabulary review ----------
 $('#srs-btn').onclick=()=>{
-  srsQueue=srs().queue.sort(()=>Math.random()-0.5);
   $('#home').classList.add('hidden');$('#play').classList.remove('hidden');
   $('#prev').disabled=true;
-  nextSrs();
+  // asked once, on the way into review rather than as a settings screen
+  // nobody would open
+  if(!deckPref().set&&STARTER.length)return askDeck();
+  startReview();
 };
+
+function startReview(){
+  srsQueue=srs().queue.sort(()=>Math.random()-0.5);
+  nextSrs();
+}
+
+function askDeck(){
+  $('#bar').style.width='0%';
+  $('#stage').innerHTML=`<p class="teach">Bedrock comes with
+      <b>${STARTER.length} common Spanish words</b> — question words,
+      connectors, the verbs that carry most sentences.</p>
+    <p class="ctx">If you've studied Spanish before, a lot of these will
+      already be yours, and drilling them wastes the time you'd rather spend
+      on words you don't know.</p>
+    <div class="row" style="flex-direction:column">
+      <button class="ok" id="d-all">Add them all — I'm starting fresh</button>
+      <button id="d-some">Let me untick the ones I know</button>
+      <button id="d-none">Skip it — just my lesson words</button>
+    </div>`;
+  $('#d-all').onclick=()=>{log({type:'deck_pref',mode:'all',skip:[]});startReview();};
+  $('#d-none').onclick=()=>{log({type:'deck_pref',mode:'none',skip:[]});startReview();};
+  $('#d-some').onclick=pickDeck;
+  guard();
+}
+
+function pickDeck(){
+  const known=new Set();
+  const rows=STARTER.map((w,i)=>`<button class="pick" data-i="${i}">
+      <span class="pk">${w.es}</span><span class="pn">${w.en}</span></button>`).join('');
+  $('#stage').innerHTML=`<p class="ctx">Tap anything you already know — those
+      get left out. Everything still lit up gets added.</p>
+    <div class="row"><button id="p-done">Add <b id="p-n">${STARTER.length}</b> words</button></div>
+    <div class="picks">${rows}</div>`;
+  $('#stage').querySelectorAll('.pick').forEach(b=>{
+    b.onclick=()=>{
+      const w=STARTER[+b.dataset.i].es;
+      known.has(w)?known.delete(w):known.add(w);
+      b.classList.toggle('off',known.has(w));
+      $('#p-n').textContent=STARTER.length-known.size;
+    };
+  });
+  $('#p-done').onclick=()=>{
+    log({type:'deck_pref',mode:known.size?'some':'all',skip:[...known]});
+    startReview();
+  };
+}
 
 function nextSrs(){
   if(!srsQueue.length){srsCard=null;return home();}
