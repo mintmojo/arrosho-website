@@ -81,6 +81,11 @@ mark{background:#f2d97a;color:#1c1a17;padding:0 .18em;border-radius:.15em}
 .grid .cell .r{color:var(--accent);font-weight:600;font-size:1.05rem}
 .grid .cell .r.blur{filter:blur(6px);user-select:none}
 .gq{text-align:center;margin:0 0 1rem;color:var(--muted);font-size:.9rem}
+.srs{width:100%;margin-bottom:1.1rem;padding:.9rem 1rem;text-align:left;
+  border-color:var(--accent);display:flex;justify-content:space-between;align-items:center;gap:.8rem}
+.srs b{font-weight:600}
+.srs small{color:var(--muted);font-size:.78rem;display:block;margin-top:.1rem}
+.srs .cnt{color:var(--accent);font-size:1.35rem;font-weight:600;flex:0 0 auto}
 footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padding-top:.9rem}
 .hidden{display:none}
 </style>
@@ -94,10 +99,11 @@ footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid 
     <div class="bar">
       <div class="stat"><b id="s-streak">0</b><span>day streak</span></div>
       <div class="stat"><b id="s-done">0</b><span>lessons</span></div>
-      <div class="stat"><b id="s-acc">–</b><span>accuracy</span></div>
+      <div class="stat"><b id="s-known">0</b><span>words</span></div>
     </div>
+    <button id="srs-btn" class="srs hidden"></button>
     <div id="list"></div>
-    <button class="link" id="review-btn">Review what I missed</button>
+    <button class="link" id="review-btn">Review lesson prompts I missed</button>
     <footer>
       Everything stays on this device. Nothing is sent anywhere.
       <button class="link" id="export">Export my data</button> ·
@@ -142,8 +148,40 @@ function derive(){
   return{seen,done,streak,acc:n?Math.round(ok/n*100):null};
 }
 
+// ---------- SRS: Leitner, derived from the event log ----------
+// Levels 1-7, intervals double. A miss resets to 1. Nothing is stored as
+// state — replaying reviews reproduces it, so swapping in FSRS later is a
+// change to this one function, not a data migration.
+const LEITNER=[1,2,4,8,16,32,64], NEW_PER_DAY=15, DAY=864e5;
+
+function srs(){
+  const st=derive(), cards={};
+  // a word is only unlocked once the lesson that teaches it is finished
+  LESSONS.forEach(l=>{
+    if(!st.done.has(l.id)||!l.vocab)return;
+    l.vocab.forEach(v=>cards[v.es]={...v,lesson:l.id,level:0,last:null,seen:0});
+  });
+  for(const e of events){
+    if(e.type!=='review')continue;
+    const c=cards[e.card]; if(!c)continue;
+    c.level=e.result==='ok'?Math.min(7,c.level+1):1;
+    c.last=e.t; c.seen++;
+  }
+  const now=Date.now(), today=new Date().toISOString().slice(0,10);
+  const introducedToday=new Set(events.filter(e=>e.type==='review'
+    &&e.t.slice(0,10)===today&&e.first).map(e=>e.card)).size;
+  const all=Object.values(cards);
+  all.forEach(c=>c.due=c.last?new Date(c.last).getTime()+LEITNER[c.level-1]*DAY:0);
+  const fresh=all.filter(c=>!c.last);
+  const due=all.filter(c=>c.last&&c.due<=now);
+  // cap new introductions per day so review load stays survivable
+  const room=Math.max(0,NEW_PER_DAY-introducedToday);
+  return {all,due,fresh,queue:[...due,...fresh.slice(0,room)],
+          known:all.filter(c=>c.level>=3).length,capped:fresh.length>room};
+}
+
 // ---------- app ----------
-let LESSONS=[],cur=null,step=0;
+let LESSONS=[],cur=null,step=0,srsQueue=[],srsCard=null;
 const $=s=>document.querySelector(s);
 
 fetch('lessons.json').then(r=>r.json()).then(d=>{LESSONS=d.lessons;home();});
@@ -155,7 +193,18 @@ function home(){
   const graded=LESSONS.filter(l=>l.id!=='how');
   const gradedDone=graded.filter(l=>st.done.has(l.id)).length;
   $('#s-done').textContent=gradedDone+'/'+graded.length;
-  $('#s-acc').textContent=st.acc===null?'–':st.acc+'%';
+  const s=srs();
+  $('#s-known').textContent=s.known+'/'+s.all.length;
+  const btn=$('#srs-btn');
+  if(s.queue.length){
+    btn.classList.remove('hidden');
+    const nNew=s.queue.filter(c=>!c.last).length, nDue=s.queue.length-nNew;
+    btn.innerHTML=`<span><b>Review vocabulary</b><small>${
+      nDue?nDue+' due':''}${nDue&&nNew?' · ':''}${nNew?nNew+' new':''}</small></span>
+      <span class="cnt">${s.queue.length}</span>`;
+  }else{
+    btn.classList.add('hidden');
+  }
   $('#list').innerHTML='';
   LESSONS.forEach(l=>{
     const b=document.createElement('button');
@@ -248,6 +297,41 @@ $('#review-btn').onclick=()=>{
   cur={id:'review',title:'Review',blocks:items.map(x=>LESSONS.find(l=>l.id===x.lesson).blocks[x.i])};
   step=0;$('#home').classList.add('hidden');$('#play').classList.remove('hidden');render();
 };
+
+// ---------- vocabulary review ----------
+$('#srs-btn').onclick=()=>{
+  srsQueue=srs().queue.sort(()=>Math.random()-0.5);
+  $('#home').classList.add('hidden');$('#play').classList.remove('hidden');
+  $('#prev').disabled=true;
+  nextSrs();
+};
+
+function nextSrs(){
+  if(!srsQueue.length){srsCard=null;return home();}
+  srsCard=srsQueue.shift();
+  const c=srsCard, isNew=!c.last;
+  $('#bar').style.width='0%';
+  $('#stage').innerHTML=`<div class="card">
+      ${isNew?'<p class="hint">new word</p>':''}
+      <p class="en">${c.en}</p><p class="hint">say it in Spanish out loud, then check</p></div>
+    <div class="row"><button id="show">Show me</button></div>`;
+  $('#show').onclick=()=>{
+    $('#stage').innerHTML=`<div class="card">
+        <p class="en">${c.en}</p><p class="es">${c.es}</p>
+        <p class="pron">${c.p||''}</p></div>
+      <div class="row">
+        <button class="miss" id="m">Missed it</button>
+        <button class="ok" id="o">Got it</button></div>`;
+    $('#o').onclick=()=>gradeSrs('ok');$('#m').onclick=()=>gradeSrs('miss');
+    guard();
+  };
+  guard();
+}
+
+function gradeSrs(r){
+  log({type:'review',card:srsCard.es,result:r,first:!srsCard.last});
+  nextSrs();
+}
 
 $('#prev').onclick=()=>{if(step>0){step--;render();}};
 $('#quit').onclick=home;
