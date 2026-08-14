@@ -1,9 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#161512"/>
-  <g fill="none" stroke="#c9a464" stroke-width="26" stroke-linecap="round">
-    <path d="M128 352h256"/>
-    <path d="M160 288h192"/>
-    <path d="M192 224h128"/>
-  </g>
-  <path d="M256 128l52 64H204z" fill="#c9a464"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="96" fill="#faf8f4"/>
+  <svg viewBox="-70 92 610 396" x="46" y="140" width="420" height="273">
+    <clipPath id="alc"><path d="M-400,-300 L154,-300 L154,110 C 168,144 176,164 188,190 C 202,220 224,246 246,270 C 268,294 288,320 306,348 C 324,376 346,412 370,470 L370,900 L-400,900 Z"/></clipPath>
+    <clipPath id="arc"><path d="M900,-300 L198,-300 L198,110 C 212,144 220,164 232,190 C 246,220 268,246 290,270 C 312,294 332,320 350,348 C 368,376 390,412 414,470 L414,900 L900,900 Z"/></clipPath>
+    <g clip-path="url(#alc)"><rect x="0" y="350" width="460" height="80" rx="28" fill="#161819"/><rect x="58" y="254" width="344" height="72" rx="26" fill="#161819"/><rect x="116" y="158" width="228" height="72" rx="26" fill="#161819"/></g>
+    <g clip-path="url(#arc)"><rect x="0" y="350" width="460" height="80" rx="28" fill="#161819"/><rect x="58" y="254" width="344" height="72" rx="26" fill="#161819"/><rect x="116" y="158" width="228" height="72" rx="26" fill="#161819"/></g>
+    <path d="M 176,110 C 190,144 198,164 210,190 C 224,220 246,246 268,270 C 290,294 310,320 328,348 C 346,376 368,412 392,470" fill="none" stroke="#3F9EAF" stroke-width="17.5" stroke-linecap="round" stroke-dasharray="56 26"/>
+    <path d="M 149,125 C 163,159 171,179 183,205 C 197,235 219,261 241,285 C 263,309 283,335 301,363 C 319,391 341,427 365,485" fill="none" stroke="#3F9EAF" stroke-width="13.75" stroke-linecap="round" stroke-dasharray="47 26" stroke-dashoffset="22" opacity="0.75"/>
+    <path d="M 122,140 C 136,174 144,194 156,220 C 170,250 192,276 214,300 C 236,324 256,350 274,378 C 292,406 314,442 338,500" fill="none" stroke="#3F9EAF" stroke-width="11.25" stroke-linecap="round" stroke-dasharray="39 26" stroke-dashoffset="44" opacity="0.5"/>
+  </svg>
 </svg>

@@ -1,4 +1,4 @@
-const CACHE = 'bedrock-v1';
+const CACHE = 'bedrock-v4';
 const ASSETS = ['./', './index.html', './lessons.json', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {

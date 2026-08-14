@@ -1,227 +1,263 @@
 {
-  "version": 3,
+  "version": 4,
   "course": "Spanish",
-  "order": "Orientation, then the Red MTC Spanish guide grammar sequence",
   "lessons": [
     {
+      "id": "how",
+      "label": "★",
+      "title": "How to actually learn a language",
+      "decision": "What these lessons are, and what actually does the work",
+      "blocks": [
+        { "t": "context", "title": "Why this comes first", "text": "If you skip this you'll use the rest of the course wrong. Two minutes here saves you months." },
+        { "t": "teach", "text": "The reason adults fail at languages isn't that languages are hard. Children manage it, and they aren't smarter than you.<br><br>The reason is <b>forgetting</b>. You learn faster than you think and forget faster than you learn, and most study habits fight that instead of working with it." },
+        { "t": "teach", "text": "Two things fix it, and both are boring.<br><br><b>1. Testing beats reviewing.</b> Reading something again feels productive and barely works. Trying to recall it — and failing — is what makes it stick. Every prompt in this course is that, on purpose." },
+        { "t": "teach", "text": "<b>2. Spacing beats cramming.</b> The best moment to review something is right when you're about to forget it. Ten minutes a day for a month beats a five-hour weekend, and it isn't close." },
+        { "t": "context", "title": "Why input matters most", "text": "Here's the part most apps won't tell you. <b>Grammar is absorbed, not installed.</b> You pick it up by understanding lots of real Spanish — podcasts, shows, conversation, YouTube — not by drilling rules." },
+        { "t": "teach", "text": "So what is this course for?<br><br>These lessons are <b>exposure and awareness</b>. They give you the shape of a thing so that when it goes past you in real speech, you <i>notice</i> it instead of it washing over you.<br><br>The lesson makes you aware. The input makes you fluent." },
+        { "t": "teach", "text": "Which means the honest version of the deal:<br><br>Everything here is a <b>refresher and a set of examples</b>. The depth comes from you — from hours of listening to native speech, and from wanting it enough to keep going back.<br><br>No app substitutes for that. This one just makes the hours count for more." },
+        { "t": "context", "title": "How to use these lessons", "text": "Say every answer <b>out loud</b> before you check. Silent guessing barely works.<br><br>Be wrong often — that's the mechanism, not a failure.<br><br>Short and daily beats long and rare.<br><br>And go find something to listen to." }
+      ]
+    },
+    {
       "id": 0,
+      "label": "0",
       "title": "Two languages, two ways of being",
       "decision": "Why Spanish makes you say things English lets you dodge",
       "blocks": [
-        { "t": "context", "text": "Before any grammar. Spanish isn't English with different words — it's a different set of choices about what you have to make explicit. Knowing that up front turns the hard parts from arbitrary rules into things that make sense." },
-        { "t": "teach", "text": "Start with the easy news. English and Spanish share a Latin ancestor, and roughly a third of English vocabulary came in from that side of the family. You already own thousands of Spanish words. Most of this course is claiming them, not learning them." },
-        { "t": "teach", "text": "Now the real difference. English has <b>one</b> word for <i>to be</i>. Spanish has <b>two</b>, and it makes you pick every single time.<br><br><b>Ser</b> is what something <i>is</i>. <b>Estar</b> is how it <i>is doing</i>." },
-        { "t": "teach", "text": "That's not a technicality. Watch:<br><br><b>Estoy aburrido</b> — I'm bored.<br><b>Soy aburrido</b> — I'm boring.<br><br>Same three English words. One verb apart. Spanish won't let you blur the line between what you're experiencing and what you are." },
-        { "t": "teach", "text": "Another:<br><br><b>Estoy listo</b> — I'm ready.<br><b>Soy listo</b> — I'm clever.<br><br>Every time you describe yourself in Spanish, you answer a question English never asks: <i>is this me, or is this just today?</i>" },
-        { "t": "context", "text": "That's the part worth sitting with. A Spanish speaker has spent their whole life separating essence from state, because the grammar demanded it. Speaking Spanish well means adopting that habit of mind — not translating faster." },
-        { "t": "teach", "text": "The same thing happens elsewhere. English <i>for</i> covers two different ideas that Spanish splits into <b>por</b> and <b>para</b> — roughly, the reason something happened versus the destination it's headed for. Thanks <i>because of</i> something, versus a gift <i>meant for</i> someone." },
-        { "t": "teach", "text": "And gender. <b>El</b> and <b>la</b> aren't about male and female — they're noun classes, like folders. <b>El problema</b> is masculine despite the <b>-a</b>. <b>La mano</b> is feminine despite the <b>-o</b>.<br><br>Don't look for meaning in it. Look for the pattern, and let the agreement make the sentence hang together." },
-        { "t": "context", "text": "Here's the part nobody tells you. A second language isn't a worse copy of your first — it hands you moves yours doesn't have.<br><br>In Spanish you can say <b>se me cayó</b> — <i>it fell from me</i> — where English forces <i>I dropped it</i>. One language assigns blame, the other describes an event. Sometimes it's genuinely easier to say a true thing in your second language than your first." },
-        { "t": "teach", "text": "Which is why this isn't vocabulary acquisition. You're picking up a different way of dividing up reality, and after a while it stops being translation and starts being another way you think." },
-        { "t": "context", "text": "So: every lesson from here opens with why the thing matters before it shows you how it works. If a rule ever feels arbitrary, that's a gap in the explanation, not in you." }
+        { "t": "context", "title": "Why the difference matters", "text": "Spanish isn't English with different words — it's a different set of choices about what you're forced to make explicit. Knowing that up front turns the hard parts from arbitrary rules into things that make sense." },
+        { "t": "teach", "text": "The easy news first. English and Spanish share a Latin ancestor, and a large slice of English vocabulary came in from that side of the family.<br><br>You already own thousands of Spanish words. Much of this course is claiming them, not learning them." },
+        { "t": "teach", "text": "Now the real difference. English has <b>one</b> word for <i>to be</i>. Spanish has <b>two</b>, and makes you pick every single time.<br><br><b>Ser</b> is what something <b>is</b>. Concrete. Settled.<br><b>Estar</b> is how it <b>is doing</b>. Malleable. Changeable." },
+        { "t": "teach", "text": "That's not a technicality:<br><br><b>Estoy aburrido</b> — I'm bored.<br><b>Soy aburrido</b> — I'm boring.<br><br>Same three English words. One verb apart. Spanish won't let you blur what you're experiencing with what you are." },
+        { "t": "teach", "text": "Another:<br><br><b>Estoy listo</b> — I'm ready.<br><b>Soy listo</b> — I'm clever.<br><br>Every time you describe yourself in Spanish you answer a question English never asks: <i>is this me, or is this just today?</i>" },
+        { "t": "context", "title": "Why it becomes part of you", "text": "This is a <b>habit of mind</b> — not translating faster.<br><br>The grammar becomes part of who you are, because it becomes how you're able to express yourself. A Spanish speaker has spent their whole life separating essence from state, because the grammar demanded it. That's what you're picking up." },
+        { "t": "teach", "text": "The same split happens with English <i>for</i>, which Spanish divides into <b>por</b> and <b>para</b>.<br><br><b>Gracias por la ayuda</b> — thanks <i>for</i> the help. This is <b>por</b>: the reason, the cause, the thing that already happened.<br><br><b>Es para ti</b> — it's <i>for</i> you. This is <b>para</b>: the destination, the purpose, where it's headed." },
+        { "t": "teach", "text": "And gender. <b>El</b> and <b>la</b> aren't claims about male and female — they're noun classes, like folders.<br><br><b>El problema.</b> Masculine, despite the <b>-a</b>. Words ending <b>-ma</b> are usually masculine — they came in from Greek and kept their own rules.<br><b>La mano.</b> Feminine, despite the <b>-o</b>." },
+        { "t": "teach", "text": "Don't hunt for meaning in gender. Learn the patterns, and past that, native speakers mostly go on <b>what sounds right</b> — because they've heard it ten thousand times.<br><br>That's another thing only input gives you." },
+        { "t": "context", "title": "Why a second language gives you more", "text": "A second language isn't a worse copy of your first. It hands you moves yours doesn't have.<br><br>Spanish lets you say <b>se me cayó</b> — <i>it fell from me</i> — where English forces <i>I dropped it</i>. One language assigns blame, the other describes an event.<br><br>Sometimes a true thing is easier to say in your second language than your first." },
+        { "t": "context", "title": "What comes next", "text": "Everything from here is <b>examples</b>, not the whole picture. Each lesson opens with why the thing matters, then shows you the shape of it.<br><br>The depth comes from your own listening. These lessons just make sure you recognise it when it goes past." }
       ]
     },
     {
       "id": 1,
+      "label": "1",
       "title": "Words you already own",
       "decision": "English -tion becomes Spanish -ción",
       "blocks": [
-        { "t": "context", "text": "<b>Why this first.</b> Most courses start you with phrases you can't take apart. This starts you with a rule that hands you thousands of words at once — and they're ordinary words to a Spanish speaker, so using them makes you sound normal, not textbook." },
-        { "t": "teach", "text": "<b>Nation</b> is <b>nación</b>. The ending shifts. The word doesn't." },
-        { "t": "prompt", "en": "information", "es": "información" },
-        { "t": "prompt", "en": "situation", "es": "situación" },
-        { "t": "prompt", "en": "education", "es": "educación" },
-        { "t": "prompt", "en": "conversation", "es": "conversación" },
-        { "t": "teach", "text": "You didn't learn four words. You learned one rule and collected four. There are thousands more waiting on it." }
+        { "t": "context", "title": "Why free words matter", "text": "Most courses start you on phrases you can't take apart. This starts you on a rule that hands you thousands of words at once — and they're ordinary words to a Spanish speaker, so using them makes you sound normal rather than textbook." },
+        { "t": "teach", "text": "<b>Nation</b> becomes <b>nación</b> in Spanish. The ending shifts. The word doesn't." },
+        { "t": "grid", "prompt": "Say each one in Spanish out loud, then check all five.",
+          "items": [
+            { "en": "nation", "es": "nación" },
+            { "en": "information", "es": "información" },
+            { "en": "situation", "es": "situación" },
+            { "en": "education", "es": "educación" },
+            { "en": "conversation", "es": "conversación" }
+          ] },
+        { "t": "teach", "text": "You didn't learn five new words. You learned one rule and collected five. There are thousands more with that same rule." }
       ]
     },
     {
       "id": 2,
-      "title": "Where the weight lands",
+      "label": "2",
+      "title": "Where the emphasis goes",
       "decision": "The accent tells you which syllable to hit",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> English swallows unstressed syllables — <i>compárable</i> collapses to <i>comp'rable</i>. Spanish gives every syllable its full value and then leans hard on exactly one. Put the weight in the wrong place and you're often not just accented, you're saying a different word." },
-        { "t": "teach", "text": "Say this out loud before I tell you anything. Trust your instinct and commit to it — getting it wrong now is the point." },
+        { "t": "context", "title": "Why emphasis matters", "text": "English swallows the syllables it doesn't stress. Spanish doesn't — every syllable gets its full value, and exactly one gets the emphasis." },
+        { "t": "context", "title": "", "text": "Put the emphasis in the wrong place and you're often not just accented — you're saying a different word." },
+        { "t": "teach", "text": "One more thing before you try it. <b>Spanish vowels are short and pure.</b><br><br>The letter <b>a</b> says <i>ah</i>, not <i>ay</i>. <b>e</b> says <i>eh</i>. <b>i</b> says <i>ee</i>. <b>o</b> says <i>oh</i>. <b>u</b> says <i>oo</i>.<br><br>Five sounds, always the same. English has around twenty and changes them constantly." },
+        { "t": "teach", "text": "Now say this out loud before I tell you anything. Commit to a guess.<br><br>Getting it wrong right now is the catalyst — it's where the new bridges between neurons get built, so the right answer becomes automatic later. A correct guess teaches you far less." },
         { "t": "say", "es": "conversación",
           "wrong": "CAWN-ver-SAY-shun",
           "right": "kohn-vehr-sah-see-OHN",
-          "a": "The accent is an instruction: <b>hit the last syllable.</b> Two other English habits to drop — that first <b>o</b> is a clean <i>oh</i>, not <i>aw</i>, and <b>-ción</b> is <i>see-OHN</i>, not <i>shun</i>. Spanish gives every syllable its full value." },
+          "a": "The accent is an instruction: <b>emphasise the last syllable.</b> And notice the vowels went short — <i>oh</i>, <i>eh</i>, <i>ah</i>, <i>ee</i>, <i>oh</i>. No <i>say</i>, no <i>shun</i>." },
         { "t": "say", "es": "educación",
           "wrong": "ED-yoo-KAY-shun",
           "right": "eh-doo-kah-see-OHN",
-          "a": "Same instruction, same trap. No <i>yoo</i>, no <i>kay</i>, no <i>shun</i> — Spanish vowels stay pure: <b>a</b> is <i>ah</i>, <b>e</b> is <i>eh</i>, <b>i</b> is <i>ee</i>, <b>o</b> is <i>oh</i>, <b>u</b> is <i>oo</i>. Always." },
-        { "t": "teach", "text": "Now one with no accent mark, so the rule has to carry you." },
+          "a": "Same instruction, same trap. Every vowel is short and clean, and the accent tells you where the weight lands." },
+        { "t": "teach", "text": "Now one with <b>no accent mark</b>, so the rule has to carry you." },
         { "t": "say", "es": "importante",
           "wrong": "im-POR-t'nt",
           "right": "eem-pohr-TAHN-teh",
-          "a": "Words ending in a vowel, <b>-n</b> or <b>-s</b> lean on the <b>second-to-last</b> syllable — no mark needed. And that final <b>e</b> is pronounced. English swallows endings; Spanish never does." },
+          "a": "Words ending in a <mark>vowel</mark>, <mark>-n</mark> or <mark>-s</mark> take the emphasis on the <b>second-to-last</b> syllable — no mark needed to say so.<br><br>And that final <b>e</b> gets pronounced. English drops endings; Spanish never does." },
         { "t": "say", "es": "universidad",
           "wrong": "yoo-ni-VER-si-tee",
           "right": "oo-nee-vehr-see-DAHD",
-          "a": "It ends in <b>-d</b>, so the default flips: anything ending in a consonant other than <b>-n</b> or <b>-s</b> leans on the <b>last</b> syllable." },
-        { "t": "teach", "text": "That's the whole system. Vowel, <b>-n</b> or <b>-s</b> → second-to-last. Any other consonant → last. An accent mark overrides both.<br><br>Spanish never leaves you guessing where the weight goes. English does that constantly." }
+          "a": "This ends in <b>-d</b>, so the default flips: anything ending in a consonant other than <mark>-n</mark> or <mark>-s</mark> takes the emphasis on the <b>last</b> syllable." },
+        { "t": "teach", "text": "That's the whole system.<br><br>Ends in a <mark>vowel</mark>, <mark>-n</mark> or <mark>-s</mark> → second-to-last syllable.<br>Ends in any other consonant → last syllable.<br>An accent mark → overrides both, always.<br><br>Spanish never leaves you guessing where the emphasis goes. English does that constantly." }
       ]
     },
     {
       "id": 3,
+      "label": "3",
       "title": "All of them are \"la\"",
       "decision": "-ción words are feminine",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> Gender isn't a claim about the world — <i>la mesa</i> doesn't mean tables are womanly. It's a filing system, and its real job is agreement: the article, the noun and the describing word all echo each other, which is a lot of why Spanish sounds the way it does." },
-        { "t": "teach", "text": "Every word ending in <b>-ción</b> takes <b>la</b>. There's no list to memorise — the ending already told you." },
-        { "t": "prompt", "en": "the information", "es": "la información" },
-        { "t": "prompt", "en": "the conversation", "es": "la conversación" },
-        { "t": "teach", "text": "One rule just handed you the gender of a few thousand nouns. This is the pattern for the whole course: find the rule, skip the list." }
+        { "t": "context", "title": "Why gender matters", "text": "Gender isn't a claim about the world — <i>la mesa</i> doesn't mean tables are womanly. It's a filing system, and its real job is agreement: article, noun and describing word all echo each other. That echo is a lot of why Spanish sounds the way it does." },
+        { "t": "teach", "text": "Every word ending in <b>-ción</b> takes <b>la</b>. Nothing to memorise — the ending already told you." },
+        { "t": "prompt", "en": "the information", "es": "la información", "p": "lah een-for-mah-see-OHN" },
+        { "t": "prompt", "en": "the conversation", "es": "la conversación", "p": "lah kohn-vehr-sah-see-OHN" },
+        { "t": "teach", "text": "One rule just handed you the gender of a few thousand nouns. That's the pattern for this whole course: find the rule, skip the list." }
       ]
     },
     {
       "id": 4,
+      "label": "4",
       "title": "Four more rules",
       "decision": "-dad, -oso, -ivo, -mente",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> You're not collecting words, you're building a converter. Once these four are in, most English abstract nouns and adjectives have a Spanish twin you can generate on the spot instead of recalling." },
+        { "t": "context", "title": "Why patterns matter", "text": "You're not collecting words, you're building a converter. Once these are in, most English abstract nouns and adjectives have a Spanish twin you can generate on the spot instead of trying to recall." },
         { "t": "teach", "text": "<b>-ty</b> becomes <b>-dad</b>, and those are feminine too." },
-        { "t": "prompt", "en": "university", "es": "la universidad" },
-        { "t": "prompt", "en": "possibility", "es": "la posibilidad" },
+        { "t": "prompt", "en": "university", "es": "la universidad", "p": "lah oo-nee-vehr-see-DAHD" },
+        { "t": "prompt", "en": "possibility", "es": "la posibilidad", "p": "lah poh-see-bee-lee-DAHD" },
         { "t": "teach", "text": "<b>-ous</b> becomes <b>-oso</b>. These describe things." },
-        { "t": "prompt", "en": "famous", "es": "famoso" },
-        { "t": "prompt", "en": "delicious", "es": "delicioso" },
+        { "t": "prompt", "en": "famous", "es": "famoso", "p": "fah-MOH-soh" },
+        { "t": "prompt", "en": "delicious", "es": "delicioso", "p": "deh-lee-see-OH-soh" },
         { "t": "teach", "text": "<b>-ive</b> becomes <b>-ivo</b>, and <b>-ly</b> becomes <b>-mente</b>." },
-        { "t": "prompt", "en": "active", "es": "activo" },
-        { "t": "prompt", "en": "exactly", "es": "exactamente" },
+        { "t": "prompt", "en": "active", "es": "activo", "p": "ahk-TEE-voh" },
+        { "t": "prompt", "en": "exactly", "es": "exactamente", "p": "ehk-sahk-tah-MEN-teh" },
         { "t": "teach", "text": "Things, and words to describe them. Next you get what joins the two — and it's the choice from lesson 0." }
       ]
     },
     {
       "id": 5,
+      "label": "5",
       "title": "Ser — what something is",
       "decision": "es for identity and essence",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> This is the identity verb. Reaching for <b>ser</b> is a claim that something is essentially, definingly that way. When you describe yourself with it you're saying <i>this is who I am</i> — so it carries more weight than English <i>am</i> ever does." },
+        { "t": "context", "title": "Why ser matters", "text": "This is the identity verb, and it's concrete. Reaching for <b>ser</b> claims something is essentially, definingly that way. When you describe yourself with it you're saying <i>this is who I am</i> — so it carries more weight than English <i>am</i> ever does." },
         { "t": "teach", "text": "<b>Es</b> — is. For what something fundamentally is: identity, origin, what kind of thing it is." },
-        { "t": "prompt", "en": "the conversation is important", "es": "la conversación es importante" },
-        { "t": "prompt", "en": "the university is famous", "es": "la universidad es famosa" },
+        { "t": "prompt", "en": "the conversation is important", "es": "la conversación es importante", "p": "lah kohn-vehr-sah-see-OHN ess eem-pohr-TAHN-teh" },
+        { "t": "prompt", "en": "the university is famous", "es": "la universidad es famosa", "p": "lah oo-nee-vehr-see-DAHD ess fah-MOH-sah" },
         { "t": "teach", "text": "Notice <b>famosa</b>, not <b>famoso</b>. It's <b>la</b> universidad, so the describing word follows it to <b>-a</b>. That's the agreement from lesson 3 doing its job." },
-        { "t": "prompt", "en": "the education is active", "es": "la educación es activa" },
+        { "t": "prompt", "en": "the education is active", "es": "la educación es activa", "p": "lah eh-doo-kah-see-OHN ess ahk-TEE-vah" },
         { "t": "teach", "text": "One word, and every noun and adjective you've collected just became a sentence." }
       ]
     },
     {
       "id": 6,
+      "label": "6",
       "title": "Estar — how something is",
       "decision": "está for state and location",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> <b>Estar</b> is the verb of <i>right now</i>. It's how Spanish speakers talk about mood, condition and place — the things that could be different tomorrow. Learning to reach for it is learning to stop turning passing states into permanent claims about yourself." },
+        { "t": "context", "title": "Why estar matters", "text": "<b>Estar</b> is the verb of <i>right now</i>, and it's malleable. It's how Spanish speakers talk about mood, condition and place — things that could be different tomorrow. Learning to reach for it is learning to stop turning passing states into permanent claims about yourself." },
         { "t": "teach", "text": "<b>Está</b> — also <i>is</i>. But for where something is, or how it's doing at the moment." },
-        { "t": "prompt", "en": "the information is here", "es": "la información está aquí" },
-        { "t": "prompt", "en": "the university is there", "es": "la universidad está allí" },
-        { "t": "teach", "text": "Both words are <i>is</i>. English uses one word for two jobs and never makes you notice. Spanish splits them, and the next lesson is that split." }
+        { "t": "prompt", "en": "the information is here", "es": "la información está aquí", "p": "lah een-for-mah-see-OHN ess-TAH ah-KEE" },
+        { "t": "prompt", "en": "the university is there", "es": "la universidad está allí", "p": "lah oo-nee-vehr-see-DAHD ess-TAH ah-YEE" },
+        { "t": "teach", "text": "Both words are <i>is</i>. English uses one for two jobs and never makes you notice. Spanish splits them — and the next lesson is that split." }
       ]
     },
     {
       "id": 7,
+      "label": "7",
       "title": "Ser or estar",
       "decision": "Which \"is\" to reach for",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters — this is the big one.</b> It's the mistake English speakers make most, and it isn't cosmetic. Say <b>soy aburrido</b> when you meant <b>estoy aburrido</b> and you've announced that you're boring rather than bored. The grammar is making a claim about you either way." },
-        { "t": "teach", "text": "The working rule, and it's a good one: <b>permanent → ser, temporary → estar.</b> That'll carry you through most of what you say every day, so lean on it." },
-        { "t": "teach", "text": "It's clearest side by side:<br><br><b>El hielo es frío</b> — ice is cold. That's what ice <i>is</i>.<br><b>La sopa está fría</b> — the soup is cold. It isn't supposed to be.<br><br>Same adjective. One is the nature of the thing, one is its current state." },
-        { "t": "teach", "text": "Now the seam, so you're not blindsided later. <b>Es joven</b> — he is young. Being young is about as temporary as things get, and it still takes <b>ser</b>.<br><br>Why? Because it's a category he belongs to, not a condition he's in." },
-        { "t": "teach", "text": "So permanent-versus-temporary is the surface of something slightly deeper: am I naming <b>what it is</b>, or <b>how it's doing / where it is</b>?<br><br>Essence or category → <b>ser</b>. Condition or place → <b>estar</b>.<br><br>Use permanent/temporary as your everyday guide. When it feels wrong, drop to this one." },
-        { "t": "prompt", "en": "the conversation is important — essence or condition?", "es": "essence → la conversación es importante" },
-        { "t": "prompt", "en": "the conversation is here — which one?", "es": "location → la conversación está aquí" },
-        { "t": "prompt", "en": "the education is famous", "es": "la educación es famosa" },
-        { "t": "prompt", "en": "the education is here", "es": "la educación está aquí" },
-        { "t": "context", "text": "Every time you use one of these you're making a small statement about what's essential and what's passing. That's a habit of mind, and it's the single biggest thing Spanish will change about how you describe yourself." }
+        { "t": "context", "title": "Why the choice matters", "text": "This is the mistake English speakers make most, and it isn't cosmetic. Say <b>soy aburrido</b> when you meant <b>estoy aburrido</b> and you've announced you're boring rather than bored. The grammar makes a claim about you either way." },
+        { "t": "teach", "text": "The working rule, and it's a good one: <b>permanent → ser, temporary → estar.</b> That carries you through most of what you say day to day, so lean on it." },
+        { "t": "teach", "text": "Clearest side by side:<br><br><b>El hielo es frío</b> — ice is cold. That's what ice <i>is</i>.<br><b>La sopa está fría</b> — the soup is cold. It isn't supposed to be.<br><br>Same adjective. One is the nature of the thing, one is its current state." },
+        { "t": "teach", "text": "Now the seam, so it doesn't blindside you later.<br><br><b>Es joven</b> — he is young. Being young is about as temporary as things get, and it still takes <b>ser</b>.<br><br>Why? Because it's a category he belongs to, not a condition he's in." },
+        { "t": "teach", "text": "So permanent-versus-temporary is the surface of something deeper: am I naming <b>what it is</b>, or <b>how it's doing / where it is</b>?<br><br>Essence or category → <b>ser</b>.<br>Condition or place → <b>estar</b>.<br><br>Use permanent/temporary as your everyday guide. When it feels wrong, drop to this one." },
+        { "t": "prompt", "en": "the conversation is important — essence or condition?", "es": "essence → la conversación es importante", "p": "ess eem-pohr-TAHN-teh" },
+        { "t": "prompt", "en": "the conversation is here — which one?", "es": "location → la conversación está aquí", "p": "ess-TAH ah-KEE" },
+        { "t": "prompt", "en": "the education is famous", "es": "la educación es famosa", "p": "ess fah-MOH-sah" },
+        { "t": "prompt", "en": "the education is here", "es": "la educación está aquí", "p": "ess-TAH ah-KEE" },
+        { "t": "context", "title": "Why this becomes a habit", "text": "Every time you use one of these you make a small statement about what's essential and what's passing. That's the habit of mind — and it's the biggest single thing Spanish changes about how you describe yourself.<br><br>You'll hear this distinction hundreds of times in real speech. Now you'll notice it." }
       ]
     },
     {
       "id": 8,
+      "label": "8",
       "title": "Verbs you already own",
       "decision": "Base-form verbs end -ar, -er, -ir",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> English needs two words for <i>to prepare</i>. Spanish folds the <i>to</i> into the ending. That's why the next six lessons work at all — the base form never changes, so once you can put something in front of it, every verb you recognise comes along." },
-        { "t": "teach", "text": "<b>Preparar</b> is <i>to prepare</i>. The <b>-ar</b> is doing the job of the word <i>to</i>." },
-        { "t": "prompt", "en": "to organise", "es": "organizar" },
-        { "t": "prompt", "en": "to decide", "es": "decidir" },
-        { "t": "prompt", "en": "to permit", "es": "permitir" },
-        { "t": "prompt", "en": "to visit", "es": "visitar" },
+        { "t": "context", "title": "Why the base form matters", "text": "English needs two words for <i>to prepare</i>. Spanish folds the <i>to</i> into the ending. That's why the next six lessons work — the base form never changes, so once you can put something in front of it, every verb you recognise comes along." },
+        { "t": "teach", "text": "<b>Preparar</b> is <i>to prepare</i>. The <b>-ar</b> does the job of the word <i>to</i>." },
+        { "t": "prompt", "en": "to organise", "es": "organizar", "p": "or-gah-nee-SAHR" },
+        { "t": "prompt", "en": "to decide", "es": "decidir", "p": "deh-see-DEER" },
+        { "t": "prompt", "en": "to permit", "es": "permitir", "p": "pehr-mee-TEER" },
+        { "t": "prompt", "en": "to visit", "es": "visitar", "p": "vee-see-TAHR" },
         { "t": "teach", "text": "You can only recognise these so far. Six lessons from now you'll be using every one of them." }
       ]
     },
     {
       "id": 9,
+      "label": "9",
       "title": "Tener que — having to",
       "decision": "tengo que + base form",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> Spanish tends to <i>have</i> states where English <i>is</i> them — <b>tengo hambre</b> is <i>I have hunger</i>, not <i>I am hungry</i>. Obligation works the same way: you don't become obliged, you carry an obligation. Same idea, different relationship to it." },
+        { "t": "context", "title": "Why tener que matters", "text": "Spanish tends to <i>have</i> states where English <i>is</i> them — <b>tengo hambre</b> is <i>I have hunger</i>, not <i>I am hungry</i>. Obligation works the same way: you don't become obliged, you carry an obligation. Same idea, different relationship to it." },
         { "t": "teach", "text": "<b>Tengo que</b> — I have to. What follows doesn't change at all." },
-        { "t": "prompt", "en": "I have to decide", "es": "tengo que decidir" },
-        { "t": "prompt", "en": "I have to visit the university", "es": "tengo que visitar la universidad" },
+        { "t": "prompt", "en": "I have to decide", "es": "tengo que decidir", "p": "TEN-goh keh deh-see-DEER" },
+        { "t": "prompt", "en": "I have to visit the university", "es": "tengo que visitar la universidad", "p": "TEN-goh keh vee-see-TAHR lah oo-nee-vehr-see-DAHD" },
         { "t": "teach", "text": "Learn this shape properly. Five more openings use it, and this is only the first." }
       ]
     },
     {
       "id": 10,
+      "label": "10",
       "title": "Deber — ought to",
       "decision": "debo + base form",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> <b>Tengo que</b> is pressure from outside — circumstances say so. <b>Debo</b> is pressure from inside, closer to duty or conscience. Spanish separates the two; English blurs both into <i>have to</i> and <i>should</i>." },
+        { "t": "context", "title": "Why deber matters", "text": "<b>Tengo que</b> is pressure from outside — circumstances say so. <b>Debo</b> is pressure from inside, closer to duty or conscience. Spanish separates the two; English blurs both into <i>have to</i> and <i>should</i>." },
         { "t": "teach", "text": "<b>Debo</b> — I should. Same shape you just learned." },
-        { "t": "prompt", "en": "I should organise the information", "es": "debo organizar la información" },
-        { "t": "prompt", "en": "I should prepare the conversation", "es": "debo preparar la conversación" },
+        { "t": "prompt", "en": "I should organise the information", "es": "debo organizar la información", "p": "DEH-boh or-gah-nee-SAHR lah een-for-mah-see-OHN" },
+        { "t": "prompt", "en": "I should prepare the conversation", "es": "debo preparar la conversación", "p": "DEH-boh preh-pah-RAHR lah kohn-vehr-sah-see-OHN" },
         { "t": "teach", "text": "Second opening, nothing new to learn. That's what the shape buys you." }
       ]
     },
     {
       "id": 11,
+      "label": "11",
       "title": "Poder — being able, and saying no",
       "decision": "puedo + base form, and no in front",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> Negation is where Spanish is genuinely simpler and you should enjoy it. English rebuilds the sentence — <i>I decide</i> becomes <i>I don't decide</i>, with a helper verb from nowhere. Spanish just puts <b>no</b> at the front and leaves everything alone." },
+        { "t": "context", "title": "Why no matters", "text": "Negation is where Spanish is genuinely simpler and you should enjoy it. English rebuilds the sentence — <i>I decide</i> becomes <i>I don't decide</i>, with a helper verb out of nowhere. Spanish puts <b>no</b> at the front and leaves everything else alone." },
         { "t": "teach", "text": "<b>Puedo</b> — I can." },
-        { "t": "prompt", "en": "I can organise it", "es": "puedo organizar" },
+        { "t": "prompt", "en": "I can organise it", "es": "puedo organizar", "p": "PWEH-doh or-gah-nee-SAHR" },
         { "t": "teach", "text": "Now negate anything. <b>No</b> goes in front. Nothing else moves." },
-        { "t": "prompt", "en": "I can't decide", "es": "no puedo decidir" },
-        { "t": "prompt", "en": "I don't have to visit the university", "es": "no tengo que visitar la universidad" },
+        { "t": "prompt", "en": "I can't decide", "es": "no puedo decidir", "p": "noh PWEH-doh deh-see-DEER" },
+        { "t": "prompt", "en": "I don't have to visit the university", "es": "no tengo que visitar la universidad", "p": "noh TEN-goh keh vee-see-TAHR lah oo-nee-vehr-see-DAHD" },
         { "t": "teach", "text": "One small word, and everything you've built so far just doubled." }
       ]
     },
     {
       "id": 12,
+      "label": "12",
       "title": "Querer — wanting",
       "decision": "quiero + base form",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> <b>Querer</b> is also how you say you love someone — <b>te quiero</b>. English has one word for love and makes it enormous; Spanish has a warm everyday one and a weightier one, and knowing which to use is a genuinely cultural skill." },
+        { "t": "context", "title": "Why querer matters", "text": "<b>Querer</b> is also how you say you love someone — <b>te quiero</b>. English has one word for love and makes it enormous; Spanish has a warm everyday one and a weightier one, and knowing which to use is a genuinely cultural skill you'll only get from listening." },
         { "t": "teach", "text": "<b>Quiero</b> — I want." },
-        { "t": "prompt", "en": "I want to visit the university", "es": "quiero visitar la universidad" },
-        { "t": "prompt", "en": "I don't want to decide", "es": "no quiero decidir" },
-        { "t": "prompt", "en": "I want to prepare the presentation", "es": "quiero preparar la presentación" },
+        { "t": "prompt", "en": "I want to visit the university", "es": "quiero visitar la universidad", "p": "kee-EH-roh vee-see-TAHR lah oo-nee-vehr-see-DAHD" },
+        { "t": "prompt", "en": "I don't want to decide", "es": "no quiero decidir", "p": "noh kee-EH-roh deh-see-DEER" },
+        { "t": "prompt", "en": "I want to prepare the presentation", "es": "quiero preparar la presentación", "p": "kee-EH-roh preh-pah-RAHR lah preh-sen-tah-see-OHN" },
         { "t": "teach", "text": "Fourth opening. Still the same shape." }
       ]
     },
     {
       "id": 13,
+      "label": "13",
       "title": "Necesitar — needing",
       "decision": "necesito + base form",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> This one is a test of whether the converter from lesson 4 is running yet. You've never been taught this word, and you should still be able to see it coming." },
-        { "t": "teach", "text": "<b>Necesito</b> — I need. Look at it: <i>necessitate</i>. You could almost have guessed it, and soon you'll guess right often enough to stop noticing." },
-        { "t": "prompt", "en": "I need to organise the education", "es": "necesito organizar la educación" },
-        { "t": "prompt", "en": "I don't need to decide", "es": "no necesito decidir" }
+        { "t": "context", "title": "Why necesitar matters", "text": "This one tests whether the converter from lesson 4 is running yet. You've never been taught this word, and you should still see it coming." },
+        { "t": "teach", "text": "<b>Necesito</b> — I need. Look at it: <i>necessitate</i>. You could almost have guessed it, and soon you'll guess right often enough to stop noticing you're doing it." },
+        { "t": "prompt", "en": "I need to organise the education", "es": "necesito organizar la educación", "p": "neh-seh-SEE-toh or-gah-nee-SAHR lah eh-doo-kah-see-OHN" },
+        { "t": "prompt", "en": "I don't need to decide", "es": "no necesito decidir", "p": "noh neh-seh-SEE-toh deh-see-DEER" }
       ]
     },
     {
       "id": 14,
+      "label": "14",
       "title": "Ir a — going to",
       "decision": "voy a + base form",
       "blocks": [
-        { "t": "context", "text": "<b>Why it matters.</b> Spanish has a real future tense, and in everyday speech people mostly don't use it. <b>Voy a</b> is what you'll actually hear. So this isn't a beginner's shortcut you'll replace later — it's the thing native speakers say." },
+        { "t": "context", "title": "Why voy a matters", "text": "Spanish has a real future tense, and in everyday speech people mostly don't use it. <b>Voy a</b> is what you'll actually hear. So this isn't a beginner's shortcut you'll replace later — it's the thing native speakers say." },
         { "t": "teach", "text": "<b>Voy a</b> — I'm going to. Two words, same behaviour as the rest." },
-        { "t": "prompt", "en": "I'm going to visit the university", "es": "voy a visitar la universidad" },
-        { "t": "prompt", "en": "I'm not going to accept the situation", "es": "no voy a aceptar la situación" },
+        { "t": "prompt", "en": "I'm going to visit the university", "es": "voy a visitar la universidad", "p": "voy ah vee-see-TAHR lah oo-nee-vehr-see-DAHD" },
+        { "t": "prompt", "en": "I'm not going to accept the situation", "es": "no voy a aceptar la situación", "p": "noh voy ah ah-sep-TAHR lah see-twah-see-OHN" },
         { "t": "teach", "text": "Six openings — tengo que, debo, puedo, quiero, necesito, voy a — across every verb you recognise, with <b>no</b> available on any of them. Add <b>ser</b> and <b>estar</b> and you can describe things, place them, and say what you intend to do about them." },
-        { "t": "context", "text": "And every one of those sentences made you choose what's essential versus what's passing. That choice is the thing you're actually learning. The vocabulary is the easy part." }
+        { "t": "context", "title": "Why the listening comes next", "text": "Every one of those sentences made you choose what's essential versus what's passing. That choice is the thing you're actually learning.<br><br>Now go and hear it. Put on something in Spanish and catch <b>ser</b>, <b>estar</b> and these six openings going past. You'll hear them within minutes — and that's where this starts turning into fluency." }
       ]
     }
   ]

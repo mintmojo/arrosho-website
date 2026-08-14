@@ -21,7 +21,8 @@ body{margin:0;background:var(--bg);color:var(--fg);
   font:16px/1.55 ui-serif,Georgia,'Times New Roman',serif;
   -webkit-text-size-adjust:100%}
 .wrap{max-width:34rem;margin:0 auto;padding:1.25rem 1.1rem 5rem}
-header{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.25rem}
+header{display:flex;align-items:center;gap:.65rem;margin-bottom:.25rem}
+header img{width:2.1rem;height:2.1rem;flex:0 0 auto}
 h1{font-size:1.5rem;margin:0;letter-spacing:-.01em}
 .sub{color:var(--muted);font-size:.85rem}
 .bar{display:flex;gap:1.25rem;margin:1rem 0 1.5rem;padding:.7rem .9rem;
@@ -66,13 +67,27 @@ button:active{transform:translateY(1px)}
 .prog i{display:block;height:100%;background:var(--accent);transition:width .2s}
 .link{background:none;border:none;color:var(--muted);padding:.4rem 0;
   text-decoration:underline;text-underline-offset:3px}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:.2rem}
+.nav button{background:none;border:none;color:var(--muted);padding:.5rem .1rem;font-size:.9rem}
+.nav button:disabled{opacity:.3}
+mark{background:#f2d97a;color:#1c1a17;padding:0 .18em;border-radius:.15em}
+/* pronunciation under a normal prompt — deliberately small */
+.pron{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.8rem;
+  color:var(--muted);margin:.5rem 0 0;letter-spacing:.01em}
+.grid{display:grid;gap:.5rem;margin-bottom:1rem}
+.grid .cell{background:var(--card);border:1px solid var(--line);border-radius:.5rem;
+  padding:.7rem .85rem;display:flex;justify-content:space-between;align-items:baseline;gap:.8rem}
+.grid .cell .l{color:var(--muted)}
+.grid .cell .r{color:var(--accent);font-weight:600;font-size:1.05rem}
+.grid .cell .r.blur{filter:blur(6px);user-select:none}
+.gq{text-align:center;margin:0 0 1rem;color:var(--muted);font-size:.9rem}
 footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padding-top:.9rem}
 .hidden{display:none}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header><h1>Bedrock</h1><span class="sub">Spanish · draft</span></header>
+  <header><img src="icon.svg" alt=""><h1>Bedrock</h1><span class="sub">Spanish · draft</span></header>
 
   <!-- HOME -->
   <section id="home">
@@ -94,7 +109,10 @@ footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid 
   <section id="play" class="hidden">
     <div class="prog"><i id="bar"></i></div>
     <div id="stage"></div>
-    <button class="link" id="quit">← back</button>
+    <div class="nav">
+      <button id="prev">← back</button>
+      <button id="quit">✕ lessons</button>
+    </div>
   </section>
 </div>
 
@@ -139,7 +157,7 @@ function home(){
   LESSONS.forEach(l=>{
     const b=document.createElement('button');
     b.className='lesson'+(st.done.has(l.id)?' done':'');
-    b.innerHTML=`<span class="num">${st.done.has(l.id)?'✓':l.id}</span>
+    b.innerHTML=`<span class="num">${st.done.has(l.id)?'✓':(l.label??l.id)}</span>
       <span class="t">${l.title}<small>${l.decision}</small></span>`;
     b.onclick=()=>start(l);
     $('#list').appendChild(b);
@@ -163,9 +181,24 @@ function render(){
   const b=cur.blocks[step];
   $('#bar').style.width=(step/cur.blocks.length*100)+'%';
   if(b.t==='teach'||b.t==='context'){
-    $('#stage').innerHTML=`<p class="${b.t==='context'?'ctx':'teach'}">${b.text}</p>
+    const head=(b.t==='context'&&b.title)?`<b>${b.title}.</b> `:'';
+    $('#stage').innerHTML=`<p class="${b.t==='context'?'ctx':'teach'}">${head}${b.text}</p>
       <div class="row"><button id="next">Continue</button></div>`;
     $('#next').onclick=()=>{step++;render();};
+  }else if(b.t==='grid'){
+    // several examples on one page, answers hidden until asked for
+    const cells=b.items.map((it,n)=>`<div class="cell"><span class="l">${it.en}</span>
+        <span class="r blur" data-n="${n}">${it.es}</span></div>`).join('');
+    $('#stage').innerHTML=`<p class="gq">${b.prompt}</p><div class="grid">${cells}</div>
+      <div class="row"><button id="show">Show me all five</button></div>`;
+    $('#show').onclick=()=>{
+      document.querySelectorAll('.grid .r').forEach(el=>el.classList.remove('blur'));
+      $('#stage').querySelector('.row').innerHTML=
+        `<button class="miss" id="m">Some were wrong</button>
+         <button class="ok" id="o">Got them</button>`;
+      $('#o').onclick=()=>ans('ok');$('#m').onclick=()=>ans('miss');
+      guard();
+    };
   }else if(b.t==='say'){
     // Spanish shown first — attempt it, get it wrong, then learn why
     $('#stage').innerHTML=`<div class="card">
@@ -186,11 +219,12 @@ function render(){
     };
   }else{
     $('#stage').innerHTML=`<div class="card">
-        <p class="en">${b.en}</p><p class="hint">say it out loud, then check</p></div>
+        <p class="en">${b.en}</p><p class="hint">say it in Spanish out loud, then check</p></div>
       <div class="row"><button id="show">Show me</button></div>`;
     $('#show').onclick=()=>{
+      const pron=b.p?`<p class="pron">${b.p}</p>`:'';
       $('#stage').innerHTML=`<div class="card">
-          <p class="en">${b.en}</p><p class="es">${b.es}</p></div>
+          <p class="en">${b.en}</p><p class="es">${b.es}</p>${pron}</div>
         <div class="row">
           <button class="miss" id="m">Missed it</button>
           <button class="ok" id="o">Got it</button></div>`;
@@ -198,6 +232,7 @@ function render(){
       guard();
     };
   }
+  $('#prev').disabled=(step===0);
   guard();
 }
 function ans(r){log({type:'answer',lesson:cur.id,i:step,result:r});step++;render();}
@@ -211,6 +246,7 @@ $('#review-btn').onclick=()=>{
   step=0;$('#home').classList.add('hidden');$('#play').classList.remove('hidden');render();
 };
 
+$('#prev').onclick=()=>{if(step>0){step--;render();}};
 $('#quit').onclick=home;
 $('#export').onclick=()=>{
   const a=document.createElement('a');
