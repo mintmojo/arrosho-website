@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Tile test</title>
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/colors.css">
+<style>body{margin:0;padding:24px;background:#23260F}.row{display:flex;gap:3px;margin-bottom:18px;align-items:flex-end}
+.t{position:relative;background:url(Regular/Front.svg) center/100% 100% no-repeat;flex:0 0 auto}
+.t img{position:absolute;inset:0;width:100%;height:100%}
+.b{background:url(Regular/Back.svg) center/100% 100% no-repeat;flex:0 0 auto}</style>
+</head><body>
+<div class="row" id="a"></div>
+<div class="row" id="b"></div>
+<div class="row" id="c"></div>
+<script>
+const D='Regular/';
+function tile(face,w,rot){const h=Math.round(w*4/3);return `<div class="${face?'t':'b'}" style="width:${w}px;height:${h}px;${rot?`transform:rotate(${rot}deg)`:''}">${face?`<img src="${D}${face}.svg">`:''}</div>`}
+a.innerHTML=['Man1','Pin5-Dora','Sou9','Nan','Haku','Chun','Sou1'].map(f=>tile(f,44)).join('')+tile(null,44);
+b.innerHTML=['Man1','Pin5','Sou3','Chun','Ton','Pin9','Man8','Sou7'].map(f=>tile(f,19)).join('');
+c.innerHTML=tile('Man2',26)+tile('Man3',26,90)+tile('Man4',26,180)+tile(null,26,90);
+</script>
+</body></html>

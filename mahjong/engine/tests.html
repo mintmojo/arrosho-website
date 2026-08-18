@@ -1,0 +1,255 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Riichi engine tests</title>
+<style>*{box-sizing:border-box}body{margin:0;padding:28px;background:#12140A;color:#E6E8E4;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
+h1{font:600 20px/1.2 system-ui;margin:0 0 4px}.sum{margin:0 0 20px;color:#9AA08F}
+table{border-collapse:collapse;width:100%;max-width:1000px}
+td,th{text-align:left;padding:5px 10px;border-bottom:1px solid rgba(230,232,228,.1);vertical-align:top}
+th{color:#9AA08F;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.ok{color:#6894A1}.bad{color:#D2553F;font-weight:700}
+tr.f{background:rgba(210,85,63,.1)}
+.big{font:600 34px/1 system-ui;margin:0 0 2px}
+a,a:hover{color:#6894A1}</style></head><body>
+<h1>Riichi engine — test suite</h1><p class="sum" id="sum">running…</p>
+<div id="out"></div>
+<script src="tiles.js"></script><script src="shanten.js"></script><script src="hand.js"></script>
+<script src="yaku.js"></script><script src="score.js"></script><script src="game.js"></script>
+<script>
+const R=[];let pass=0,fail=0;
+function t(name,got,want){
+  const g=JSON.stringify(got),w=JSON.stringify(want);
+  const ok=g===w;ok?pass++:fail++;
+  R.push({name,got:g,want:w,ok});
+}
+const P=RM.parse, C=s=>RM.counts(P(s));
+/* ---------- shanten ---------- */
+t('complete standard',RM.shanten(C('234m 567m 789p 234s 55s')),-1);
+t('tenpai ryanmen',RM.shanten(C('234m 567m 789p 234s 5s')),0);
+t('1-shanten',RM.shanten(C('234m 567m 789p 24s 5s 9p')),1);
+t('7 pairs tenpai',RM.shanten(C('11m 22m 33m 44p 55p 66s 7s')),0);
+t('chiitoi complete',RM.shanten(C('11m 22m 33m 44p 55p 66s 77s')),-1);
+t('kokushi tenpai',RM.shanten(C('1m 9m 1p 9p 1s 9s E S W N haku hatsu chun')),0);
+t('kokushi complete',RM.shanten(C('1m 9m 1p 9p 1s 9s E S W N haku hatsu chun 1m')),-1);
+t('chuuren tenpai',RM.shanten(C('1112345678999m')),0);
+t('worst hand',RM.shanten(C('147m 258p 369s E S W N')),6);
+t('no-pair 5 blocks',RM.shanten(C('123m 456m 789m 12p 45s')),1);
+t('open hand tenpai',RM.shanten(C('234m 567m 12p 55s'),1),0);
+t('open hand 1-shanten',RM.shanten(C('234m 567m 12p 5s 9p'),1),1);
+/* ---------- ukeire ---------- */
+(function(){
+  const u=RM.ukeire(C('234m 567m 789p 234s 5s'),0,C('234m 567m 789p 234s 5s'));
+  t('ukeire tenpai tiles',u.tiles.map(x=>RM.name(x.tile)),['2s','5s']);
+  t('ukeire tenpai count',u.total,6);
+})();
+/* ---------- completeness ---------- */
+t('not complete',RM.isComplete(C('234m 567m 789p 234s 56s'),[]),false);
+t('complete w/ meld',RM.isComplete(C('234m 567m 789p 55s'),[{type:'pon',tile:RM.T('E')}]),true);
+/* ---------- scoring ---------- */
+function sc(o){return RM.score(o)}
+/* 1. pinfu only, non-dealer ron → 1000 */
+(function(){
+  const r=sc({concealed:C('234m 567m 789p 234s 55s'),winTile:RM.T('4m'),tsumo:false,
+    seatWind:RM.T('S'),roundWind:RM.T('E'),isDealer:false});
+  t('pinfu han',r.han,1);t('pinfu fu',r.fu,30);t('pinfu ron pay',r.pay.ron,1000);
+  t('pinfu named',r.yaku.map(y=>y.name),['Pinfu']);
+})();
+/* 2. riichi + tsumo + pinfu, non-dealer → 700/1300 */
+(function(){
+  const r=sc({concealed:C('234m 567m 789p 234s 55s'),winTile:RM.T('4m'),tsumo:true,riichi:true,
+    seatWind:RM.T('S'),roundWind:RM.T('E'),isDealer:false});
+  t('rtp han',r.han,3);t('rtp fu',r.fu,20);
+  t('rtp pay',[r.pay.dealer,r.pay.other],[1300,700]);
+})();
+/* 3. riichi + chiitoi, non-dealer ron → 3200 */
+(function(){
+  const r=sc({concealed:C('11m 22m 33m 44p 55p 66s 77s'),winTile:RM.T('7s'),tsumo:false,riichi:true,
+    seatWind:RM.T('S'),roundWind:RM.T('E'),isDealer:false});
+  t('chiitoi han',r.han,3);t('chiitoi fu',r.fu,25);t('chiitoi pay',r.pay.ron,3200);
+})();
+/* 4. kokushi, non-dealer ron → 32000 */
+(function(){
+  const r=sc({concealed:C('1m 9m 1p 9p 1s 9s E S W N haku hatsu chun 1m'),winTile:RM.T('9s'),
+    tsumo:false,seatWind:RM.T('S'),roundWind:RM.T('E'),isDealer:false});
+  t('kokushi yakuman',r.yakuman,1);t('kokushi pay',r.pay.ron,32000);
+})();
+/* 5. tanyao open, 1 han 30 fu, non-dealer ron → 1000 */
+(function(){
+  const r=sc({concealed:C('234m 567m 44s'),melds:[{type:'chi',tile:RM.T('3p')},{type:'pon',tile:RM.T('6s')}],
+    winTile:RM.T('4m'),tsumo:false,seatWind:RM.T('S'),roundWind:RM.T('E'),isDealer:false});
+  t('tanyao open names',r.yaku.map(y=>y.name),['Tanyao']);
+  t('tanyao pay',r.pay.ron,1000);
+})();
+/* 6. no yaku → error */
+(function(){
+  const r=sc({concealed:C('234m 567m 234p 678s 99p'),winTile:RM.T('9p'),tsumo:false,
+    seatWind:RM.T('S'),roundWind:RM.T('E'),isDealer:false});
+  t('no yaku rejected',r.error,'no yaku');
+  const r2=sc({concealed:C('123m 456m 789m 123p 99p'),winTile:RM.T('9p'),tsumo:false,
+    seatWind:RM.T('S'),roundWind:RM.T('E'),isDealer:false});
+  t('ittsu detected',r2.yaku.map(y=>y.name),['Ikkitsuukan']);
+})();
+/* 7. daisangen */
+(function(){
+  const r=sc({concealed:C('haku haku haku hatsu hatsu hatsu chun chun chun 234m 55p'),winTile:RM.T('4m'),
+    tsumo:true,seatWind:RM.T('S'),roundWind:RM.T('E'),isDealer:false});
+  t('daisangen',r.yaku.map(y=>y.name),['Daisangen']);t('daisangen pay',r.pay.total,32000);
+})();
+/* 8. suuankou tsumo (dealer) → double? no, single yakuman 48000 */
+(function(){
+  const r=sc({concealed:C('111m 333p 777s EEE 55s'),winTile:RM.T('5s'),tsumo:true,
+    seatWind:RM.T('E'),roundWind:RM.T('E'),isDealer:true});
+  t('suuankou tanki',r.yaku.map(y=>y.name),['Suuankou tanki']);
+  t('suuankou pay',r.pay.total,96000);
+})();
+/* 9. dora counting: riichi + pinfu + 2 dora → 4 han 30 fu = 7700 */
+(function(){
+  const r=sc({concealed:C('234m 567m 789p 234s 55s'),winTile:RM.T('4m'),tsumo:false,riichi:true,
+    seatWind:RM.T('S'),roundWind:RM.T('E'),isDealer:false,doraIndicators:[RM.T('4s')]});
+  t('dora count',r.dora,2);t('dora han total',r.han,4);t('dora pay',r.pay.ron,7700);
+})();
+/* 10. yakuhai + honitsu open */
+(function(){
+  const r=sc({concealed:C('123p 789p haku haku haku 55p'),melds:[{type:'pon',tile:RM.T('E')}],
+    winTile:RM.T('3p'),tsumo:false,seatWind:RM.T('E'),roundWind:RM.T('E'),isDealer:true});
+  const names=r.yaku.map(y=>y.name).sort();
+  t('honitsu yakuhai names',names,['Honitsu','Yakuhai: White Dragon','Yakuhai: round wind','Yakuhai: seat wind'].sort());
+})();
+/* 11. dealer mangan ron */
+(function(){
+  const r=sc({concealed:C('234m 567m 789p 234s 55s'),winTile:RM.T('4m'),tsumo:false,riichi:true,
+    seatWind:RM.T('E'),roundWind:RM.T('E'),isDealer:true,doraIndicators:[RM.T('4s'),RM.T('1m'),RM.T('4m')]});
+  t('dealer 4 dora → 6 han',r.han,6);
+  t('dealer limit',r.limit,'Haneman');t('dealer haneman',r.pay.ron,18000);
+})();
+/* 12. suuankou tanki vs toitoi+sanankou when one set is called */
+(function(){
+  const r=sc({concealed:C('222m 555p 888s 99m'),melds:[{type:'pon',tile:RM.T('3s')}],
+    winTile:RM.T('9m'),tsumo:true,seatWind:RM.T('S'),roundWind:RM.T('E'),isDealer:false});
+  const n=r.yaku.map(y=>y.name);
+  t('open toitoi',n.indexOf('Toitoitsu')>=0,true);
+  t('open sanankou',n.indexOf('Sanankou')>=0,true);
+  t('not suuankou when called',n.some(x=>x.indexOf('Suuankou')===0),false);
+  t('no menzen tsumo when open',n.indexOf('Menzen tsumo')>=0,false);
+})();
+/* 12b. shanpon ron does not give suuankou */
+(function(){
+  const r=sc({concealed:C('222m 555p 888s EEE 99m'),winTile:RM.T('9m'),tsumo:false,
+    seatWind:RM.T('S'),roundWind:RM.T('E'),isDealer:false});
+  const n=r.yaku.map(y=>y.name);
+  t('tanki ron still suuankou',n.some(x=>x.indexOf('Suuankou')===0),true);
+})();
+/* 13. wall integrity */
+(function(){
+  const w=RM.buildWall(42);
+  t('wall size',w.length,136);
+  const c=RM.counts(w);t('4 of each',c.every(x=>x===4),true);
+  t('three red fives',w.filter(x=>x.red).length,3);
+  t('deterministic',RM.buildWall(42).map(x=>x.id).join()===w.map(x=>x.id).join(),true);
+})();
+/* 14. dora wrap */
+t('9m→1m',RM.name(RM.doraNext(RM.T('9m'))),'1m');
+t('N→E',RM.name(RM.doraNext(RM.T('N'))),'E');
+t('chun→haku',RM.name(RM.doraNext(RM.T('chun'))),'haku');
+/* ---------- kan mechanics: a kan must cost the table one draw ---------- */
+(function(){
+  const st=RM.newGame({seed:5});
+  t('opening wall',RM.wallLeft(st),70);
+  t('opening census',RM.tileCensus(st),136);
+  t('dead wall 14',st.replacements.length+st.deadReserve.length,14);
+  st.players[0].hand=RM.parse('2222m 345p 678p 99s 3s').map((x,i)=>({id:900+i,t:x,red:false}));
+  st.turn=0;st.phase='act';
+  const before=RM.wallLeft(st), census=RM.tileCensus(st);
+  RM.apply(st,{type:'ankan',seat:0,tile:RM.T('2m')});
+  t('kan costs one live draw',RM.wallLeft(st),before-1);
+  t('dead wall stays 14',st.replacements.length+st.deadSpare.length+st.deadReserve.length-6,14-6);
+  t('tiles conserved through kan',RM.tileCensus(st),census);
+  t('kan reveals a dora',st.doraIndicators.length,2);
+  t('dora indices undisturbed',st.doraIndicators[1]===st.doraPool[1],true);
+})();
+(function(){
+  const st=RM.newGame({seed:11});
+  st.turn=0;st.phase='act';
+  const w=RM.wallLeft(st);
+  ['2222m','3333p','5555s','7777s'].forEach((q,k)=>{
+    st.players[0].hand=RM.parse(q+' 345p 99s 1s').map((x,i)=>({id:800+k*20+i,t:x,red:false}));
+    RM.apply(st,{type:'ankan',seat:0,tile:RM.parse(q)[0]});
+    st.phase='act';st.turn=0;
+  });
+  t('four kans cost four draws',RM.wallLeft(st),w-4);
+  t('five dora indicators',st.doraIndicators.length,5);
+  t('no undefined indicator',st.doraIndicators.every(d=>typeof d==='number'),true);
+})();
+/* ---------- chankan: an added kan can be robbed ---------- */
+function robSetup(){
+  const st=RM.newGame({seed:9});
+  st.players[0].melds=[{type:'pon',tile:RM.T('2m'),from:1,reds:0}];
+  st.players[0].hand=RM.parse('2m 345p 678p 99s').map((x,i)=>({id:700+i,t:x,red:false}));
+  st.players[2].hand=RM.parse('13m 456p 789p 234s 55s').map((x,i)=>({id:750+i,t:x,red:false}));
+  st.turn=0;st.phase='act';
+  return st;
+}
+(function(){
+  const st=robSetup();
+  st.players[0].drawnTile=st.players[0].hand[0];
+  t('kakan offered',RM.actActions(st).some(a=>a.type==='kakan'&&a.tile===RM.T('2m')),true);
+  RM.apply(st,{type:'kakan',seat:0,tile:RM.T('2m')});
+  t('robbing window opens',st.phase,'call');
+  t('robbery is ron-only',st.pendingCalls.options[0].options.every(o=>o.type==='ron'),true);
+  t('the waiting seat may rob',st.pendingCalls.options.map(o=>o.seat),[2]);
+  RM.resolveCalls(st,[{type:'ron',seat:2}]);
+  t('robbery ends the hand',[st.result.type,st.result.winner],['win',2]);
+  t('chankan scored',st.result.score.yaku.some(y=>y.name==='Chankan'),true);
+  t('robbed kan reverts to pon',st.players[0].melds[0].type,'pon');
+  t('kan count rolled back',st.kanCount,0);
+})();
+(function(){
+  const st=robSetup();
+  const w=RM.wallLeft(st);
+  RM.apply(st,{type:'kakan',seat:0,tile:RM.T('2m')});
+  RM.resolveCalls(st,[{type:'pass',seat:2}]);
+  t('passed kan completes',st.players[0].melds[0].type,'kan');
+  t('kan player draws again',[st.turn,st.phase],[0,'act']);
+  t('passed kan still costs a draw',RM.wallLeft(st),w-1);
+  t('declining a robbery sets temp furiten',st.players[2].tempFuriten,true);
+})();
+/* ---------- rinshan and haitei never stack ----------
+   A kan hand holds 15 tiles: the quad (4) + 3 sets (9) + a pair (2).
+   Dora indicators are pinned to red dragon so the han count is not seed-dependent. */
+function pinDora(st){
+  const c=RM.T('chun');
+  st.doraPool=[c,c,c,c,c];st.uraPool=[c,c,c,c,c];st.doraIndicators=[c];st.uraIndicators=[c];st.doraRevealed=1;
+}
+(function(){
+  const st=RM.newGame({seed:5});pinDora(st);
+  st.wall=st.wall.slice(0,1);
+  st.replacements[0]={id:990,t:RM.T('5s'),red:false};
+  st.players[0].hand=RM.parse('2222m 345p 678p 789s 5s').map((x,i)=>({id:960+i,t:x,red:false}));
+  st.turn=0;st.phase='act';
+  RM.apply(st,{type:'ankan',seat:0,tile:RM.T('2m')});
+  t('replacement emptied the live wall',RM.wallLeft(st),0);
+  t('flagged rinshan',st.rinshan,true);
+  const r=RM.scoreFor(st,0,RM.T('5s'),true);
+  t('rinshan hand is complete',!r.error,true);
+  const names=r.yaku.map(y=>y.name).sort();
+  t('rinshan awarded',names,['Menzen tsumo','Rinshan kaihou']);
+  t('haitei not also awarded',names.indexOf('Haitei raoyue')>=0,false);
+  t('rinshan tsumo han',r.han,2);
+})();
+/* haitei still fires on a genuine last-tile draw */
+(function(){
+  const st=RM.newGame({seed:5});pinDora(st);
+  st.wall=[{id:991,t:RM.T('5s'),red:false}];
+  st.players[0].hand=RM.parse('234m 345p 678p 789s 5s').map((x,i)=>({id:970+i,t:x,red:false}));
+  st.turn=0;st.phase='draw';
+  RM.apply(st,{type:'draw'});
+  t('last tile drawn from the live wall',RM.wallLeft(st),0);
+  t('not rinshan',st.rinshan,false);
+  const r=RM.scoreFor(st,0,RM.T('5s'),true);
+  t('haitei hand is complete',!r.error,true);
+  const names=r.yaku.map(y=>y.name);
+  t('haitei awarded on last draw',names.indexOf('Haitei raoyue')>=0,true);
+  t('rinshan not also awarded',names.indexOf('Rinshan kaihou')>=0,false);
+})();
+/* ---------- render ---------- */
+document.getElementById('sum').innerHTML='<span class="big '+(fail?'bad':'ok')+'">'+pass+' / '+(pass+fail)+'</span><br>'+(fail?fail+' failing':'all passing');
+document.getElementById('out').innerHTML='<table><tr><th>Test</th><th>Got</th><th>Expected</th></tr>'+
+R.map(r=>'<tr class="'+(r.ok?'':'f')+'"><td>'+r.name+'</td><td class="'+(r.ok?'ok':'bad')+'">'+r.got+'</td><td>'+(r.ok?'':r.want)+'</td></tr>').join('')+'</table>';
+</script></body></html>

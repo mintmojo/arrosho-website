@@ -1,0 +1,76 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Riichi engine — simulation</title>
+<style>*{box-sizing:border-box}body{margin:0;padding:28px;background:#12140A;color:#E6E8E4;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}
+h1{font:600 20px/1.2 system-ui;margin:0 0 4px}p{color:#9AA08F;margin:0 0 18px}
+.big{font:600 34px/1 system-ui}.ok{color:#6894A1}.bad{color:#D2553F}
+table{border-collapse:collapse;max-width:900px;width:100%}td,th{padding:4px 10px;border-bottom:1px solid rgba(230,232,228,.1);text-align:left}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#9AA08F}
+pre{background:rgba(0,0,0,.25);padding:14px;border-radius:6px;overflow:auto;max-width:900px;font-size:12px}
+a,a:hover{color:#6894A1}</style></head><body>
+<h1>Engine simulation — 25 bot-only hands</h1><p id="sum">running…</p>
+<div id="out"></div><h1 style="margin-top:28px;font-size:15px">Sample hand log</h1><pre id="log"></pre>
+<script src="tiles.js"></script><script src="shanten.js"></script><script src="hand.js"></script>
+<script src="yaku.js"></script><script src="score.js"></script><script src="game.js"></script><script src="bots.js"></script>
+<script>
+function playHand(seed,trace){
+  const st=RM.newGame({seed,botSeats:[0,1,2,3]});
+  const lines=[];
+  let guard=0;
+  while(st.phase!=='end'&&guard++<400){
+    if(RM.tileCensus(st)!==136)throw new Error('tile census '+RM.tileCensus(st)+' at guard '+guard);
+    if(st.phase==='draw'){
+      if(RM.wallLeft(st)===0){RM.endExhaustive(st);break}
+      RM.apply(st,{type:'draw'});
+    }else if(st.phase==='act'){
+      const a=RM.botAct(st,st.turn);
+      if(trace)lines.push(seatName(st,st.turn)+' '+describe(st,a));
+      RM.apply(st,a);
+    }else if(st.phase==='call'){
+      const pc=st.pendingCalls;
+      const decisions=pc.options.map(o=>RM.botCall(st,o.seat,o.options));
+      const called=decisions.filter(d=>d.type!=='pass');
+      if(trace&&called.length)lines.push(seatName(st,called[0].seat)+' calls '+called[0].type.toUpperCase());
+      RM.resolveCalls(st,decisions);
+    }else break;
+  }
+  if(guard>=400)throw new Error('hand did not terminate');
+  return {st,lines};
+}
+function seatName(st,s){return ['You','Kaede','Mori','Sato'][s]+' ('+RM.name(st.players[s].wind)+')'}
+function describe(st,a){
+  if(a.type==='tsumo')return 'declares TSUMO';
+  if(a.type==='discard')return (a.riichi?'RIICHI, discards ':'discards ')+RM.name(a.tile)+(a.reason?'  — '+a.reason:'');
+  return a.type.toUpperCase()+' '+(a.tile!==undefined?RM.name(a.tile):'');
+}
+const R=[];let pass=0,fail=0;
+function t(n,got,want){const ok=JSON.stringify(got)===JSON.stringify(want);ok?pass++:fail++;R.push({n,got:JSON.stringify(got),want:JSON.stringify(want),ok})}
+let wins=0,draws=0,riichis=0,errors=[],yakuTally={},totalHan=0,hanCount=0;
+for(let seed=1;seed<=25;seed++){
+  try{
+    const {st}=playHand(seed,false);
+    const scoreSum=st.players.reduce((a,p)=>a+p.score,0)+st.riichiSticks*1000;
+    if(scoreSum!==100000)throw new Error('score sum '+scoreSum);
+    if(st.result.type==='win'){wins++;
+      const y=st.result.score.yaku.map(x=>x.name);
+      y.forEach(nm=>{yakuTally[nm]=(yakuTally[nm]||0)+1});
+      totalHan+=st.result.score.han;hanCount++;
+    }else draws++;
+    riichis+=st.players.filter(p=>p.riichi).length;
+  }catch(e){errors.push('seed '+seed+': '+e.message)}
+}
+t('no errors across 25 hands',errors.slice(0,3),[]);
+t('every hand ended',wins+draws,25);
+t('bots declare riichi',riichis>5,true);
+t('wins are the common outcome',wins>draws,true);
+const {st,lines}=playHand(7,true);
+document.getElementById('log').textContent=lines.join('\n')+'\n\n=== '+(st.result.type==='win'
+  ?seatName(st,st.result.winner)+' wins '+st.result.score.han+' han '+st.result.score.fu+' fu'+(st.result.score.limit?' ('+st.result.score.limit+')':'')+'  ['+st.result.score.yaku.map(y=>y.name).join(', ')+']'
+  :'exhaustive draw, tenpai: '+st.result.tenpai.map(s=>seatName(st,s)).join(', '))+' ===\nScores: '+st.players.map((p,i)=>['You','Kaede','Mori','Sato'][i]+' '+p.score).join('   ');
+const topYaku=Object.entries(yakuTally).sort((a,b)=>b[1]-a[1]).slice(0,12);
+document.getElementById('sum').innerHTML='<span class="big '+(fail?'bad':'ok')+'">'+pass+' / '+(pass+fail)+'</span> checks &nbsp;·&nbsp; '+
+  wins+' wins, '+draws+' exhaustive draws &nbsp;·&nbsp; '+riichis+' riichi declarations &nbsp;·&nbsp; avg '+(totalHan/hanCount).toFixed(2)+' han per win'+
+  (errors.length?'<br><span class="bad">'+errors.length+' errored: '+errors[0]+'</span>':'');
+document.getElementById('out').innerHTML='<table><tr><th>Check</th><th>Got</th><th>Expected</th></tr>'+
+  R.map(r=>'<tr><td>'+r.n+'</td><td class="'+(r.ok?'ok':'bad')+'">'+r.got+'</td><td>'+(r.ok?'':r.want)+'</td></tr>').join('')+
+  '</table><h1 style="margin:26px 0 4px;font-size:15px">Yaku frequency</h1><table>'+
+  topYaku.map(([k,v])=>'<tr><td>'+k+'</td><td>'+v+'</td></tr>').join('')+'</table>';
+</script></body></html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Riichi table — portrait</title>
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/colors.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/typography.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/form.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/base.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/_ds_bundle.js"></script>
+<style>*{box-sizing:border-box}
+html,body{margin:0;background:#12140A;font-family:var(--font-body)}
+body{display:flex;justify-content:center;align-items:flex-start;padding:16px;overflow:hidden}
+a,a:hover{color:var(--arr-teal)}
+.phone{width:390px;height:844px;position:relative;overflow:hidden;display:flex;flex-direction:column;color:var(--arr-white);background-image:var(--noise-overlay),radial-gradient(120% 80% at 50% 18%,#31402A 0%,#23260F 62%,#1B1F0A 100%);background-size:140px 140px,100% 100%}
+.eb{font-family:var(--font-core);font-weight:var(--eyebrow-weight);font-size:11px;letter-spacing:var(--eyebrow-tracking);text-transform:uppercase}
+.topbar{display:flex;align-items:center;gap:8px;padding:12px 14px 8px;flex:0 0 auto}
+.chip{display:flex;align-items:center;gap:6px;padding:5px 9px;border-radius:var(--radius-round);background:rgba(230,232,228,0.08);border:1px solid var(--border-hairline-dark)}
+.wind-big{font-family:var(--font-display);font-size:26px;line-height:0.98;letter-spacing:var(--display-tracking)}
+.num{font-family:var(--font-core);font-weight:700;font-variant-numeric:tabular-nums}
+.riichi-tag{font-family:var(--font-core);font-weight:800;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--arr-black);background:var(--arr-flag);padding:2px 5px;border-radius:4px}
+.oppgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:2px 14px 10px;flex:0 0 auto}
+.oppcard{background:rgba(230,232,228,0.06);border:1px solid var(--border-hairline-dark);border-radius:var(--radius-step);padding:9px 10px 10px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.oppcard.danger{border-color:rgba(210,85,63,0.55)}
+.tipcard{margin:0 14px 8px;flex:0 0 auto;background:rgba(27,31,10,0.45);border:1px solid var(--border-hairline-dark);border-left:3px solid var(--arr-steel);border-radius:var(--radius-field);padding:10px 12px;display:flex;flex-direction:column;gap:7px}
+.pond{flex:1;align-self:center;display:grid;grid-template-columns:76px 160px 76px;grid-template-rows:74px 156px 74px;gap:5px;place-items:center;justify-content:center}
+.pondinfo{width:132px;height:132px;border-radius:var(--radius-step);background:rgba(27,31,10,0.42);border:1px solid var(--border-hairline-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.dgrid{display:grid;grid-template-columns:repeat(6,26px);gap:2px}
+.hand{display:flex;flex-direction:column;gap:5px;align-items:center;padding:6px 14px 0;flex:0 0 auto}
+.hrow{display:flex;gap:4px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px 18px;flex:0 0 auto}
+.btn{font-family:var(--font-core);font-weight:700;font-size:14px;border:0;border-radius:var(--radius-action);padding:15px 12px;cursor:pointer;transition:transform var(--dur-base) var(--ease-out),background var(--dur-base) var(--ease-out)}
+.btn:active{transform:var(--hover-lift)}
+.btn-primary{background:var(--arr-steel);color:var(--arr-black)}
+.btn-primary:hover{background:var(--arr-steel-light)}
+.btn-ghost{background:rgba(230,232,228,0.08);color:var(--arr-white);border:1px solid var(--border-inset)}
+.btn-ghost:hover{background:var(--surface-inset-strong)}</style>
+</head><body><div id="root"></div>
+<script src="mock-shared.jsx" type="text/babel"></script>
+<script type="text/babel">
+const {Icon}=window.ArroshoDesignSystem_6655bd;
+const G=window.GAME;
+const SEATC={E:'var(--arr-teal)',S:'var(--arr-steel)',W:'var(--arr-flag)',N:'var(--arr-sage)'};
+const SEATW={self:'E',right:'S',across:'W',left:'N'};
+const SAFE=['9p','1s','8m','haku','2p'];
+const TIPS={
+ '1m':['Cutting 1m','Nobody has discarded 1m. Against West\u2019s riichi that is a live tile \u2014 a real risk, not a safe cut.'],
+ '9s':['Cutting 9s','Breaks 789s and drops you out of tenpai. Safe against West, but you give up the hand.'],
+ '7s':['Cutting 7s','Breaks 789s and drops you out of tenpai \u2014 there is no cheaper tile in that run.'],
+ 'S':['Cutting South','Your only pair. Lose it and the shape collapses \u2014 back to two away.'],
+ 'drawn':['You are tenpai','Waiting 3s or 6s \u2014 seven tiles live. The hand has no yaku, so a win only scores if you declare riichi.']
+};
+const PRETTY={haku:'white dragon',hatsu:'green dragon',chun:'red dragon',E:'east',S:'south',W:'west',N:'north'};
+const pretty=n=>PRETTY[n]||n;
+function OppCard({seat}){
+  const s=G.seats[seat],w=SEATW[seat];
+  return <div className={'oppcard'+(s.riichi?' danger':'')}>
+    <div style={{display:'flex',alignItems:'center',gap:6}}>
+      <span style={{fontFamily:'var(--font-display)',fontSize:15,color:SEATC[w]}}>{w}</span>
+      <span style={{fontSize:11.5,fontWeight:600,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{s.name}</span>
+    </div>
+    <div className="num" style={{fontSize:14}}>{s.score.toLocaleString()}</div>
+    {s.riichi
+      ? <span className="riichi-tag" style={{alignSelf:'flex-start'}}>Riichi</span>
+      : <span className="eb" style={{fontSize:8.5,color:'var(--arr-grey)',opacity:0.75}}>{G.discards[seat].length} discards</span>}
+  </div>;
+}
+function DiscardGroup({tiles,dir}){
+  const rows=[];for(let i=0;i<tiles.length;i+=6)rows.push(tiles.slice(i,i+6));
+  const rot={self:0,across:180,left:90,right:-90}[dir];
+  return <div style={{transform:'rotate('+rot+'deg)'}}>
+    <div style={{display:'flex',flexDirection:'column',gap:2}}>
+      {rows.map((r,ri)=><div className="dgrid" key={ri}>
+        {r.map((t,i)=>{const sideways=dir==='across'&&ri*6+i===G.acrossRiichiAt-1;
+          return <div key={i} style={{width:26,height:35,display:'grid',placeItems:'center'}}><Tile t={t} w={26} rot={sideways?90:0}/></div>})}
+      </div>)}
+    </div></div>;
+}
+function App(){
+  const [sel,setSel]=React.useState('drawn');
+  const hand=G.hand;
+  const key=sel==='drawn'?'drawn':hand[sel];
+  const tip=TIPS[key]||['Cutting '+pretty(key),'Nothing special about this tile \u2014 it holds your shape and gives little away.'];
+  const selName=sel==='drawn'?G.drawn:hand[sel];
+  const safeSel=SAFE.indexOf(key)>=0;
+  return <div className="phone">
+    <div className="topbar">
+      <span className="eb" style={{color:'var(--arr-teal)'}}>{G.round}</span>
+      <span className="eb" style={{fontSize:9,color:'var(--arr-grey)',opacity:0.7}}>You deal</span>
+      <div style={{flex:1}}/>
+      <div className="chip" style={{padding:'3px 8px 3px 5px'}}><Tile t={G.dora} w={16}/><span className="eb" style={{fontSize:8.5,color:'var(--arr-grey)'}}>Dora</span></div>
+      <div className="chip"><span className="num" style={{fontSize:12}}>{G.wall}</span></div>
+      <div className="chip" style={{padding:6}}><Icon name="bars" size={16}/></div>
+    </div>
+    <div className="oppgrid"><OppCard seat="left"/><OppCard seat="across"/><OppCard seat="right"/></div>
+    <div className="tipcard">
+      <span className="eb" style={{fontSize:9.5,color:'var(--arr-steel)'}}>{tip[0]}</span>
+      <span style={{fontSize:13,lineHeight:1.5,opacity:0.9}}>{tip[1]}</span>
+      <div style={{display:'flex',alignItems:'center',gap:6}}>
+        <span className="eb" style={{fontSize:8.5,color:'var(--arr-grey)'}}>Safe vs West</span>
+        <div style={{display:'flex',gap:3}}>{SAFE.map(t=><Tile key={t} t={t} w={17}/>)}</div>
+      </div>
+    </div>
+    <div className="pond">
+      <div/><DiscardGroup tiles={G.discards.across} dir="across"/><div/>
+      <DiscardGroup tiles={G.discards.left} dir="left"/>
+      <div className="pondinfo">
+        <span className="wind-big">{G.seats.self.wind}</span>
+        <span className="eb" style={{fontSize:8.5,color:'var(--arr-grey)'}}>Your seat · dealer</span>
+      </div>
+      <DiscardGroup tiles={G.discards.right} dir="right"/>
+      <div/><DiscardGroup tiles={G.discards.self} dir="self"/><div/>
+    </div>
+    <div style={{display:'flex',alignItems:'center',gap:8,padding:'6px 14px 0'}}>
+      <span style={{fontFamily:'var(--font-display)',fontSize:15,color:'var(--arr-teal)'}}>E</span>
+      <span className="num" style={{fontSize:14}}>{G.seats.self.score.toLocaleString()}</span>
+      <div style={{flex:1}}/>
+      <span className="eb" style={{fontSize:9,color:'var(--arr-teal)'}}>Your turn</span>
+    </div>
+    <div className="hand">
+      <div className="hrow">{hand.slice(0,7).map((t,i)=><Tile key={i} t={t} w={47} onClick={()=>setSel(i)}
+        style={{cursor:'pointer',outline:sel===i?'2px solid var(--arr-teal)':'none',outlineOffset:2,borderRadius:2}}/>)}</div>
+      <div className="hrow">{hand.slice(7).map((t,i)=><Tile key={i} t={t} w={47} onClick={()=>setSel(i+7)}
+        style={{cursor:'pointer',outline:sel===i+7?'2px solid var(--arr-teal)':'none',outlineOffset:2,borderRadius:2}}/>)}
+        <div style={{width:10}}/>
+        <Tile t={G.drawn} w={47} onClick={()=>setSel('drawn')} style={{cursor:'pointer',outline:sel==='drawn'?'2px solid var(--arr-teal)':'none',outlineOffset:2,borderRadius:2}}/>
+      </div>
+    </div>
+    <div className="actions">
+      <button className="btn btn-ghost">Discard {pretty(selName)}</button>
+      <button className="btn btn-primary">Riichi — discard {pretty(selName)}</button>
+    </div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+<script>function __fit(){var p=document.querySelector('.phone');if(!p)return;var s=Math.min(1,(innerHeight-32)/844,(innerWidth-32)/390);p.style.transformOrigin='top center';p.style.transform='scale('+s+')';document.body.style.height=(844*s+32)+'px'}addEventListener('resize',__fit);var __t=setInterval(function(){if(document.querySelector('.phone')){__fit();clearInterval(__t)}},60);</script>
+</body></html>

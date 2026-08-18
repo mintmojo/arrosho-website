@@ -1,0 +1,130 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Riichi table — A · Authentic</title>
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/colors.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/typography.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/form.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/base.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/_ds_bundle.js"></script>
+<style>*{box-sizing:border-box}
+html,body{margin:0;background:#12140A;font-family:var(--font-body)}
+body{display:flex;justify-content:center;align-items:flex-start;padding:16px;overflow:hidden}
+a,a:hover{color:var(--arr-teal)}
+.phone{width:390px;height:844px;position:relative;overflow:hidden;display:flex;flex-direction:column;color:var(--arr-white);background-image:var(--noise-overlay),radial-gradient(120% 80% at 50% 18%,#31402A 0%,#23260F 62%,#1B1F0A 100%);background-size:140px 140px,100% 100%}
+.eb{font-family:var(--font-core);font-weight:var(--eyebrow-weight);font-size:11px;letter-spacing:var(--eyebrow-tracking);text-transform:uppercase}
+.topbar{display:flex;align-items:center;gap:10px;padding:12px 14px 8px;flex:0 0 auto}
+.chip{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:var(--radius-round);background:rgba(230,232,228,0.08);border:1px solid var(--border-hairline-dark)}
+.wind-big{font-family:var(--font-display);font-size:26px;line-height:0.98;letter-spacing:var(--display-tracking)}
+.num{font-family:var(--font-core);font-weight:700;font-variant-numeric:tabular-nums}
+.riichi-tag{font-family:var(--font-core);font-weight:800;font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--arr-black);background:var(--arr-flag);padding:2px 6px;border-radius:4px}
+.btn{font-family:var(--font-core);font-weight:700;font-size:14px;letter-spacing:0.02em;border:0;border-radius:var(--radius-action);padding:14px 18px;cursor:pointer;transition:transform var(--dur-base) var(--ease-out),background var(--dur-base) var(--ease-out)}
+.btn:active{transform:var(--hover-lift)}
+.btn-primary{background:var(--arr-steel);color:var(--arr-black)}
+.btn-ghost{background:rgba(230,232,228,0.08);color:var(--arr-white);border:1px solid var(--border-inset)}
+.btn:disabled{opacity:0.35;cursor:default}
+.sliver{width:34px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.pond{flex:1;align-self:center;display:grid;grid-template-columns:62px 158px 62px;grid-template-rows:70px 130px 70px;gap:5px;place-items:center;justify-content:center}
+.pondinfo{width:120px;height:120px;border-radius:var(--radius-step);background:rgba(27,31,10,0.42);border:1px solid var(--border-hairline-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.dgrid{display:grid;grid-template-columns:repeat(6,24px);gap:2px;justify-content:center}
+.handrow{display:flex;align-items:flex-end;padding:0 14px}
+.tipline{min-height:34px;padding:0 16px;display:flex;align-items:center;gap:8px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 14px 18px}
+</style></head><body><div id="root"></div>
+<script src="mock-shared.jsx" type="text/babel"></script>
+<script type="text/babel">
+const {Icon}=window.ArroshoDesignSystem_6655bd;
+const G=window.GAME;
+const TIPS={'1m':'1m is not safe against West — nobody has discarded it.','9s':'Breaking 789s drops you out of tenpai.','S':'Your pair is the hand\u2019s only pair. Drop it and you lose the shape.'};
+function OppHand({n=13,rot=0,w=15}){
+  const t=[];for(let i=0;i<n;i++)t.push(<Tile key={i} t="back" w={w} style={{opacity:0.55}}/>);
+  return <div style={{display:'flex',gap:2}}>{t}</div>;
+}
+function DiscardGroup({tiles,dir}){
+  const rows=[];for(let i=0;i<tiles.length;i+=6)rows.push(tiles.slice(i,i+6));
+  const inner=<div style={{display:'flex',flexDirection:'column',gap:2}}>
+    {rows.map((r,ri)=><div className="dgrid" key={ri} style={{justifyContent:'start'}}>
+      {r.map((t,i)=>{const idx=ri*6+i;const sideways=dir==='across'&&idx===G.acrossRiichiAt-1;
+        return <div key={i} style={{width:24,height:32,display:'grid',placeItems:'center'}}><Tile t={t} w={24} rot={sideways?90:0}/></div>})}
+    </div>)}
+  </div>;
+  const rot={self:0,across:180,left:90,right:-90}[dir];
+  return <div style={{transform:'rotate('+rot+'deg)'}}>{inner}</div>;
+}
+function Sliver({seat,side}){
+  const s=G.seats[seat];
+  return <div className="sliver">
+    <div style={{width:34,height:34,borderRadius:var_r,display:'grid',placeItems:'center',background:'rgba(230,232,228,0.08)',border:'1px solid var(--border-hairline-dark)'}}>
+      <span className="wind-big" style={{fontSize:17}}>{s.wind}</span></div>
+    <span className="num" style={{fontSize:11,color:'var(--arr-grey)'}}>{(s.score/1000).toFixed(1)}k</span>
+    {s.riichi&&<span className="riichi-tag" style={{writingMode:'vertical-rl',letterSpacing:'0.1em',padding:'6px 2px'}}>Riichi</span>}
+    <div style={{display:'flex',flexDirection:'column',alignItems:'center',marginTop:4}}>
+      {Array.from({length:13}).map((_,i)=><div key={i} style={{width:24,height:13,display:'grid',placeItems:'center',marginBottom:2}}>
+        <Tile t="back" w={13} rot={90} style={{opacity:0.42}}/></div>)}
+    </div>
+  </div>;
+}
+const var_r='var(--radius-icon)';
+function App(){
+  const [sel,setSel]=React.useState('drawn');
+  const hand=G.hand;
+  const tip=sel===null?null:(sel==='drawn'?'Tenpai \u2014 waiting 3s or 6s. No yaku, so riichi or the win won\u2019t score.':(TIPS[hand[sel]]||'Solid tile. Nothing calls for cutting it.'));
+  const selName=sel===null?null:(sel==='drawn'?G.drawn:hand[sel]);
+  return <div className="phone">
+    <div className="topbar">
+      <span className="eb" style={{color:'var(--arr-teal)'}}>{G.round}</span>
+      <span className="eb" style={{color:'var(--arr-grey)',opacity:0.7}}>Dealer</span>
+      <div style={{flex:1}}/>
+      <div className="chip"><span className="num" style={{fontSize:12}}>{G.wall}</span><span className="eb" style={{fontSize:9,color:'var(--arr-grey)'}}>left</span></div>
+      <div className="chip" style={{padding:6}}><Icon name="bars" size={16}/></div>
+    </div>
+    <div style={{display:'flex',alignItems:'center',gap:8,padding:'2px 14px 6px'}}>
+      <div style={{width:30,height:30,borderRadius:8,display:'grid',placeItems:'center',background:'rgba(230,232,228,0.08)',border:'1px solid var(--border-hairline-dark)'}}>
+        <span className="wind-big" style={{fontSize:15}}>{G.seats.across.wind}</span></div>
+      <div style={{minWidth:0}}>
+        <div style={{fontSize:12,fontWeight:600}}>{G.seats.across.name}</div>
+        <div className="num" style={{fontSize:11,color:'var(--arr-grey)'}}>{G.seats.across.score.toLocaleString()}</div>
+      </div>
+      {G.seats.across.riichi&&<span className="riichi-tag">Riichi</span>}
+      <div style={{flex:1}}/>
+      <OppHand n={13} w={14}/>
+    </div>
+    <div style={{flex:1,display:'flex',gap:6,padding:'0 10px',alignItems:'stretch',minHeight:0}}>
+      <Sliver seat="left"/>
+      <div className="pond">
+        <div/><DiscardGroup tiles={G.discards.across} dir="across"/><div/>
+        <DiscardGroup tiles={G.discards.left} dir="left"/>
+        <div className="pondinfo">
+          <span className="wind-big">{G.seats.self.wind}</span>
+          <span className="eb" style={{fontSize:9,color:'var(--arr-grey)'}}>Dora</span>
+          <Tile t={G.dora} w={26}/>
+        </div>
+        <DiscardGroup tiles={G.discards.right} dir="right"/>
+        <div/><DiscardGroup tiles={G.discards.self} dir="self"/><div/>
+      </div>
+      <Sliver seat="right"/>
+    </div>
+    <div style={{display:'flex',alignItems:'center',gap:8,padding:'6px 14px 2px'}}>
+      <span className="eb" style={{fontSize:9,color:'var(--arr-grey)'}}>You</span>
+      <span className="num" style={{fontSize:12}}>{G.seats.self.score.toLocaleString()}</span>
+      <div style={{flex:1}}/>
+      <span className="eb" style={{fontSize:9,color:'var(--arr-teal)'}}>Your turn</span>
+    </div>
+    <div className="tipline">{tip&&<><span style={{width:3,height:16,background:'var(--arr-steel)',flex:'0 0 auto'}}/><span style={{fontSize:12.5,lineHeight:1.35,color:'var(--arr-white)',opacity:0.86}}>{tip}</span></>}</div>
+    <div className="handrow">
+      {hand.map((t,i)=><Tile key={i} t={t} w={42} onClick={()=>setSel(sel===i?null:i)}
+        style={{marginLeft:i?-20:0,zIndex:i,transform:sel===i?'translateY(-12px)':'none',transition:'transform var(--dur-base) var(--ease-out)',cursor:'pointer'}}/>)}
+      <Tile t={G.drawn} w={42} onClick={()=>setSel(sel==='drawn'?null:'drawn')}
+        style={{marginLeft:12,zIndex:20,transform:sel==='drawn'?'translateY(-12px)':'none',transition:'transform var(--dur-base) var(--ease-out)',cursor:'pointer'}}/>
+    </div>
+    <div className="actions">
+      <button className="btn btn-ghost" disabled={sel===null}>Riichi</button>
+      <button className="btn btn-primary" disabled={sel===null}>{selName?'Discard '+selName.replace('haku','white').replace('hatsu','green').replace('chun','red'):'Pick a tile'}</button>
+    </div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script><script>function __fit(){var p=document.querySelector('.phone');if(!p)return;var s=Math.min(1,(innerHeight-32)/844,(innerWidth-32)/390);p.style.transformOrigin='top center';p.style.transform='scale('+s+')';document.body.style.height=(844*s+32)+'px'}addEventListener('resize',__fit);var __t=setInterval(function(){if(document.querySelector('.phone')){__fit();clearInterval(__t)}},60);</script></body></html>

@@ -1,0 +1,39 @@
+:root{
+--font-display:'Archivo Black','Archivo',sans-serif;
+--font-core:'Archivo',sans-serif;
+--font-body:'Inter',system-ui,sans-serif;
+
+/* Display — always uppercase, weight 400 (the face is already black) */
+--display-weight:400; /* @kind other */
+--display-tracking:-0.025em; /* @kind other */
+--display-leading:0.98; /* @kind other */
+--display-hero:clamp(40px,7vw,92px); /* @kind font */
+--display-page:clamp(34px,5.6vw,68px); /* @kind font */
+--display-section:clamp(30px,4vw,44px); /* @kind font */
+--display-sub:clamp(28px,3.6vw,40px); /* @kind font */
+--display-card:28px; /* @kind font */
+--display-card-sm:24px; /* @kind font */
+
+/* Eyebrows / wordmark — Archivo 600-800, wide tracking, uppercase */
+--eyebrow-size:13px; /* @kind font */
+--eyebrow-size-sm:12px; /* @kind font */
+--eyebrow-weight:700; /* @kind other */
+--eyebrow-tracking:0.16em; /* @kind other */
+--eyebrow-tracking-tight:0.14em; /* @kind other */
+--wordmark-tracking:0.22em; /* @kind other */
+--wordmark-weight:800; /* @kind other */
+
+/* Body — Inter */
+--body-hero:19px; /* @kind font */
+--body-lg:17px; /* @kind font */
+--body-md:16px; /* @kind font */
+--body-sm:15.5px; /* @kind font */
+--body-xs:15px; /* @kind font */
+--body-caption:14px; /* @kind font */
+--body-leading:1.6; /* @kind other */
+--body-leading-loose:1.7; /* @kind other */
+--body-leading-card:1.65; /* @kind other */
+--body-weight:400; /* @kind other */
+--body-weight-strong:600; /* @kind other */
+--body-opacity-on-dark:0.82; /* @kind other */
+}

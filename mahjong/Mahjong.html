@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Riichi — East only</title>
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/colors.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/typography.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/form.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/tokens/base.css">
+<link rel="stylesheet" href="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/styles.css">
+<style>*{box-sizing:border-box}
+html,body{margin:0;background:#12140A;font-family:var(--font-body);-webkit-tap-highlight-color:transparent}
+body{display:flex;justify-content:center;align-items:flex-start;padding:16px;overflow:hidden}
+a,a:hover{color:var(--arr-teal)}
+.phone{width:390px;height:844px;position:relative;overflow:hidden;display:flex;flex-direction:column;color:var(--arr-white);background-image:var(--noise-overlay),radial-gradient(120% 80% at 50% 18%,#31402A 0%,#23260F 62%,#1B1F0A 100%);background-size:140px 140px,100% 100%}
+.eb{font-family:var(--font-core);font-weight:700;font-size:11px;letter-spacing:var(--eyebrow-tracking);text-transform:uppercase}
+.num{font-family:var(--font-core);font-weight:700;font-variant-numeric:tabular-nums}
+.wind-big{font-family:var(--font-display);font-size:26px;line-height:0.98;letter-spacing:var(--display-tracking)}
+.topbar{display:flex;align-items:center;gap:7px;padding:12px 14px 8px;flex:0 0 auto}
+.chip{display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:var(--radius-round);background:rgba(230,232,228,0.08);border:1px solid var(--border-hairline-dark);color:var(--arr-white)}
+.iconbtn{cursor:pointer;padding:6px;font:inherit}
+.iconbtn:hover{background:var(--surface-inset-strong)}
+.menubackdrop{position:absolute;inset:0;z-index:35}
+.menu{position:absolute;top:46px;right:14px;z-index:40;background:#1B1F0A;border:1px solid var(--border-hairline-dark);border-radius:var(--radius-field);padding:6px;display:flex;flex-direction:column;gap:2px;min-width:186px;box-shadow:var(--shadow-lift)}
+.menurow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;background:none;border:0;color:var(--text-on-dark);font-family:var(--font-body);font-size:12.5px;text-align:left}
+.menurow:hover{background:var(--surface-inset)}
+.menubtn{color:var(--text-on-dark-muted)}
+.oppgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:2px 14px 9px;flex:0 0 auto}
+.oppcard{background:rgba(230,232,228,0.06);border:1px solid var(--border-hairline-dark);border-radius:var(--radius-step);padding:8px 9px 9px;display:flex;flex-direction:column;gap:4px;min-width:0;transition:border-color var(--dur-base) var(--ease-out)}
+.oppcard.danger{border-color:rgba(210,85,63,0.55)}
+.oppcard.active{border-color:var(--arr-teal)}
+.riichi-tag{font-family:var(--font-core);font-weight:800;font-size:8.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--arr-black);background:var(--arr-flag);padding:2px 5px;border-radius:4px;align-self:flex-start}
+.furiten-tag{font-family:var(--font-core);font-weight:800;font-size:8.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--arr-white);border:1px solid var(--arr-flag);padding:1px 5px;border-radius:4px}
+.tipcard{margin:0 14px 8px;flex:0 0 auto;min-height:74px;background:rgba(27,31,10,0.45);border:1px solid var(--border-hairline-dark);border-left:3px solid var(--arr-steel);border-radius:var(--radius-field);padding:9px 12px;display:flex;flex-direction:column;gap:6px;justify-content:center}
+.pond{flex:1;display:grid;grid-template-columns:76px 160px 76px;grid-template-rows:minmax(70px,auto) 132px minmax(70px,auto);gap:4px;place-items:center;justify-content:center;align-content:center;min-height:0}
+.pondinfo{width:128px;height:128px;border-radius:var(--radius-step);background:rgba(27,31,10,0.42);border:1px solid var(--border-hairline-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.selfrow{display:flex;align-items:center;gap:7px;padding:6px 14px 0;flex:0 0 auto}
+.hand{display:flex;flex-direction:column;gap:5px;align-items:center;padding:6px 12px 0;flex:0 0 auto}
+.hrow{display:flex;gap:4px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:11px 14px 18px;flex:0 0 auto;min-height:82px;align-items:center}
+.span2{grid-column:1/-1}
+.waiting{grid-column:1/-1;text-align:center;font-size:9.5px;color:var(--arr-grey);opacity:0.7}
+.actions button:disabled{opacity:0.32;cursor:default;transform:none}
+.overlay{position:absolute;inset:0;z-index:50;background:rgba(18,20,10,0.82);display:flex;align-items:center;justify-content:center;padding:20px}
+.sheet{width:100%;background:#23260F;border:1px solid var(--border-hairline-dark);border-radius:var(--radius-card);padding:20px;display:flex;flex-direction:column;gap:7px;max-height:100%;overflow:auto}
+@media (max-width:430px){body{padding:0}.phone{width:100vw;height:100vh}}</style>
+</head><body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/arrosho-design-system-6655bd05-4b66-41f5-8c7e-6f3200610969/_ds_bundle.js"></script>
+<script src="engine/tiles.js"></script><script src="engine/shanten.js"></script><script src="engine/hand.js"></script>
+<script src="engine/yaku.js"></script><script src="engine/score.js"></script><script src="engine/game.js"></script><script src="engine/bots.js"></script>
+<script src="tile.jsx" type="text/babel"></script>
+<script src="game-ui.jsx" type="text/babel"></script>
+<script src="game-app.jsx" type="text/babel"></script>
+<script>function __fit(){var p=document.querySelector('.phone');if(!p||innerWidth<=430)return;var s=Math.min(1,(innerHeight-32)/844,(innerWidth-32)/390);p.style.transformOrigin='top center';p.style.transform='scale('+s+')';document.body.style.height=(844*s+32)+'px'}addEventListener('resize',__fit);var __t=setInterval(function(){if(document.querySelector('.phone')){__fit()}},200);</script>
+</body></html>

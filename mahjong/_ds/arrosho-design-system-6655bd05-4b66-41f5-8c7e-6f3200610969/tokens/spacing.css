@@ -1,0 +1,23 @@
+:root{
+--space-1:6px;
+--space-2:10px;
+--space-3:14px;
+--space-4:18px;
+--space-5:24px;
+--space-6:28px;
+--space-7:36px;
+--space-8:48px;
+--space-9:64px;
+--space-10:72px;
+--space-11:100px;
+--space-12:110px;
+
+--content-max:1180px; /* @kind spacing */
+--content-max-narrow:1040px; /* @kind spacing */
+--gutter:48px;
+--gutter-mobile:24px;
+--section-y:110px;
+--section-y-mobile:76px;
+--grid-gap:64px;
+--card-gap:24px;
+}
