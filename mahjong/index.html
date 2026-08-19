@@ -19,7 +19,7 @@ a,a:hover{color:var(--arr-teal)}
 .eb{font-family:var(--font-core);font-weight:700;font-size:11px;letter-spacing:var(--eyebrow-tracking);text-transform:uppercase}
 .num{font-family:var(--font-core);font-weight:700;font-variant-numeric:tabular-nums}
 .wind-big{font-family:var(--font-display);font-size:26px;line-height:0.98;letter-spacing:var(--display-tracking)}
-.topbar{display:flex;align-items:center;gap:7px;padding:12px 14px 8px;flex:0 0 auto}
+.topbar{display:flex;align-items:center;gap:7px;padding:calc(12px + env(safe-area-inset-top)) 14px 8px;flex:0 0 auto}
 .chip{display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:var(--radius-round);background:rgba(230,232,228,0.08);border:1px solid var(--border-hairline-dark);color:var(--arr-white)}
 .iconbtn{cursor:pointer;padding:6px;font:inherit}
 .iconbtn:hover{background:var(--surface-inset-strong)}
