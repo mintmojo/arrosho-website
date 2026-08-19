@@ -43,6 +43,12 @@ a,a:hover{color:var(--arr-teal)}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:11px 14px 18px;flex:0 0 auto;min-height:82px;align-items:center}
 .span2{grid-column:1/-1}
 .waiting{grid-column:1/-1;text-align:center;font-size:9.5px;color:var(--arr-grey);opacity:0.7}
+.btn{font-family:var(--font-core);font-weight:700;font-size:14px;letter-spacing:0.02em;border:0;border-radius:var(--radius-action);padding:15px 12px;cursor:pointer;transition:transform var(--dur-base) var(--ease-out),background var(--dur-base) var(--ease-out)}
+.btn:active{transform:var(--hover-lift)}
+.btn-primary{background:var(--arr-steel);color:var(--arr-black)}
+.btn-primary:hover{background:var(--arr-steel-light)}
+.btn-ghost{background:rgba(230,232,228,0.08);color:var(--arr-white);border:1px solid var(--border-inset)}
+.btn-ghost:hover{background:var(--surface-inset-strong)}
 .actions button:disabled{opacity:0.32;cursor:default;transform:none}
 .overlay{position:absolute;inset:0;z-index:50;background:rgba(18,20,10,0.82);display:flex;align-items:center;justify-content:center;padding:20px}
 .sheet{width:100%;background:#23260F;border:1px solid var(--border-hairline-dark);border-radius:var(--radius-card);padding:20px;display:flex;flex-direction:column;gap:7px;max-height:100%;overflow:auto}
