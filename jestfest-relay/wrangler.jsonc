@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jestfest-relay",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // One Durable Object instance per room (`Room` in src/room.js).
+  "durable_objects": {
+    "bindings": [
+      { "name": "ROOM", "class_name": "Room" }
+    ]
+  },
+
+  // SQLite-backed DO storage (required for the free Workers plan — the older
+  // KV-backed DO storage class needs Workers Paid). This is also what makes
+  // WebSocket Hibernation + `deleteAll()` at room-end work the way spec §10
+  // describes: state lives in the DO's SQLite, not in memory, and is wiped
+  // on purpose when a room ends rather than relying on the DO evaporating.
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["Room"] }
+  ],
+
+  "observability": {
+    "enabled": true
+  },
+
+  // PROTOCOL.md §4 defaults. Overridable per-environment (e.g. a faster
+  // RECONNECT_GRACE_MS for local integration testing via `wrangler dev
+  // --var RECONNECT_GRACE_MS:3000`) without touching src/room.js.
+  "vars": {
+    "RECONNECT_GRACE_MS": "180000",
+    "ROOM_TTL_MS": "21600000"
+  }
+}

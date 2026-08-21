@@ -1,0 +1,148 @@
+/* Jest Fest — design tokens.
+   Ported verbatim from the Arrosho design system attached to this project
+   (`Arrosho/Jest fest/_ds/arrosho-design-system-*/tokens/*.css`). Do not
+   invent new brand colors, radii or type sizes here — add to the source
+   design system first if something is missing, then port it down. */
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Archivo+Black&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+/* ---- Core palette — verbatim from arrosho.com ---- */
+--arr-slate:#2B3F45;
+--arr-steel:#6894A1;
+--arr-steel-light:#7CA0AC;
+--arr-sage:#6A7062;
+--arr-olive:#3E442B;
+--arr-olive-light:#4A5138;
+--arr-olive-deep:#23260F;
+--arr-white:#E6E8E4;
+--arr-grey:#A1B0AB;
+--arr-black:#1B1F0A;
+--arr-ink:#161819;
+--arr-teal:#3F9EAF;
+--arr-flag:#D2553F;
+--arr-mist:#D7E0E2;
+--arr-clay:#DDE0D2;
+--arr-gradient-1:#24343A;
+--arr-gradient-2:#3A555F;
+
+/* ---- Semantic — light surfaces ---- */
+--surface-page:var(--arr-white);
+--surface-mist:var(--arr-mist);
+--surface-clay:var(--arr-clay);
+--surface-slate:var(--arr-slate);
+--surface-olive:var(--arr-olive);
+--surface-card:var(--arr-slate);
+--surface-card-alt:var(--arr-olive);
+--surface-inset:rgba(230,232,228,0.06);
+--surface-inset-strong:rgba(230,232,228,0.16);
+--surface-field:rgba(27,31,10,0.35);
+
+--text-body:var(--arr-black);
+--text-muted:var(--arr-olive);
+--text-on-dark:var(--arr-white);
+--text-on-dark-muted:var(--arr-grey);
+--text-accent:var(--arr-steel);
+
+--accent:var(--arr-teal);
+--accent-atmosphere:var(--arr-steel);
+--action-bg:var(--arr-steel);
+--action-bg-hover:var(--arr-steel-light);
+--action-fg:var(--arr-black);
+--alert:var(--arr-flag);
+
+--border-hairline:rgba(27,31,10,0.1);
+--border-hairline-dark:rgba(230,232,228,0.14);
+--border-inset:rgba(230,232,228,0.28);
+--border-card:rgba(230,232,228,0.08);
+
+/* ---- Type ---- */
+--font-display:'Archivo Black','Archivo',sans-serif;
+--font-core:'Archivo',sans-serif;
+--font-body:'Inter',system-ui,sans-serif;
+
+--display-weight:400;
+--display-tracking:-0.025em;
+--display-leading:0.98;
+--display-hero:clamp(40px,7vw,92px);
+--display-page:clamp(34px,5.6vw,68px);
+--display-section:clamp(30px,4vw,44px);
+--display-sub:clamp(28px,3.6vw,40px);
+--display-card:28px;
+--display-card-sm:24px;
+
+--eyebrow-size:13px;
+--eyebrow-size-sm:12px;
+--eyebrow-weight:700;
+--eyebrow-tracking:0.16em;
+--eyebrow-tracking-tight:0.14em;
+--wordmark-tracking:0.22em;
+--wordmark-weight:800;
+
+--body-hero:19px;
+--body-lg:17px;
+--body-md:16px;
+--body-sm:15.5px;
+--body-xs:15px;
+--body-caption:14px;
+--body-leading:1.6;
+--body-leading-loose:1.7;
+--body-leading-card:1.65;
+--body-weight:400;
+--body-weight-strong:600;
+--body-opacity-on-dark:0.82;
+
+/* ---- Spacing ---- */
+--space-1:6px;
+--space-2:10px;
+--space-3:14px;
+--space-4:18px;
+--space-5:24px;
+--space-6:28px;
+--space-7:36px;
+--space-8:48px;
+--space-9:64px;
+--space-10:72px;
+--space-11:100px;
+--space-12:110px;
+
+--content-max:1180px;
+--content-max-narrow:1040px;
+--gutter:48px;
+--gutter-mobile:24px;
+--section-y:110px;
+--section-y-mobile:76px;
+--grid-gap:64px;
+--card-gap:24px;
+
+/* ---- Form (radii, shadow, gradients, motion) ---- */
+--radius-field:10px;
+--radius-icon:12px;
+--radius-action:14px;
+--radius-step:16px;
+--radius-pill:18px;
+--radius-video:20px;
+--radius-card:24px;
+--radius-round:999px;
+
+--shadow-lift:0 10px 24px rgba(0,0,0,0.28);
+--shadow-media:0 24px 60px rgba(0,0,0,0.35);
+
+--gradient-dark:radial-gradient(140% 100% at 8% 8%, rgba(27,31,10,0.55) 0%, rgba(27,31,10,0) 42%),radial-gradient(140% 120% at 100% 0%, rgba(104,148,161,0.55) 0%, rgba(43,63,69,0) 55%),linear-gradient(155deg,#24343A 0%,#3A555F 42%,#6894A1 78%,#7CA0AC 100%);
+--gradient-pill:linear-gradient(160deg,#4A5138 0%,#23260F 100%);
+--noise-overlay:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+
+--ease-out:ease;
+--dur-fast:0.15s;
+--dur-base:0.18s;
+--dur-slow:0.2s;
+--hover-lift:translateY(-2px);
+
+/* ---- Jest Fest additions (not in the source design system; kept in this
+   one place so they're easy to find and aren't scattered through component
+   CSS). Player-avatar palette cycles through these four brand colors. ---- */
+--jf-avatar-1:var(--arr-teal);
+--jf-avatar-2:var(--arr-steel);
+--jf-avatar-3:var(--arr-sage);
+--jf-avatar-4:var(--arr-olive-light);
+}

@@ -1,0 +1,79 @@
+/* Jest Fest — display.html only.
+   Targets a laptop or TV in landscape: one wide panel, generous type, no
+   inputs (the Display never plays — PROTOCOL.md §0). */
+
+body.jf-display{background:var(--surface-mist); min-height:100vh;}
+
+.jf-display-shell{
+  min-height:100vh; display:flex; flex-direction:column;
+}
+
+.jf-display-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:20px var(--gutter);
+}
+@media (max-width:860px){ .jf-display-header{padding:16px var(--gutter-mobile);} }
+
+.jf-display-main{
+  flex:1; display:flex; align-items:flex-start; justify-content:center;
+  padding:0 var(--gutter) var(--space-9);
+}
+@media (max-width:860px){ .jf-display-main{padding:0 var(--gutter-mobile) var(--space-7);} }
+
+.jf-lobby-panel{
+  width:100%; max-width:980px;
+  background:var(--gradient-dark); color:var(--text-on-dark);
+  border-radius:var(--radius-card); padding:56px; position:relative; overflow:hidden;
+}
+@media (max-width:860px){ .jf-lobby-panel{padding:32px 24px;} }
+
+.jf-lobby-columns{
+  display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start;
+}
+@media (max-width:900px){ .jf-lobby-columns{grid-template-columns:1fr;} }
+
+.jf-code-panel{
+  text-align:center; background:var(--surface-inset); border:1px solid var(--border-inset);
+  border-radius:var(--radius-card); padding:32px;
+}
+.jf-code-panel .jf-code-value{
+  font-family:var(--font-display); font-weight:400;
+  font-size:clamp(40px,7vw,72px); letter-spacing:0.06em; color:var(--arr-teal);
+  white-space:nowrap;
+}
+.jf-code-panel .jf-code-hint{font-size:14px; color:var(--text-on-dark-muted); margin-bottom:10px;}
+.jf-qr-wrap{display:flex; justify-content:center; margin-top:20px;}
+.jf-qr-wrap svg{border-radius:var(--radius-field); background:var(--arr-white); padding:10px; width:170px; height:170px;}
+
+.jf-section-title{
+  font-size:13px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--text-on-dark-muted); margin-bottom:18px;
+}
+
+.jf-library-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:12px;
+}
+@media (max-width:900px){ .jf-library-grid{grid-template-columns:1fr;} }
+
+.jf-game-card{
+  text-align:left; width:100%; background:var(--surface-inset);
+  border:1px solid var(--border-inset); border-radius:var(--radius-step);
+  padding:26px; color:var(--text-on-dark); cursor:pointer;
+  transition:background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.jf-game-card:hover{background:var(--surface-inset-strong);}
+.jf-game-card[aria-pressed="true"]{
+  background:rgba(63,158,175,0.16); border-color:var(--arr-teal);
+}
+.jf-game-card h3{
+  font-family:var(--font-display); font-weight:400; font-size:22px; margin-bottom:8px;
+}
+.jf-game-card p{font-size:14.5px; line-height:1.5; opacity:0.78;}
+.jf-game-card .jf-game-min{font-size:12px; color:var(--text-on-dark-muted); margin-top:10px; display:block;}
+
+.jf-start-row{margin-top:24px;}
+
+.jf-ingame-mount{width:100%; max-width:980px;}
+
+/* players-joined count in the corner while in the lobby's game section */
+.jf-player-count{font-weight:700; color:var(--text-on-dark);}

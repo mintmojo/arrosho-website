@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jest Fest — Arrosho</title>
+<meta name="description" content="A game-night hub: one shared screen, everyone else joins from their phone. Host a game or enter a room code.">
+<meta name="theme-color" content="#24343A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/landing.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#2B3F45">
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Jest Fest">
+</head>
+<body class="jf-landing">
+
+<section class="jf-hero arr-hero-centered">
+  <div class="jf-hero-row">
+    <div class="jf-hero-diamond-wrap jf-left"><div class="jf-hero-diamond"></div></div>
+    <h1 class="jf-hero-title">Jest Fest</h1>
+    <div class="jf-hero-diamond-wrap jf-right"><div class="jf-hero-diamond jf-flip"></div></div>
+  </div>
+</section>
+
+<div class="jf-actions-row">
+  <a class="jf-host-card" href="display.html">
+    <h3>Host a game</h3>
+  </a>
+
+  <div class="jf-join-card" id="join-card">
+    <div class="jf-join-card-collapsed" id="join-collapsed" role="button" tabindex="0">
+      <h3>Enter code</h3>
+      <span class="jf-join-hint">Join a room already running</span>
+    </div>
+    <form class="jf-join-fields" id="join-form" hidden>
+      <div id="join-code-mount"></div>
+      <input class="jf-field" id="join-name" type="text" placeholder="Your name" maxlength="40" autocomplete="off" autocapitalize="words">
+      <button class="jf-join-submit" id="join-submit" type="submit" disabled aria-label="Join room"></button>
+    </form>
+    <p class="jf-join-error" id="join-error"></p>
+  </div>
+</div>
+
+<div class="jf-divider" aria-hidden="true">
+  <svg viewBox="0 0 180 60" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M90 -20 C 100 10 80 20 92 35 C 104 50 84 55 90 70" stroke="#6894A1" stroke-width="4" stroke-linecap="round" opacity="0.8"></path>
+    <circle cx="90" cy="35" r="4" fill="#6894A1" opacity="0.9"></circle>
+  </svg>
+</div>
+
+<section class="jf-offline-section">
+  <div class="jf-offline-eyebrow">No internet needed</div>
+  <h2 class="jf-offline-heading">Play these without a room or a code</h2>
+  <div class="jf-offline-grid">
+    <a class="jf-offline-card" href="/mahjong/">
+      <div class="jf-offline-icon"><img src="/mahjong/icons/icon-192.png" alt="" width="64" height="64"></div>
+      <div>
+        <div class="jf-offline-title">Mahjong</div>
+        <div class="jf-offline-blurb">Riichi mahjong, solo vs. bots</div>
+      </div>
+    </a>
+    <a class="jf-offline-card" href="/stopwatch/">
+      <div class="jf-offline-icon"><img src="/stopwatch/icons/icon-192.png" alt="" width="64" height="64"></div>
+      <div>
+        <div class="jf-offline-title">Stopwatch</div>
+        <div class="jf-offline-blurb">Focus clock and chess clock, tap to hand over</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="jf-footer">Jest Fest, by Arrosho</footer>
+
+<script type="module">
+  import { el, icon } from './js/el.js';
+  import {
+    sanitizeRoomCode, isCompleteRoomCode, buildRoomCodeInput, joinUrl,
+  } from './js/net.js';
+
+  const collapsed = document.getElementById('join-collapsed');
+  const form = document.getElementById('join-form');
+  const codeMount = document.getElementById('join-code-mount');
+  const nameInput = document.getElementById('join-name');
+  const submitBtn = document.getElementById('join-submit');
+  const errorEl = document.getElementById('join-error');
+
+  submitBtn.appendChild(icon('arrowRight', { size: 20, color: 'var(--arr-white)' }));
+
+  let code = '';
+
+  const codeInput = buildRoomCodeInput('', (value) => {
+    code = value;
+    updateSubmit();
+    if (value.length === 4) nameInput.focus();
+  });
+  codeMount.appendChild(codeInput);
+
+  function updateSubmit() {
+    submitBtn.disabled = !(isCompleteRoomCode(code) && nameInput.value.trim().length > 0);
+  }
+  nameInput.addEventListener('input', updateSubmit);
+
+  // "Enter Code" starts collapsed and reveals the code + name fields on tap
+  // (build brief: "Enter Code reveals its fields").
+  function revealJoinForm() {
+    collapsed.hidden = true;
+    form.hidden = false;
+    codeInput.querySelector('input')?.focus();
+  }
+  collapsed.addEventListener('click', revealJoinForm);
+  collapsed.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); revealJoinForm(); }
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (submitBtn.disabled) return;
+    if (!isCompleteRoomCode(code)) {
+      errorEl.textContent = 'Room codes are 4 characters.';
+      return;
+    }
+    const name = nameInput.value.trim().slice(0, 40);
+    location.href = `${joinUrl(code)}&name=${encodeURIComponent(name)}`;
+  });
+</script>
+<script>
+  // Registered late and failure-tolerant: the app must work even if the
+  // service worker is unavailable (private mode, http, unsupported browser).
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>

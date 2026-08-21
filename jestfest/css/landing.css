@@ -1,0 +1,105 @@
+/* Jest Fest — index.html (landing) only. */
+
+body.jf-landing{background:var(--surface-mist);}
+
+.jf-hero{
+  position:relative; overflow:hidden;
+  background:
+    radial-gradient(65% 100% at 0% 0%,rgba(75,116,128,0.4) 0%,rgba(75,116,128,0) 55%),
+    radial-gradient(65% 100% at 100% 0%,rgba(75,116,128,0.4) 0%,rgba(75,116,128,0) 55%),
+    linear-gradient(180deg,#24343A 0%,#2C424B 100%);
+}
+.jf-hero::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:var(--noise-overlay); mix-blend-mode:overlay;
+}
+.jf-hero-row{
+  position:relative; z-index:1;
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+  max-width:1100px; margin:0 auto;
+}
+.jf-hero-diamond-wrap{
+  width:96px; height:96px; border-radius:var(--radius-card);
+  background:rgba(230,232,228,0.08); border:1px solid rgba(230,232,228,0.14);
+  display:flex; align-items:center; justify-content:center;
+}
+.jf-hero-diamond-wrap.jf-left{justify-self:end;}
+.jf-hero-diamond-wrap.jf-right{justify-self:start;}
+.jf-hero-diamond{width:34px; height:34px; background:var(--arr-teal); transform:rotate(45deg);}
+.jf-hero-diamond.jf-flip{transform:rotate(45deg) scaleY(-1);}
+@media (max-width:860px){ .jf-hero-diamond-wrap{width:64px; height:64px;} }
+
+.jf-hero-title{
+  padding:0 36px; text-align:center;
+  font-family:var(--font-display); font-weight:var(--display-weight);
+  font-size:var(--display-hero); text-transform:uppercase;
+  letter-spacing:var(--display-tracking); line-height:var(--display-leading);
+  color:var(--text-on-dark);
+}
+
+.jf-actions-row{
+  position:relative; max-width:var(--content-max); margin:0 auto;
+  padding:40px var(--gutter) 0; display:flex; gap:24px;
+}
+@media (max-width:860px){ .jf-actions-row{flex-direction:column; padding:32px var(--gutter-mobile) 0;} }
+
+.jf-host-card{
+  flex:1; display:flex; align-items:center; justify-content:center; gap:18px;
+  background:var(--surface-card); color:var(--text-on-dark);
+  padding:36px 30px; border-radius:var(--radius-card); cursor:pointer;
+  transition:transform var(--dur-base) var(--ease-out);
+}
+.jf-host-card:hover{transform:var(--hover-lift); box-shadow:var(--shadow-lift);}
+.jf-host-card h3{
+  font-family:var(--font-display); font-weight:400; font-size:var(--display-card);
+  line-height:1.2;
+}
+
+.jf-join-card{
+  flex:1.4; display:flex; flex-direction:column; justify-content:center; gap:16px;
+  background:var(--surface-card); color:var(--text-on-dark);
+  padding:28px 30px; border-radius:var(--radius-card);
+}
+.jf-join-card h3{
+  font-family:var(--font-display); font-weight:400; font-size:var(--display-card); line-height:1.2;
+}
+.jf-join-card-collapsed{
+  display:flex; align-items:center; justify-content:space-between; gap:16px; cursor:pointer;
+}
+.jf-join-card-collapsed .jf-join-hint{font-size:14px; color:var(--text-on-dark-muted);}
+.jf-join-fields{display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap;}
+.jf-join-fields .jf-code-input input{width:46px; height:52px; font-size:20px;}
+.jf-join-fields .jf-field{flex:1; min-width:140px;}
+.jf-join-submit{
+  flex-shrink:0; width:52px; height:52px; border-radius:var(--radius-field);
+  display:flex; align-items:center; justify-content:center;
+  background:var(--action-bg); color:var(--action-fg); cursor:pointer;
+}
+.jf-join-submit:hover{background:var(--action-bg-hover);}
+.jf-join-submit:disabled{opacity:0.4; cursor:not-allowed;}
+.jf-join-error{font-size:13px; color:var(--arr-flag); min-height:16px;}
+
+.jf-divider{display:flex; justify-content:center; padding:8px 0;}
+.jf-divider svg{height:24px; opacity:0.5;}
+
+.jf-offline-section{
+  max-width:var(--content-max); margin:0 auto; padding:40px var(--gutter) 56px; position:relative;
+}
+@media (max-width:860px){ .jf-offline-section{padding:32px var(--gutter-mobile) 48px;} }
+.jf-offline-eyebrow{
+  font-family:var(--font-core); font-weight:700; font-size:13px;
+  letter-spacing:0.14em; text-transform:uppercase; color:var(--text-muted);
+  margin-bottom:6px;
+}
+.jf-offline-heading{
+  font-family:var(--font-display); font-weight:400; font-size:var(--display-section);
+  line-height:1.15; margin-bottom:28px; color:var(--text-body);
+}
+.jf-offline-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--card-gap);}
+@media (max-width:860px){ .jf-offline-grid{grid-template-columns:1fr;} }
+.jf-offline-title{font-family:var(--font-display); font-weight:400; font-size:var(--display-card-sm); margin-bottom:4px; white-space:nowrap;}
+.jf-offline-blurb{font-size:var(--body-sm); opacity:0.72;}
+
+.jf-footer{
+  text-align:center; padding:32px var(--gutter) 48px; font-size:13px; color:var(--text-muted);
+}

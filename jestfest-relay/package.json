@@ -1,0 +1,15 @@
+{
+  "name": "jestfest-relay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Relay server (Cloudflare Worker + SQLite-backed Durable Object) for Jest Fest room hosting.",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --local",
+    "deploy": "wrangler deploy",
+    "test": "node --test test/*.test.js"
+  },
+  "devDependencies": {
+    "wrangler": "^4.124.0"
+  }
+}

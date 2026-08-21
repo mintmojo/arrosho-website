@@ -1,0 +1,58 @@
+/* Jest Fest — controller.html only.
+   Targets a phone in portrait: single column, large tap targets, safe-area
+   aware (this is meant to be added to the home screen). */
+
+html, body.jf-controller{height:100%;}
+body.jf-controller{
+  background:var(--surface-olive); color:var(--text-on-dark);
+  min-height:100vh; min-height:100dvh;
+}
+
+.jf-controller-shell{
+  min-height:100vh; min-height:100dvh; max-width:520px; margin:0 auto;
+  display:flex; flex-direction:column;
+  padding:calc(20px + env(safe-area-inset-top)) 22px calc(20px + env(safe-area-inset-bottom));
+}
+
+.jf-controller-header{
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:28px;
+}
+.jf-controller-header .jf-room-tag{
+  font-size:12.5px; color:var(--text-on-dark-muted); font-weight:600;
+}
+
+.jf-controller-body{flex:1; display:flex; flex-direction:column;}
+
+/* join form */
+.jf-join-form{display:flex; flex-direction:column; gap:22px;}
+.jf-join-form .jf-headline{
+  font-family:var(--font-display); font-weight:400; font-size:30px;
+  text-transform:uppercase; line-height:1.05;
+}
+.jf-join-form .jf-code-input input{width:100%; height:64px; font-size:28px;}
+.jf-join-form .jf-code-input{max-width:280px;}
+
+/* centered states: waiting / connecting / reconnecting / ended */
+.jf-center-state{
+  flex:1; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; text-align:center; gap:16px; padding:40px 8px;
+}
+.jf-center-state .jf-check-badge{
+  width:64px; height:64px; border-radius:999px; background:var(--arr-teal);
+  display:flex; align-items:center; justify-content:center;
+}
+.jf-center-state h2{
+  font-family:var(--font-display); font-weight:400; font-size:22px; text-transform:uppercase;
+}
+.jf-center-state p{font-size:14px; color:var(--text-on-dark-muted); max-width:280px;}
+
+.jf-controller-footer{padding-top:18px;}
+
+/* big tap targets for future per-game controller renderers, per PROTOCOL.md §7 */
+.jf-tap-option{
+  display:block; width:100%; text-align:left;
+  background:var(--surface-inset); border:1px solid var(--border-inset);
+  border-radius:var(--radius-field); padding:18px 18px; color:var(--text-on-dark);
+  font-size:16px; font-family:var(--font-body); cursor:pointer; min-height:56px;
+}
+.jf-tap-option + .jf-tap-option{margin-top:12px;}
