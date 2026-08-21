@@ -73,8 +73,8 @@ export default class Game {
   onPlayerReconnect(player) {}        // seat resumed; re-push their controller view
   onTimer(name) {}                    // fires from ctx.setTimer
 
-  displayView() { return { view: 'x', data: {} }; }
-  controllerView(playerId) { return { view: 'x', data: {} }; }
+  displayView() { return { view: 'x', data: {} }; }      // room stamps gameId
+  controllerView(playerId) { return { view: 'x', data: {} }; }  // room stamps gameId
 
   serialize() { return {}; }          // survive hibernation
   restore(saved) {}

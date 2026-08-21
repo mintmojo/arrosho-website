@@ -36,7 +36,22 @@ const stored = code ? loadReconnect(code) : { reconnectToken: '', name: '' };
 
 render();
 if (code && stored.reconnectToken && stored.name) {
+  // Reload mid-game: resume the existing seat without asking anything.
   name = stored.name;
+  connect();
+} else if (isCompleteRoomCode(code) && name.trim()) {
+  // Arrived from the landing page (or a shared link) already carrying both a
+  // room code and a name -- there is nothing left to ask, so connect straight
+  // away instead of re-rendering the same two fields and making the player
+  // tap Join a second time.
+  name = name.trim();
+  // Drop the name back out of the address bar so a copied/shared link is just
+  // the room code, and nobody inherits someone else's name.
+  try {
+    const clean = new URL(location.href);
+    clean.searchParams.delete('name');
+    history.replaceState(null, '', clean.toString());
+  } catch { /* non-fatal: the join already worked */ }
   connect();
 }
 

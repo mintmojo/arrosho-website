@@ -62,6 +62,13 @@ function pill(text, tone) {
   }, text);
 }
 
+// Stat pairs need much more air than a generic row: at a glance across a
+// room, "BANK 10" and "BIDS IN 0/3" must read as two separate facts, not one
+// run-on string. A 10px gap collides them.
+function statRow(...kids) {
+  return el('div', { style: { display: 'flex', alignItems: 'flex-start', gap: '44px', flexWrap: 'wrap', margin: '4px 0 2px' } }, ...kids);
+}
+
 function statBlock(label, value) {
   return el('div', {},
     el('div', { style: { fontSize: '12px', color: 'var(--text-on-dark-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' } }, label),
@@ -262,7 +269,7 @@ const display = {
     return panel(
       eyebrow(roundLabel(data)),
       heading('Fish and Slips'),
-      row(statBlock('Bank', data.bank), statBlock('Bids in', `${data.submittedCount} / ${data.participantCount}`)),
+      statRow(statBlock('Bank', data.bank), statBlock('Bids in', `${data.submittedCount} / ${data.participantCount}`)),
       el('div', { style: { marginTop: '26px' } }, standingsList(data.standings)),
       logList(data.log)
     );
@@ -335,7 +342,7 @@ const controller = {
       eyebrow(roundLabel(data)),
       heading(personalOutcome(api.me && api.me.id, data.resolution)),
       subtitle('Full results are on the big screen.'),
-      row(statBlock('Bank', data.bank), statBlock('Your Stash', data.myStash))
+      statRow(statBlock('Bank', data.bank), statBlock('Your Stash', data.myStash))
     );
   },
 

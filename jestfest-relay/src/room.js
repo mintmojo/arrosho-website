@@ -516,7 +516,11 @@ export class Room {
     } catch (e) {
       this.logGameError("displayView", e);
     }
-    if (dView) this.sendToRole("display", "display", dView);
+    // PROTOCOL.md §2: display/controller frames carry `gameId`. Stamp it here
+    // rather than trusting each module to remember -- Kwiplash happened to set
+    // it, Fish and Slips did not, and the client uses it to pick which
+    // games/<id>.js renderer to load. A missing gameId renders nothing at all.
+    if (dView) this.sendToRole("display", "display", { ...dView, gameId: this.meta.currentGame });
 
     for (const p of this.players) this.pushToPlayer(p.id);
   }
@@ -530,7 +534,8 @@ export class Room {
       this.logGameError("controllerView", e);
     }
     if (!cView) return;
-    for (const ws of this.socketsForPlayer(playerId)) this.sendFrame(ws, "controller", cView);
+    const stamped = { ...cView, gameId: this.meta.currentGame };
+    for (const ws of this.socketsForPlayer(playerId)) this.sendFrame(ws, "controller", stamped);
   }
 
   async handleStart(gameId) {
