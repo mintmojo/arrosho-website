@@ -280,7 +280,7 @@ function inGamePanel() {
   const mount = el('div', { class: 'jf-ingame-mount' });
   if (lastDisplayFrame) {
     const api = makeApi(socket, () => room);
-    renderGameFrame(mount, lastDisplayFrame, 'display', api);
+    renderGameFrame(mount, lastDisplayFrame, 'display', api, room.currentGame);
   } else {
     mount.appendChild(loadingScreen('Starting the game…'));
   }

@@ -245,6 +245,6 @@ function lostBody() {
 function inGameBody() {
   const mount = el('div', {});
   const api = makeApi(socket, () => room, () => me);
-  renderGameFrame(mount, lastControllerFrame, 'controller', api);
+  renderGameFrame(mount, lastControllerFrame, 'controller', api, room.currentGame);
   return mount;
 }

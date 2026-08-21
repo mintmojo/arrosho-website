@@ -7,11 +7,10 @@
 //      whatever HTMLElement it returns.
 //   2. Build the `api` object every renderer receives.
 //
-// Nothing here knows any game's rules — it's just the router. As of this
-// build, `jestfest/games/*.js` renderer modules don't exist yet (Kwiplash
-// and Fish and Slips are milestones M3/M4 in Jest fest-spec.md §9); the
-// "missing renderer" fallback below is what a room sees in the meantime
-// instead of a crash.
+// Nothing here knows any game's rules — it's just the router. Kwiplash and
+// Fish and Slips both ship renderer modules; the "missing renderer" fallback
+// below is what a room sees if a future game is half-wired, instead of a
+// blank screen.
 
 import { el, clear } from './el.js';
 
@@ -45,8 +44,19 @@ export function preloadGame(gameId) {
  * @param {'display'|'controller'} side
  * @param {object} api  see makeApi() below
  */
-export async function renderGameFrame(mount, frame, side, api) {
-  const { gameId, view, data } = frame || {};
+export async function renderGameFrame(mount, frame, side, api, fallbackGameId) {
+  const { view, data } = frame || {};
+  // The relay is supposed to stamp `gameId` on every frame (PROTOCOL.md §2),
+  // but the client already knows which game is running from the room frame's
+  // `currentGame`. Falling back to it means an older relay -- or any future
+  // game module that forgets -- degrades to "works" instead of "renders
+  // nothing". This exact gap is what made Fish and Slips look unhostable.
+  const gameId = (frame && frame.gameId) || fallbackGameId;
+  if (!gameId) {
+    clear(mount);
+    mount.appendChild(missingRendererNode(null, gameId, side, view));
+    return;
+  }
   const game = await loadGame(gameId);
   clear(mount);
 
@@ -68,10 +78,16 @@ export async function renderGameFrame(mount, frame, side, api) {
 }
 
 function missingRendererNode(game, gameId, side, view) {
-  const title = game && game.title ? game.title : gameId;
+  const title = (game && game.title) || gameId || 'This game';
+  // Say what is actually missing. The old copy printed `"undefined" isn't
+  // wired up` and hid the useful half in a screen-reader-only line, which is
+  // useless to whoever is standing in front of the TV trying to fix it.
+  const detail = !gameId
+    ? 'The relay did not say which game is running.'
+    : `No ${side} renderer for the "${view}" screen.`;
   return el('div', { class: 'jf-game-missing' },
-    el('p', {}, `"${title}" isn't wired up in this client yet.`),
-    el('p', { class: 'jf-sr-only' }, `missing ${side} renderer for view "${view}"`)
+    el('p', {}, `${title} can't be shown.`),
+    el('p', { class: 'jf-muted', style: { fontSize: '13px', marginTop: '6px' } }, detail)
   );
 }
 
