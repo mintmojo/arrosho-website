@@ -11,7 +11,7 @@
 // Strategy is NETWORK-FIRST for everything, cache as fallback. Cache-first
 // would be actively harmful here: js/config.js holds RELAY_URL, and a stale
 // copy of it would point phones at a relay that no longer exists.
-const VERSION = 'arrosho-jestfest-v2';
+const VERSION = 'arrosho-jestfest-v3';
 const SHELL = VERSION + '-shell';
 
 // Must land or the app can't open at all.

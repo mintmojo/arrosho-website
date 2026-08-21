@@ -151,14 +151,14 @@ function resolutionDetail(resolution) {
     case 'schooling':
       return 'Every player independently wrote the same number — everyone earns 1 BR and the game ends now.';
     case 'noWinner':
-      return 'Nobody survived the round (every bid collided or busted out) — no Tariff, no Bank change.';
+      return 'Nobody survived the round (every cast collided or capsized) — no Toll, no Market change.';
     case 'duelUnclaimed':
       return `${(resolution.candidateNames || []).join(' and ')} both reset to 10 fish — nobody claimed the DUEL! in time.`;
     case 'win': {
-      const parts = [`Tariff ${resolution.tariff} · Bank ${resolution.bank}`];
+      const parts = [`Toll ${resolution.tariff} · Market ${resolution.bank}`];
       if (resolution.soleSlip) parts.push('Won by Slip');
       if (resolution.collided && resolution.collided.length) parts.push(`${resolution.collided.length} Slip collision(s) reset to 10`);
-      if (resolution.bustChain && resolution.bustChain.length) parts.push(`Cascaded past ${resolution.bustChain.length} Bust(es)`);
+      if (resolution.bustChain && resolution.bustChain.length) parts.push(`Cascaded past ${resolution.bustChain.length} Capsize(s)`);
       return parts.join(' · ');
     }
     default:
@@ -175,12 +175,12 @@ function personalOutcome(playerId, resolution) {
       return 'No one won this round.';
     case 'duelUnclaimed':
       return (resolution.candidateIds || []).includes(playerId)
-        ? 'Nobody claimed the DUEL! in time — your Stash reset to 10.'
+        ? 'Nobody claimed the DUEL! in time — your Haul reset to 10.'
         : 'The DUEL! went unclaimed — the round was voided.';
     case 'win':
       if (resolution.winnerId === playerId) return 'You won the round!';
-      if (resolution.bustChain && resolution.bustChain.includes(playerId)) return "You Busted — your Stash reset to 10.";
-      if (resolution.collided && resolution.collided.includes(playerId)) return 'Your Slip collided — your Stash reset to 10.';
+      if (resolution.bustChain && resolution.bustChain.includes(playerId)) return "You Capsized — your Haul reset to 10.";
+      if (resolution.collided && resolution.collided.includes(playerId)) return 'Your Slip collided — your Haul reset to 10.';
       return "You're safe this round.";
     default:
       return '';
@@ -208,7 +208,7 @@ function biddingController(data, api) {
     draftSlip = false;
     return panel(
       eyebrow('Fish and Slips'),
-      heading('Bid locked in'),
+      heading('Cast locked in'),
       subtitle(`You wrote ${data.myBid ? data.myBid.value : '?'}${data.myBid && data.myBid.slip ? ' with a Slip' : ''}.`),
       row(pill(`Waiting on ${data.waitingOn} more`)),
       footerStats(data)
@@ -229,7 +229,7 @@ function biddingController(data, api) {
       onChange: (e) => { draftSlip = e.target.checked; },
       style: { width: '18px', height: '18px' },
     }),
-    el('span', {}, 'Play a Slip with this bid')
+    el('span', {}, 'Play a Slip with this cast')
   );
 
   const submit = () => {
@@ -244,12 +244,12 @@ function biddingController(data, api) {
 
   return panel(
     eyebrow('Fish and Slips'),
-    heading('Write your bid'),
-    subtitle(`Bank is ${data.bank}. Your Stash: ${data.myStash}.`),
+    heading('Write your cast'),
+    subtitle(`Market is ${data.bank}. Your Haul: ${data.myStash}.`),
     el('div', { style: { display: 'flex', flexDirection: 'column', gap: '14px' } },
       numInput,
       slipToggle,
-      el('button', { class: 'jf-btn jf-btn-primary jf-btn-block', onClick: submit }, 'Lock in bid')
+      el('button', { class: 'jf-btn jf-btn-primary jf-btn-block', onClick: submit }, 'Lock in cast')
     ),
     footerStats(data)
   );
@@ -269,7 +269,7 @@ const display = {
     return panel(
       eyebrow(roundLabel(data)),
       heading('Fish and Slips'),
-      statRow(statBlock('Bank', data.bank), statBlock('Bids in', `${data.submittedCount} / ${data.participantCount}`)),
+      statRow(statBlock('Market', data.bank), statBlock('Casts in', `${data.submittedCount} / ${data.participantCount}`)),
       el('div', { style: { marginTop: '26px' } }, standingsList(data.standings)),
       logList(data.log)
     );
@@ -307,7 +307,7 @@ const display = {
     const isNewcomer = data.duel.reason === 'newcomer';
     return panel(
       eyebrow('DUEL!' + (data.duel.voteRound > 0 ? ` — recursed vote ${data.duel.voteRound + 1}` : '')),
-      heading(isNewcomer ? 'New players are DUEL-ing for the Bank' : `Tied at ${data.duel.value}`),
+      heading(isNewcomer ? 'New players are DUEL-ing for the Market' : `Tied at ${data.duel.value}`),
       subtitle(
         (isNewcomer
           ? data.duel.candidates.map((c) => c.name).join(' vs ')
@@ -323,8 +323,8 @@ const display = {
     const multiway = data.candidates.length > 1;
     return panel(
       eyebrow('Fresh Catch!'),
-      heading(multiway ? `${names} are DUEL-ing to poach the Bank` : `${names} is poaching the Bank`),
-      subtitle(`The Bank (${data.bank}) is on the line. The round in progress is voided.`),
+      heading(multiway ? `${names} are DUEL-ing to poach the Market` : `${names} is poaching the Market`),
+      subtitle(`The Market (${data.bank}) is on the line. The round in progress is voided.`),
       el('div', { style: { display: 'flex', justifyContent: 'center', margin: '20px 0' } }, countdownBlock(api, data.endsAt, 'Time left'))
     );
   },
@@ -342,7 +342,7 @@ const controller = {
       eyebrow(roundLabel(data)),
       heading(personalOutcome(api.me && api.me.id, data.resolution)),
       subtitle('Full results are on the big screen.'),
-      statRow(statBlock('Bank', data.bank), statBlock('Your Stash', data.myStash))
+      statRow(statBlock('Market', data.bank), statBlock('Your Haul', data.myStash))
     );
   },
 
@@ -374,7 +374,7 @@ const controller = {
       return panel(
         eyebrow('DUEL!'),
         heading("You're sitting this one out"),
-        subtitle(data.duel.reason === 'newcomer' ? "Everyone else is voting on who poaches the Bank." : `Tied at ${data.duel.value}. Everyone else is voting.`)
+        subtitle(data.duel.reason === 'newcomer' ? "Everyone else is voting on who poaches the Market." : `Tied at ${data.duel.value}. Everyone else is voting.`)
       );
     }
     if (!data.isVoter) {
@@ -401,7 +401,7 @@ const controller = {
       return panel(
         eyebrow('Fresh Catch!'),
         heading(data.multiway ? "You're DUEL-ing for the Bank!" : "You're poaching the Bank!"),
-        subtitle(data.multiway ? 'Another newcomer joined at the same moment — the two (or more) of you will DUEL for it.' : `The Bank (${data.bank}) is about to become your Stash.`),
+        subtitle(data.multiway ? 'Another newcomer joined at the same moment — the two (or more) of you will DUEL for it.' : `The Market (${data.bank}) is about to become your Haul.`),
         el('div', { style: { display: 'flex', justifyContent: 'center', margin: '18px 0' } }, countdownBlock(api, data.endsAt, 'Time left'))
       );
     }
@@ -416,7 +416,7 @@ const controller = {
 export default {
   id: 'fish-and-slips',
   title: 'Fish and Slips',
-  blurb: 'Secret bids on a shared pot — one Slip can steal it outright.',
+  blurb: 'Secret casts on a shared Market — one Slip can steal it outright.',
   display,
   controller,
 };

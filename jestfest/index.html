@@ -124,9 +124,35 @@
 <script>
   // Registered late and failure-tolerant: the app must work even if the
   // service worker is unavailable (private mode, http, unsupported browser).
+  //
+  // The reload dance below exists because of a real outage: v1 of this worker
+  // used a plain fetch(), which reads the browser HTTP cache, so "network
+  // first" silently became "cache first" and devices kept running deleted
+  // code after a deploy. Clearing site data by hand is not something a guest
+  // at a party will ever do, so the page now forces an update check on every
+  // load and reloads itself once when a new worker takes control.
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").catch(() => {});
+      navigator.serviceWorker.register("sw.js").then((reg) => {
+        // Ask right now whether a newer sw.js exists, rather than waiting for
+        // the browser's own (much lazier) update schedule.
+        reg.update().catch(() => {});
+        setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+      }).catch(() => {});
+
+      // When a new worker claims this page, reload once so the fresh assets
+      // are actually the ones running. The sessionStorage guard makes a
+      // reload loop impossible even if something goes wrong.
+      let reloading = false;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (reloading) return;
+        try {
+          if (sessionStorage.getItem("jf-sw-reloaded") === "1") return;
+          sessionStorage.setItem("jf-sw-reloaded", "1");
+        } catch (e) { /* private mode: fall through, the guard below still holds */ }
+        reloading = true;
+        location.reload();
+      });
     });
   }
 </script>

@@ -272,7 +272,7 @@ export default class FishAndSlips {
     const value = action.value;
     const slip = action.slip === true;
     if (!isPlainInt(value) || value < 0 || value > MAX_BID_VALUE) {
-      this.ctx.toast(playerId, "error", "Bid must be a whole number of fish.");
+      this.ctx.toast(playerId, "error", "Cast must be a whole number of fish.");
       return;
     }
 
@@ -375,11 +375,16 @@ export default class FishAndSlips {
       // machinery as a normal highest bid (see _settleLeader for why this
       // unification is the natural reading, not a rules change).
       const secondValue = plain.length ? Math.max(...plain.map((e) => e.value)) : 0;
+      // Recipient of the Slip Tariff is the highest bidder who did NOT Slip --
+      // the same player whose bid defined `secondValue`.
+      const secondEntry = plain.length
+        ? plain.reduce((best, e) => (e.value > best.value ? e : best), plain[0])
+        : null;
       this._settleLeader(slipper.id, slipper.value, secondValue, {
         soleSlip: slipper.id,
         collided: [],
         cascadeFrom: plain,
-      });
+      }, secondEntry ? secondEntry.id : null);
       return;
     }
 
@@ -413,8 +418,7 @@ export default class FishAndSlips {
         [highestId],
         meta,
         (secondId, secondValue) => {
-          void secondId;
-          this._settleLeader(highestId, highestValue, secondValue, meta);
+          this._settleLeader(highestId, highestValue, secondValue, meta, secondId);
         },
         { confirmedHighestId: highestId, confirmedHighestValue: highestValue }
       );
@@ -486,7 +490,7 @@ export default class FishAndSlips {
   /** `leaderId` (highestId, or the sole Slip winner) is the round's
    *  provisional winner; `leaderValue`/`secondValue` drive the Tariff.
    *  Handles Bust + cascade, then finishes the round. */
-  _settleLeader(leaderId, leaderValue, secondValue, meta) {
+  _settleLeader(leaderId, leaderValue, secondValue, meta, secondId = null) {
     const tariff = leaderValue - secondValue;
     const stash = this.stashes[leaderId] ?? STARTING_STASH;
 
@@ -504,10 +508,21 @@ export default class FishAndSlips {
     // receive) a *different*, self-referential number.
     const bankAwarded = this._bank();
     this.stashes[leaderId] = stash - tariff + bankAwarded;
+    // The Tariff is PAID TO the second-highest bidder, not burned. The note
+    // only says the winner "pays the Tariff out of their own Stash" and never
+    // names a recipient, so this originally deducted it into nowhere.
+    // Confirmed by Ethan 2026-08-21 with a worked example: E bids 10, A bids
+    // 9, both start at 10, Bank 10 -> E ends on 19 (10 - 1 + 10) and A on 11
+    // (10 + 1). Order matters: the Bank is a live average over `stashes`, so
+    // it is snapshotted above before either side is mutated.
+    if (secondId != null && secondId !== leaderId && tariff > 0) {
+      this.stashes[secondId] = (this.stashes[secondId] ?? STARTING_STASH) + tariff;
+    }
     this._finishRoundResolved({
       kind: "win",
       winnerId: leaderId,
       tariff,
+      tariffPaidToId: tariff > 0 ? secondId : null,
       bank: bankAwarded,
       leaderValue,
       secondValue,
@@ -560,13 +575,15 @@ export default class FishAndSlips {
         line = `Schooling Together at ${resolution.value} -- everyone earns 1 BR!`;
         break;
       case "noWinner":
-        line = "No survivors this round -- no winner, no Tariff.";
+        line = "No survivors this round -- no winner, no Toll.";
         break;
       case "duelUnclaimed":
         line = `DUEL! went unclaimed (${resolution.candidateIds.map((id) => this._name(id)).join(" vs ")}) -- both reset to ${STARTING_STASH}.`;
         break;
       case "win":
-        line = `${this._name(resolution.winnerId)} wins the round (Tariff ${resolution.tariff}, Bank ${resolution.bank}).`;
+        line = resolution.tariffPaidToId
+          ? `${this._name(resolution.winnerId)} wins the round — takes the Market of ${resolution.bank}, pays a Toll of ${resolution.tariff} to ${this._name(resolution.tariffPaidToId)}.`
+          : `${this._name(resolution.winnerId)} wins the round — takes the Market of ${resolution.bank}${resolution.tariff ? `, Toll ${resolution.tariff}` : ", no Toll owed"}.`;
         break;
       default:
         line = "Round resolved.";
@@ -811,7 +828,7 @@ export default class FishAndSlips {
     this.recentLog.unshift(
       loserIds.length
         ? `${this._name(winnerId)} poached the Bank (${bank}) over ${loserIds.map((id) => this._name(id)).join(", ")}.`
-        : `${this._name(winnerId)} poached the Bank (${bank}).`
+        : `${this._name(winnerId)} poached the Market (${bank}).`
     );
     this.recentLog = this.recentLog.slice(0, 8);
     this._startRound();
@@ -1176,8 +1193,7 @@ export default class FishAndSlips {
           [winnerId],
           meta,
           (secondId, secondValue) => {
-            void secondId;
-            this._settleLeader(winnerId, d.value, secondValue, meta);
+            this._settleLeader(winnerId, d.value, secondValue, meta, secondId);
           },
           { confirmedHighestId: winnerId, confirmedHighestValue: d.value }
         );
@@ -1187,7 +1203,9 @@ export default class FishAndSlips {
       // reason === 'second': the highest tier was already confirmed before
       // this duel was pushed (see _resolveRanked) -- its id/value travel
       // with this frame specifically so this branch doesn't need to.
-      this._settleLeader(d.confirmedHighestId, d.confirmedHighestValue, d.value, meta);
+      // This duel decided the SECOND-highest slot, so its winner is exactly
+      // the player the Tariff is owed to.
+      this._settleLeader(d.confirmedHighestId, d.confirmedHighestValue, d.value, meta, winnerId);
     };
     return duel;
   }
