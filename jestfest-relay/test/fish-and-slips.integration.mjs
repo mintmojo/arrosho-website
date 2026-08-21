@@ -236,6 +236,16 @@ async function main() {
     assert(revealed.data.resolution.winnerName === "Dave", "highest bidder (Dave) wins the round");
     assert(revealed.data.resolution.tariff === values.Dave - values.Carol, "tariff = highest - second highest");
 
+    // The Tariff is paid TO the second-highest bidder (Carol), not burned --
+    // regression check for the bug where it was deducted from the winner
+    // into nowhere and nobody ever received it.
+    const daveRow = revealed.data.standings.find((p) => p.name === "Dave");
+    const carolRow = revealed.data.standings.find((p) => p.name === "Carol");
+    const { tariff, bank } = revealed.data.resolution;
+    assert(daveRow.stash === 10 - tariff + bank, "winner's Stash = Stash - Tariff + Bank (got " + daveRow.stash + ")");
+    assert(carolRow.stash === 10 + tariff, "Tariff lands in the second-highest bidder's Stash, not burned (got " + carolRow.stash + ")");
+    assert(revealed.data.resolution.tariffPaidToId != null, "resolution reports who the Tariff was paid to");
+
     display.send({ t: "endgame" });
   }
 
@@ -293,7 +303,40 @@ async function main() {
     bid(controllers.Carol, 40, false);
     const revealed = await display.waitFor((m) => m.t === "display" && m.view === "revealed", { sinceMark: dMark });
     assert(revealed.data.resolution.winnerName === "Alice", "a solo Slip auto-wins despite the lowest number");
-    assert(revealed.data.resolution.tariff === 2 - 50, "Slip tariff = own bid - highest non-Slip bid (got " + revealed.data.resolution.tariff + ")");
+    // Own-bid (2) - highest non-Slip (50) is negative -- floors to 0 rather
+    // than the Slip winner receiving a windfall for underbidding. Regression
+    // check for the bug report: Alice Slips 1, Bob (no Slip) bids 100, both
+    // start on Stash 10, Bank 10 -> expected Alice=20, Bob=10 (untouched);
+    // the bug produced Alice=19 because a stray positive Tariff got charged.
+    assert(revealed.data.resolution.tariff === 0, "a negative Slip tariff floors at 0, not the raw (own bid - highest non-Slip) value (got " + revealed.data.resolution.tariff + ")");
+    const aliceRow = revealed.data.standings.find((p) => p.name === "Alice");
+    const bobRow = revealed.data.standings.find((p) => p.name === "Bob");
+    assert(aliceRow.stash === 10 + revealed.data.resolution.bank, "Slip winner just takes the Bank when Tariff floors to 0 (got " + aliceRow.stash + ")");
+    assert(bobRow.stash === 10, "no Tariff changes hands when it floors to 0 -- Bob stays untouched (got " + bobRow.stash + ")");
+    display.send({ t: "endgame" });
+  }
+  {
+    // Mirror case: the Slip's own bid is HIGHER than the highest non-Slip
+    // bid, so the Tariff is genuinely positive -- it should still be paid to
+    // the highest non-Slip bidder (Bob), same recipient rule as a normal
+    // ranked win. Alice Slips 60, Bob (no Slip) bids 50, Carol (no Slip)
+    // bids 30, everyone starts on Stash 10, Bank 10. Tariff = 60-50 = 10
+    // (not a Bust: Tariff must be STRICTLY greater than Stash). Alice ends
+    // on 10 (10 - 10 + 10), Bob ends on 20 (10 + 10), Carol untouched at 10.
+    const { display, controllers } = await newGame(["Alice", "Bob", "Carol"]);
+    bid(controllers.Alice, 60, true); // Slip, high number -- positive Tariff
+    bid(controllers.Bob, 50, false);
+    const dMark = display.mark();
+    bid(controllers.Carol, 30, false);
+    const revealed = await display.waitFor((m) => m.t === "display" && m.view === "revealed", { sinceMark: dMark });
+    assert(revealed.data.resolution.winnerName === "Alice", "a solo Slip auto-wins even against a higher plain bid");
+    assert(revealed.data.resolution.tariff === 10, "positive Slip tariff = own bid - highest non-Slip bid (got " + revealed.data.resolution.tariff + ")");
+    const aliceRow = revealed.data.standings.find((p) => p.name === "Alice");
+    const bobRow = revealed.data.standings.find((p) => p.name === "Bob");
+    const carolRow = revealed.data.standings.find((p) => p.name === "Carol");
+    assert(aliceRow.stash === 10, "Slip winner pays a positive Tariff out of Stash + Bank like a normal win (got " + aliceRow.stash + ")");
+    assert(bobRow.stash === 20, "a positive Slip Tariff is paid to the highest non-Slip bidder (got " + bobRow.stash + ")");
+    assert(carolRow.stash === 10, "the non-recipient plain bidder is untouched (got " + carolRow.stash + ")");
     display.send({ t: "endgame" });
   }
   {

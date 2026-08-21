@@ -11,7 +11,7 @@
 // Strategy is NETWORK-FIRST for everything, cache as fallback. Cache-first
 // would be actively harmful here: js/config.js holds RELAY_URL, and a stale
 // copy of it would point phones at a relay that no longer exists.
-const VERSION = 'arrosho-jestfest-v3';
+const VERSION = 'arrosho-jestfest-v4';
 const SHELL = VERSION + '-shell';
 
 // Must land or the app can't open at all.
@@ -31,6 +31,7 @@ const PRECACHE_OPTIONAL = [
   'js/config.js', 'js/el.js', 'js/net.js', 'js/shell.js',
   'js/display.js', 'js/controller.js', 'js/qr.js',
   'games/kwiplash.js', 'games/fish-and-slips.js',
+  'icons/favicon.svg',
   'icons/icon-192.png', 'icons/icon-512.png',
   'icons/maskable-192.png', 'icons/maskable-512.png',
   'icons/apple-touch-icon.png', 'icons/favicon-32.png'

@@ -491,7 +491,19 @@ export default class FishAndSlips {
    *  provisional winner; `leaderValue`/`secondValue` drive the Tariff.
    *  Handles Bust + cascade, then finishes the round. */
   _settleLeader(leaderId, leaderValue, secondValue, meta, secondId = null) {
-    const tariff = leaderValue - secondValue;
+    // RESOLVED AMBIGUITY (negative Tariff on a sole Slip): the ranked path
+    // can never produce leaderValue < secondValue (a "highest" bid is never
+    // lower than a "second-highest" one by construction), but a sole Slip's
+    // own formula -- (their own bid) - (highest non-Slip bid) -- can, when
+    // the Slip is a deliberately low number played purely to auto-win. The
+    // note never addresses this case. Confirmed by Ethan 2026-08-21: a Slip
+    // still auto-wins and takes the Bank regardless of the numbers, so a
+    // Tariff that would go negative is simply floored at 0 -- no payment
+    // either direction -- rather than the Slip winner receiving a windfall
+    // equal to the gap. Worked example (bug report): A Slips 1, B (no Slip)
+    // bids 100, both start on Stash 10, Bank 10 -> Tariff floors to 0, A
+    // ends on 20 (10 - 0 + 10), B is untouched at 10.
+    const tariff = Math.max(0, leaderValue - secondValue);
     const stash = this.stashes[leaderId] ?? STARTING_STASH;
 
     if (tariff > stash) {
