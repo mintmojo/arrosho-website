@@ -11,7 +11,7 @@
 // Strategy is NETWORK-FIRST for everything, cache as fallback. Cache-first
 // would be actively harmful here: js/config.js holds RELAY_URL, and a stale
 // copy of it would point phones at a relay that no longer exists.
-const VERSION = 'arrosho-jestfest-v1';
+const VERSION = 'arrosho-jestfest-v2';
 const SHELL = VERSION + '-shell';
 
 // Must land or the app can't open at all.
@@ -39,9 +39,9 @@ const PRECACHE_OPTIONAL = [
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL);
-    await cache.addAll(PRECACHE);
+    await cache.addAll(PRECACHE.map((u) => new Request(u, { cache: 'reload' })));
     await Promise.all(PRECACHE_OPTIONAL.map((url) =>
-      cache.add(url).catch(() => { /* optional: a 404 here must not fail install */ })
+      cache.add(new Request(url, { cache: 'reload' })).catch(() => { /* optional: a 404 must not fail install */ })
     ));
     await self.skipWaiting();
   })());
@@ -66,7 +66,12 @@ self.addEventListener('fetch', (event) => {
 
   event.respondWith((async () => {
     try {
-      const fresh = await fetch(req);
+      // `cache: 'reload'` is the whole point of this handler: a bare fetch()
+      // consults the browser HTTP cache first, and GitHub Pages serves
+      // Cache-Control: max-age=600. That turned this "network-first" worker
+      // into a cache-first one on phones -- the page kept rendering stale
+      // CSS/JS long after a deploy, with no hard-refresh available on iOS.
+      const fresh = await fetch(req, { cache: 'reload' });
       if (fresh && fresh.ok) {
         const cache = await caches.open(SHELL);
         cache.put(req, fresh.clone());
