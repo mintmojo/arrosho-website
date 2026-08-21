@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#24343A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Archivo+Black&family=Inter:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/landing.css">
@@ -34,11 +35,11 @@
   </a>
 
   <div class="jf-join-card" id="join-card">
-    <div class="jf-join-card-collapsed" id="join-collapsed" role="button" tabindex="0">
+    <div class="jf-join-header">
       <h3>Enter code</h3>
       <span class="jf-join-hint">Join a room already running</span>
     </div>
-    <form class="jf-join-fields" id="join-form" hidden>
+    <form class="jf-join-fields" id="join-form">
       <div id="join-code-mount"></div>
       <input class="jf-field" id="join-name" type="text" placeholder="Your name" maxlength="40" autocomplete="off" autocapitalize="words">
       <button class="jf-join-submit" id="join-submit" type="submit" disabled aria-label="Join room"></button>
@@ -83,7 +84,6 @@
     sanitizeRoomCode, isCompleteRoomCode, buildRoomCodeInput, joinUrl,
   } from './js/net.js';
 
-  const collapsed = document.getElementById('join-collapsed');
   const form = document.getElementById('join-form');
   const codeMount = document.getElementById('join-code-mount');
   const nameInput = document.getElementById('join-name');
@@ -106,17 +106,9 @@
   }
   nameInput.addEventListener('input', updateSubmit);
 
-  // "Enter Code" starts collapsed and reveals the code + name fields on tap
-  // (build brief: "Enter Code reveals its fields").
-  function revealJoinForm() {
-    collapsed.hidden = true;
-    form.hidden = false;
-    codeInput.querySelector('input')?.focus();
-  }
-  collapsed.addEventListener('click', revealJoinForm);
-  collapsed.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); revealJoinForm(); }
-  });
+  // The code + name fields are always visible, matching the Claude Design
+  // prototype. At a party the person joining is usually holding a drink --
+  // every extra tap between "Enter code" and actually typing is friction.
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();

@@ -63,10 +63,11 @@ body.jf-landing{background:var(--surface-mist);}
 .jf-join-card h3{
   font-family:var(--font-display); font-weight:400; font-size:var(--display-card); line-height:1.2;
 }
-.jf-join-card-collapsed{
-  display:flex; align-items:center; justify-content:space-between; gap:16px; cursor:pointer;
+.jf-join-header{
+  display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap;
 }
-.jf-join-card-collapsed .jf-join-hint{font-size:14px; color:var(--text-on-dark-muted);}
+.jf-join-header .jf-join-hint{font-size:14px; color:var(--text-on-dark-muted);}
+@media (max-width:520px){ .jf-join-header{gap:4px;} }
 .jf-join-fields{display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap;}
 .jf-join-fields .jf-code-input input{width:46px; height:52px; font-size:20px;}
 .jf-join-fields .jf-field{flex:1; min-width:140px;}

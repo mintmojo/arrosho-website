@@ -1,6 +1,6 @@
 /* Jest Fest — design tokens.
    Ported verbatim from the Arrosho design system attached to this project
-   (`Arrosho/Jest fest/_ds/arrosho-design-system-*/tokens/*.css`). Do not
+   (Arrosho/Jest fest/_ds/arrosho-design-system-<id>/tokens/, all files). Do not
    invent new brand colors, radii or type sizes here — add to the source
    design system first if something is missing, then port it down. */
 
