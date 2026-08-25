@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Wheel of Almost Death</title>
-<meta name="description" content="Spin it. Do it. Rate it. Live with it.">
+<meta name="description" content="Add your options. Give it a spin. Live with it.">
 <meta name="theme-color" content="#15100E">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Almost Death">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icon-192.png" sizes="192x192">
-<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="icon" href="./icons/icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bevan:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -22,6 +22,7 @@
     --ink-2:#1E1715;
     --oxblood:#6E1F1B;
     --bone:#EDE3D2;
+    --bone-dim:#A2968440;
     --brass:#C9922F;
     --teal:#2A7F7A;
     --rule:#3A2E2A;
@@ -62,15 +63,37 @@
     text-shadow:0 2px 0 #2A1E1B, 0 3px 14px rgba(0,0,0,.55);
   }
   h1 em{font-style:italic;color:var(--oxblood);-webkit-text-stroke:0}
-  .tagline{margin:12px 0 0;font-size:14px;color:#A29684;max-width:32ch}
+  .tagline{
+    margin:12px 0 0;font-size:14px;color:#A29684;max-width:30ch;
+  }
   .hr{height:1px;background:var(--rule);margin:22px 0 8px}
+
+  /* ---------- wheel tabs ---------- */
+  .tabs{
+    display:flex;gap:6px;margin:16px 0 0;
+  }
+  .tab{
+    flex:1;border:1px solid var(--rule);border-radius:3px;background:#1B1412;
+    color:#A29684;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+    letter-spacing:.1em;text-transform:uppercase;padding:10px 6px;cursor:pointer;
+    text-align:center;line-height:1.3;
+  }
+  .tab:hover{border-color:var(--brass);color:var(--brass)}
+  .tab.is-active{
+    background:#241A17;border-color:var(--oxblood);color:var(--bone);
+    box-shadow:inset 0 0 0 1px var(--oxblood);
+  }
+  .tab:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+  .tab .sub{display:block;font-size:9px;letter-spacing:.06em;color:#6A5D51;margin-top:2px;text-transform:none}
+  .tab.is-active .sub{color:#A29684}
 
   /* ---------- stage ---------- */
   .stage{
     position:relative;width:var(--stage);height:var(--stage);
-    margin:14px auto 0;display:grid;place-items:center;
+    margin:14px auto 0;
+    display:grid;place-items:center;
   }
-  .stage::before{
+  .stage::before{ /* backboard */
     content:"";position:absolute;inset:-14px;border-radius:50%;
     background:radial-gradient(circle at 50% 42%, #2A201C 0%, #150F0D 70%);
     box-shadow:0 24px 60px rgba(0,0,0,.6), inset 0 0 0 1px #3A2E2A;
@@ -80,6 +103,8 @@
     will-change:transform;
     box-shadow:0 0 0 6px #2A201C, 0 0 0 7px var(--brass), 0 10px 30px rgba(0,0,0,.55);
   }
+
+  /* ticker: the brass flapper that clacks over each peg */
   .ticker{
     position:absolute;top:-20px;left:50%;width:26px;height:52px;
     margin-left:-13px;transform-origin:50% 8px;
@@ -87,6 +112,8 @@
     filter:drop-shadow(0 3px 5px rgba(0,0,0,.7));
     transition:transform .16s cubic-bezier(.2,1.6,.4,1);
   }
+
+  /* hub = the spin control */
   .hub{
     position:absolute;z-index:5;
     width:30%;height:30%;border-radius:50%;
@@ -97,7 +124,7 @@
     font-size:clamp(13px,3.6vw,17px);letter-spacing:.06em;text-transform:uppercase;
     display:grid;place-items:center;cursor:pointer;
     box-shadow:0 6px 18px rgba(0,0,0,.6), inset 0 1px 0 rgba(237,227,210,.16);
-    transition:transform .12s ease;
+    transition:transform .12s ease, box-shadow .12s ease;
   }
   .hub:active{transform:scale(.94)}
   .hub:disabled{cursor:not-allowed;color:#6A5D51;border-color:#4A3B2A}
@@ -105,119 +132,88 @@
 
   /* ---------- verdict ---------- */
   .verdict{
-    margin:30px auto 0;padding:16px 15px;
+    margin:30px auto 0;padding:16px 14px;text-align:center;
     border:1px dashed var(--rule);border-radius:3px;
     background:linear-gradient(#1B1412,#171110);
   }
   .verdict .label{
     font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.28em;
-    text-transform:uppercase;color:#7C6F60;text-align:center;
+    text-transform:uppercase;color:#7C6F60;
   }
   .verdict .value{
     font-family:"Bevan","Rockwell",Georgia,serif;
-    font-size:clamp(19px,5.8vw,27px);line-height:1.12;margin-top:8px;
-    text-transform:uppercase;color:#5C5045;word-break:break-word;text-align:center;
+    font-size:clamp(20px,6.4vw,30px);line-height:1.1;margin-top:8px;
+    text-transform:uppercase;color:#5C5045;word-break:break-word;
   }
-  .verdict.is-set .value{color:var(--bone);animation:stamp .38s cubic-bezier(.2,1.5,.35,1) both}
+  .verdict.is-set .value{
+    color:var(--bone);
+    animation:stamp .38s cubic-bezier(.2,1.5,.35,1) both;
+  }
   .verdict.is-set{border-style:solid;border-color:var(--oxblood)}
+  .verdict .vnote{
+    margin-top:10px;font-size:12.5px;line-height:1.5;color:#A29684;
+    text-transform:none;font-family:"IBM Plex Sans",system-ui,sans-serif;
+    letter-spacing:0;
+  }
   @keyframes stamp{
     0%{transform:scale(1.5) rotate(-4deg);opacity:0;filter:blur(3px)}
     60%{opacity:1;filter:blur(0)}
     100%{transform:scale(1) rotate(-1.2deg);opacity:1}
   }
-  .vfull{
-    margin:12px 0 0;font-size:14.5px;color:#CBBFAD;text-align:center;
+
+  /* ---------- timer bar (Timed/Spam only) ---------- */
+  .timerBar{
+    display:none;align-items:center;gap:10px;justify-content:center;
+    margin:16px auto 0;flex-wrap:wrap;
+  }
+  .timerBar.show{display:flex}
+  .minutesLabel{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:#A29684;
+  }
+  #itemMinutes{
+    width:64px;background:#100C0B;color:var(--bone);
+    border:1px solid var(--rule);border-radius:3px;padding:13px 8px;
+    font:inherit;font-size:15px;text-align:center;
+  }
+  #itemMinutes:focus{outline:none;border-color:var(--brass)}
+  #itemMinutes.hide{display:none}
+  .countdown{
+    font-family:"IBM Plex Mono",monospace;font-size:15px;letter-spacing:.06em;
+    color:var(--brass);min-width:3.5em;text-align:center;
+  }
+  .countdown.is-live{color:var(--oxblood)}
+
+  .derivedNote{
     display:none;
+    font-size:12.5px;color:#8A7D6E;line-height:1.5;
+    padding:12px 14px;margin:14px 0 0;
+    border:1px dashed var(--rule);border-radius:3px;
+    background:#1B1412;
   }
-  .verdict.is-set .vfull{display:block}
+  .derivedNote.show{display:block}
+  #adderRow.hide, #footRow.hide{display:none}
+  #list.readonly .kill{display:none}
+  #list.readonly li{opacity:.9}
 
-  .rp{
-    display:none;margin:15px 0 0;padding:11px 12px;
-    border-left:3px solid var(--oxblood);background:#1F1513;border-radius:2px;
+  /* ---------- options ---------- */
+  .sec-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin:34px 0 12px;
   }
-  .verdict.is-set .rp{display:block}
-  .rp .rp-label{
-    font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.24em;
-    text-transform:uppercase;color:var(--oxblood);margin-bottom:5px;
-  }
-  .rp .rp-text{font-size:14px;color:#D6CAB8}
-
-  /* ---------- suds logging ---------- */
-  .sudsbar{display:none;margin-top:15px;padding-top:14px;border-top:1px solid #2A211D}
-  .verdict.is-set .sudsbar{display:block}
-  .sudsbar .prevline{
-    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.2em;
-    text-transform:uppercase;color:#7C6F60;text-align:center;margin-bottom:11px;
-  }
-  .sudsbar .prevline b{color:var(--brass);font-weight:500;letter-spacing:.08em}
-  .sudsrow{display:flex;gap:8px;align-items:center}
-  .sudsrow input[type=number]{
-    flex:1;min-width:0;text-align:center;
-    background:#100C0B;color:var(--bone);
-    border:1px solid var(--rule);border-radius:3px;
-    padding:12px 10px;font:inherit;font-size:17px;
-    font-family:"IBM Plex Mono",monospace;
-  }
-  .sudsrow input[type=number]:focus{outline:none;border-color:var(--brass)}
-  .sudsrow input::-webkit-outer-spin-button,
-  .sudsrow input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-  .sudsrow input[type=number]{-moz-appearance:textfield}
-  .logged{
-    text-align:center;font-family:"IBM Plex Mono",monospace;font-size:11px;
-    letter-spacing:.16em;text-transform:uppercase;color:var(--teal);
-    margin-top:10px;min-height:14px;
-  }
-
-  /* ---------- sections ---------- */
-  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin:34px 0 4px}
   .sec-head h2{
     font-family:"IBM Plex Mono",monospace;font-weight:500;
     font-size:11px;letter-spacing:.24em;text-transform:uppercase;
     color:#A29684;margin:0;
   }
   .count{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--brass)}
-  .sec-note{font-size:12.5px;color:#6A5D51;margin:0 0 12px}
 
-  ul{list-style:none;margin:12px 0 0;padding:0}
-  li.item{border-bottom:1px solid #241C19;padding:3px 0}
-  .row{display:flex;align-items:center;gap:11px;padding:9px 4px;cursor:pointer}
-  .row .swatch{width:11px;height:11px;border-radius:2px;flex:none;transform:rotate(45deg)}
-  .row .name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px}
-  .badge{
-    flex:none;font-family:"IBM Plex Mono",monospace;font-size:12px;
-    min-width:42px;text-align:center;padding:3px 7px;border-radius:2px;
-    border:1px solid var(--rule);color:#6A5D51;background:#161110;
-  }
-  .badge.has{color:var(--bone)}
-  .delta{
-    flex:none;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
-    min-width:34px;text-align:right;color:#6A5D51;
-  }
-  .delta.down{color:var(--teal)}
-  .delta.up{color:var(--oxblood)}
-
-  .detail{display:none;padding:2px 4px 14px 26px}
-  li.open .detail{display:block}
-  .detail .full{font-size:14px;color:#CBBFAD;margin-bottom:10px}
-  .detail .rp-mini{
-    font-size:13.5px;color:#B8AC9A;
-    border-left:3px solid var(--oxblood);padding:7px 11px;background:#1F1513;border-radius:2px;
-  }
-  .detail .rp-mini span{
-    display:block;font-family:"IBM Plex Mono",monospace;font-size:9px;
-    letter-spacing:.24em;text-transform:uppercase;color:var(--oxblood);margin-bottom:4px;
-  }
-  .detail .acts{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
-
-  .empty{color:#6A5D51;font-size:14px;padding:16px 4px;border-bottom:1px solid #241C19}
-
-  .adder{display:flex;flex-direction:column;gap:8px;margin-top:14px}
-  .adder .pair{display:flex;gap:8px}
+  .adder{display:flex;gap:8px}
   input[type=text]{
     flex:1;min-width:0;
     background:#100C0B;color:var(--bone);
     border:1px solid var(--rule);border-radius:3px;
-    padding:12px;font:inherit;font-size:16px;
+    padding:13px 12px;font:inherit;font-size:16px;
   }
   input[type=text]::placeholder{color:#6A5D51}
   input[type=text]:focus{outline:none;border-color:var(--brass)}
@@ -225,15 +221,38 @@
     border:1px solid var(--rule);border-radius:3px;
     background:#241A17;color:var(--bone);
     font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;
-    text-transform:uppercase;padding:10px 16px;cursor:pointer;
+    text-transform:uppercase;padding:0 16px;cursor:pointer;
   }
   .btn:hover{border-color:var(--brass);color:var(--brass)}
   .btn:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
-  .btn.sm{padding:7px 12px;font-size:11px}
-  .btn.danger:hover{border-color:var(--oxblood);color:var(--oxblood)}
 
-  .foot{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:18px;flex-wrap:wrap}
-  label.toggle{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:13px;color:#A29684}
+  ul{list-style:none;margin:14px 0 0;padding:0}
+  li{
+    display:flex;align-items:flex-start;gap:11px;
+    padding:11px 4px;border-bottom:1px solid #241C19;
+  }
+  li .swatch{width:11px;height:11px;border-radius:2px;flex:none;transform:rotate(45deg);margin-top:5px}
+  li .textcol{flex:1;min-width:0}
+  li .name{display:block;font-size:15px;line-height:1.35}
+  li .mins{display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--brass);margin-top:3px}
+  li .note{display:block;font-size:11.5px;color:#8A7D6E;line-height:1.45;margin-top:3px}
+  li .kill{margin-top:-3px}
+  li .kill{
+    flex:none;width:30px;height:30px;border:0;border-radius:50%;
+    background:transparent;color:#6A5D51;font-size:17px;line-height:1;cursor:pointer;
+  }
+  li .kill:hover{color:var(--oxblood);background:#231715}
+  li .kill:focus-visible{outline:2px solid var(--brass);outline-offset:1px}
+  .empty{color:#6A5D51;font-size:14px;padding:16px 4px;border-bottom:1px solid #241C19}
+
+  .foot{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:14px;margin-top:18px;flex-wrap:wrap;
+  }
+  label.toggle{
+    display:flex;align-items:center;gap:9px;cursor:pointer;
+    font-size:13px;color:#A29684;
+  }
   label.toggle input{accent-color:var(--oxblood);width:17px;height:17px}
   .linkish{
     background:none;border:0;padding:4px 0;cursor:pointer;
@@ -262,13 +281,19 @@
   <header>
     <p class="eyebrow">Arrosho &middot; Decision Apparatus No. 1</p>
     <h1>Wheel of<br><em>Almost</em> Death</h1>
-    <p class="tagline">Spin it. Do it. Rate it. The wheel picks, because choosing is the compulsion.</p>
+    <p class="tagline">Add your options. Give it a spin. Live with it.</p>
   </header>
 
   <div class="hr"></div>
 
+  <div class="tabs" id="tabs" role="tablist" aria-label="Which wheel">
+    <button class="tab" type="button" role="tab" data-wheel="timed">Timed / Spam<span class="sub">short list, some against a clock</span></button>
+    <button class="tab" type="button" role="tab" data-wheel="home">Home<span class="sub">your own time and tools</span></button>
+    <button class="tab" type="button" role="tab" data-wheel="inperson">In-Person<span class="sub">needs your team</span></button>
+  </div>
+
   <div class="stage">
-    <canvas id="wheel" width="800" height="800" aria-label="Exposure wheel"></canvas>
+    <canvas id="wheel" width="800" height="800" aria-label="Option wheel"></canvas>
     <svg class="ticker" viewBox="0 0 26 52" aria-hidden="true">
       <circle cx="13" cy="8" r="5.5" fill="#C9922F"/>
       <circle cx="13" cy="8" r="2" fill="#15100E"/>
@@ -281,49 +306,40 @@
   <div class="verdict" id="verdict">
     <div class="label" id="verdictLabel">Awaiting fate</div>
     <div class="value" id="verdictValue">&mdash;</div>
-    <p class="vfull" id="verdictFull"></p>
-
-    <div class="rp">
-      <div class="rp-label">No matter what</div>
-      <div class="rp-text" id="verdictRp"></div>
-    </div>
-
-    <div class="sudsbar">
-      <div class="prevline" id="prevLine"></div>
-      <div class="sudsrow">
-        <input type="number" id="sudsInput" min="0" max="100" inputmode="numeric"
-               placeholder="0&ndash;100" aria-label="Distress rating out of 100">
-        <button class="btn" id="logSuds" type="button">Log</button>
-      </div>
-      <div class="logged" id="loggedMsg"></div>
-    </div>
+    <div class="vnote" id="verdictNote" style="display:none"></div>
   </div>
 
-  <section>
+  <div class="timerBar" id="timerBar">
+    <span class="minutesLabel">On the clock</span>
+    <div class="countdown" id="countdown">—</div>
+  </div>
+
+  <section id="listSection">
+    <div class="derivedNote" id="derivedNote">
+      Some items here carry their own time limit — land on one and the clock starts: no reprieve, the next spin fires on its own when it hits zero.
+      Items with no time set end when their own instructions say they're done.
+    </div>
+
     <div class="sec-head">
-      <h2>Active &middot; SUDS</h2>
+      <h2 id="wheelName">On the wheel</h2>
       <span class="count" id="count">0</span>
     </div>
-    <p class="sec-note">The number is how it felt last time. Do it, then replace it.</p>
+
+    <div class="adder" id="adderRow">
+      <input type="text" id="newOption" placeholder="Add an option" maxlength="60"
+             autocomplete="off" autocapitalize="sentences" spellcheck="false">
+      <input type="number" id="itemMinutes" class="hide" min="1" max="60" step="1" inputmode="numeric" placeholder="min">
+      <button class="btn" id="add" type="button">Add</button>
+    </div>
 
     <ul id="list"></ul>
 
-    <div class="adder">
-      <input type="text" id="newOption" placeholder="New exposure" maxlength="90"
-             autocomplete="off" autocapitalize="sentences" spellcheck="false">
-      <div class="pair">
-        <input type="text" id="newRp" placeholder="Response prevention &mdash; no matter what" maxlength="140"
-               autocomplete="off" autocapitalize="sentences" spellcheck="false">
-        <button class="btn" id="add" type="button">Add</button>
-      </div>
-    </div>
-
-    <div class="foot">
+    <div class="foot" id="footRow">
       <label class="toggle">
         <input type="checkbox" id="eliminate">
-        Take it off the wheel once it&rsquo;s spun
+        Remove the winner after each spin
       </label>
-      <button class="linkish" id="reset" type="button">Reset to default list</button>
+      <button class="linkish" id="clear" type="button">Clear all</button>
     </div>
   </section>
 
@@ -337,43 +353,10 @@
 (function(){
   "use strict";
 
-  /* ---------- the active list ---------- */
-  /* Passives are deliberately not here. They are situational, not spinnable. */
-  var DEFAULTS = [
-    { n:1,  short:"I was wrong",
-      full:"Say “I was wrong about that, you were right” to whoever last corrected me, within the hour",
-      rp:"No “but I meant,” no explaining what I originally thought" },
-    { n:2,  short:"Ship it raw",
-      full:"Send a real work deliverable with zero framing around it",
-      rp:"Delete every pre-apology: “quick draft,” “sorry for the delay,” “let me know if this isn’t what you wanted”" },
-    { n:3,  short:"Flat claim",
-      full:"use the cards: answer the instant it's asked, first instinct, out loud. And make the answer be an “absolute fact“",
-      rp:"No “I think,” no “maybe,” no “I could be wrong”, no “I’m not sure, but”" },
-    { n:4,  short:"15 min draft",
-      full:"Set a timer to write (in only a single draft) for no more than 15 min and then just send it to someone.",
-      rp:"Don’t call it a draft. Don’t ask what they think." },
-    { n:5,  short:"spontanious pressure",
-      full:"Think of something to do, and just do it. No pressure to start and no pre-optimization",
-      rp:"No revisiting it for 24 hours" },
-    { n:6,  short:"You’re right, thanks",
-      full:"Get corrected publicly and reply only “You’re right, thanks”",
-      rp:"No follow-up defending the original position, not later either" },
-    { n:7, short:"What did I get wrong",
-      full:"Ask someone who knows me well what I've been wrong about and haven't admitted, then just agreey",
-      rp:"No debating, no context, no “well in fairness”" },
-    { n:8, short:"What I didn’t do",
-      full:"Write on the board a specific thing I've taught or written and then didn't do, and announce it",
-      rp:"No wrapping it in self-punishment. State the fact and stop. Don’t add, that’s the neutralizer." }
-  ];
-
-  function seed(){
-    return DEFAULTS.map(function(d){
-      return { n:d.n, short:d.short, full:d.full, rp:d.rp, suds:null, prev:null };
-    });
-  }
-
-  /* ---------- storage ---------- */
-  var KEY = "woad.v2";
+  /* ---------- storage (degrades to memory if blocked) ---------- */
+  var KEY = "woad.v3";
+  var V2_KEY = "woad.v2"; // v2 had home/inperson only; timed was a derived union, never stored
+  var V1_KEY = "woad.v1"; // v1 was a single flat wheel
   var mem = null;
   function load(){
     try{
@@ -387,34 +370,135 @@
     try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
   }
 
-  var saved = load();
-  var items = (saved && Array.isArray(saved.items) && saved.items.length) ? saved.items : seed();
-  var eliminate = !!(saved && saved.eliminate);
+  /* ---------- three wheels ----------
+     Each wheel keeps its own curated list. Timed/Spam items can carry a
+     `minutes` value — land on one and the clock starts, no reprieve, the
+     next spin fires the moment it hits zero. Items with no `minutes` end by
+     their own built-in instructions instead (one card, one call, a silent
+     count). */
+  var WHEELS = {
+    timed: {
+      label: "Timed / Spam",
+      defaults: [
+        {"text": "Cards: one card, answer instantly, as fact", "note": "Draw one card, answer the instant it's asked, out loud, stated as fact — no “I think” or “maybe.” One card, not a run."},
+        {"text": "Ask what I did wrong, take it, done", "note": "Ask someone what I've done wrong. When they answer, say only “you're right, thanks” — no defending it — then it's over, straight to the next spin."},
+        {"text": "Board confession: taught it, didn't do it", "note": "Go write on the board something you've taught or written that you personally haven't followed through on, say it out loud, then come back to your seat. No self-punishing wrap-up."},
+        {"text": "Leave mid-conversation, zero context", "note": "Join or start a conversation, silently count to 44, then say “I gotta go” and leave — no explanation, no follow-up smoothing it over later."},
+        {"text": "Procrastinated task, no extras", "note": "Pull out the book you've been avoiding and work on it inside session — no extra time, no missing materials excused.", "minutes": 10},
+        {"text": "Cold-call from session, one call", "note": "Dial a real lead from the room, zero rehearsal, in front of your team. One call, then done — no debrief right after."},
+        {"text": "15-min single draft, just send it", "note": "Set a 15-minute clock, write toward real work, send whatever exists when it goes off — don't call it a draft.", "minutes": 15},
+        {"text": "Ask what I've been wrong about, leave before it settles", "note": "Ask what I've been wrong about and haven't admitted — no arguing, no context. Stay aware of the time and leave before the conversation resolves."},
+        {"text": "One sentence toward the BYU essay", "note": "Open one of the actual prompts and write one honest sentence toward it — no outlining first.", "minutes": 5}
+      ]
+    },
+    home: {
+      label: "Home",
+      defaults: [
+        {"text": "Answer from memory, don't look it up after", "note": "e.g. someone asks what year the Provo temple was dedicated — give your best guess and don't Google it after, not even that night."},
+        {"text": "Give an estimate, no hedge", "note": "e.g. “how long will the bake take?” — say “40 minutes” flat, not “maybe 35–45ish, not totally sure.”"},
+        {"text": "Misremember a detail, catch it, say nothing", "note": "e.g. you say the meeting was Tuesday, realize mid-sentence it was actually Wednesday — let it stand."},
+        {"text": "Tell someone from memory who'd know better", "note": "e.g. tell a baker friend your starter's hydration % from memory instead of checking your notes first, even though they'd catch it if you're off."},
+        {"text": "Say “I don't know.” Full stop.", "note": "e.g. someone asks a real estate question you're fuzzy on — say “I don't know” and stop, no guessing, no “but probably…”"},
+        {"text": "Let someone find their own word", "note": "e.g. mid-conversation someone's fishing for a word (“it's like… the thing where…”) — let them find it instead of supplying it."},
+        {"text": "Don't correct someone who needs help", "note": "e.g. a roommate is measuring flour by volume instead of weight — let them keep doing it their way without stepping in."},
+        {"text": "Think of it, just do it — no revisiting for 24h", "note": "e.g. an idea for an Arrosho post pops up — post it as-is, don't reopen or tweak it for a full day."},
+        {"text": "Finish a task halfway, stop when the timer says", "note": "e.g. you're folding laundry when the timer hits zero mid-pile — stop right there, walk away."},
+        {"text": "Admit “you were right,” no explaining", "note": "e.g. your mom pointed out you mismeasured a recipe last week — text her “you were right about that,” nothing else added."},
+        {"text": "Send a deliverable, zero framing", "note": "e.g. send the Arrosho outreach draft with no “quick draft, lmk what you think” — just the file."},
+        {"text": "15-min single draft, just send it", "note": "e.g. set a 15-min timer, write toward a book outline, send whatever exists when it goes off — don't call it a draft."},
+        {"text": "Ask what I've been wrong about, agree", "note": "e.g. ask a roommate “what have I been wrong about that I haven't admitted?” and agree with the first thing they say, no debating."},
+        {"text": "Submit the moment it's complete, no re-read", "note": "e.g. finish an EXSC assignment — submit it immediately, skip the proofread pass."},
+        {"text": "Leave a known error in something already sent", "note": "e.g. you notice after sending a text you wrote “there” instead of “their” — leave it, no follow-up correcting it."},
+        {"text": "Notice a typo, don't send the correction", "note": "e.g. same shape — you catch a typo in an email you already sent and don't send a “sorry, meant to say…” follow-up."},
+        {"text": "Sourdough: commit at hour 2, ready or not", "note": "e.g. feed the starter, and at the 2-hour mark mix and shape the dough even if you're not sure it's peaked."},
+        {"text": "Fold laundry, first item within 10 sec", "note": "e.g. walk up to the pile and fold the very first item you touch within 10 seconds — no sorting by color first."},
+        {"text": "One real sentence toward the BYU essay", "note": "e.g. open one of the actual prompts and write one honest sentence toward it before outlining or reading example essays."},
+        {"text": "Cold-call solo, zero rehearsal", "note": "e.g. pick up the phone and dial a real lead within 15 seconds of deciding to call — no mental rehearsal of what you'll say."}
+      ]
+    },
+    inperson: {
+      label: "In-Person",
+      defaults: [
+        {"text": "Cards: answer instantly, as absolute fact", "note": "e.g. someone flips a card with a question on it — answer the instant it's asked, out loud, stated as fact, no “I think” or “maybe.”"},
+        {"text": "Get corrected publicly, say thanks, stop", "note": "e.g. someone in group corrects something you said — reply only “you're right, thanks” and don't defend the original point, then or later."},
+        {"text": "Board confession: taught it, didn't do it", "note": "e.g. write on the board something you've taught or written that you personally haven't followed through on, say it out loud — no self-punishing wrap-up."},
+        {"text": "Leave mid-conversation, zero context", "note": "e.g. mid-topic, say “I gotta go” and actually leave — no explanation, no follow-up text smoothing it over later."},
+        {"text": "Procrastinated task, no extra time or materials", "note": "e.g. pull out the Arrosho analysis or book outline you've been avoiding and work on it for whatever's left of session — no extra time, no missing materials excused."},
+        {"text": "Cold-call from session, zero rehearsal", "note": "e.g. if logistics allow, dial a real lead from the room, zero rehearsal, in front of your team."}
+      ]
+    }
+  };
+  var WHEEL_ORDER = ["timed","home","inperson"];
 
-  // repair anything half-shaped from an older save
-  items = items.filter(Boolean).map(function(it){
-    return {
-      n: it.n,
-      short: String(it.short || it.full || "Untitled").slice(0,60),
-      full: String(it.full || it.short || "Untitled"),
-      rp: String(it.rp || ""),
-      suds: (typeof it.suds === "number") ? it.suds : null,
-      prev: (typeof it.prev === "number") ? it.prev : null
-    };
+  var saved = load();
+  var v2Saved = null, v1Saved = null;
+  if(!saved){
+    try{
+      var rawV2 = localStorage.getItem(V2_KEY);
+      if(rawV2) v2Saved = JSON.parse(rawV2);
+    }catch(e){}
+    if(!v2Saved){
+      try{
+        var rawV1 = localStorage.getItem(V1_KEY);
+        if(rawV1) v1Saved = JSON.parse(rawV1);
+      }catch(e){}
+    }
+  }
+  var migrated = saved || v2Saved;
+
+  // items are {text, note, minutes} — note is an optional example/definition shown under
+  // the label, minutes is an optional per-item countdown (Timed/Spam only). normalize
+  // handles plain strings and older saved data (no note/minutes yet) transparently.
+  function normalizeItem(it){
+    if(typeof it === "string") return {text: it, note: "", minutes: null};
+    if(it && typeof it.text === "string"){
+      var m = (typeof it.minutes === "number" && it.minutes > 0) ? it.minutes : null;
+      return {text: it.text, note: it.note || "", minutes: m};
+    }
+    return null;
+  }
+  function normalizeList(list){
+    return (list || []).map(normalizeItem).filter(Boolean);
+  }
+
+  var state = {
+    active: (migrated && WHEEL_ORDER.indexOf(migrated.active) !== -1) ? migrated.active : "home",
+    eliminate: !!(migrated && migrated.eliminate),
+    options: {}
+  };
+  ["timed","home","inperson"].forEach(function(w){
+    if(migrated && migrated.options && Array.isArray(migrated.options[w]) && migrated.options[w].length){
+      state.options[w] = normalizeList(migrated.options[w]);
+    }else{
+      state.options[w] = WHEELS[w].defaults.slice();
+    }
   });
+  // one-time migration: an old single-wheel custom list becomes the starting Home list
+  if(!saved && !v2Saved && v1Saved && Array.isArray(v1Saved.options) && v1Saved.options.length){
+    state.options.home = normalizeList(v1Saved.options);
+    state.eliminate = !!v1Saved.eliminate;
+  }
+
+  // `options` stays a live reference to the active wheel's array — mutate in place (push/splice)
+  // so the rest of the app doesn't need to change; reassigned only on tab switch, see switchWheel().
+  var options = state.options[state.active];
+  var eliminate = state.eliminate;
+  var itemMinutesInput = document.getElementById("itemMinutes");
+  var timerBar = document.getElementById("timerBar");
+  var derivedNote = document.getElementById("derivedNote");
+  var countdownEl = document.getElementById("countdown");
+  var adderRow = document.getElementById("adderRow");
+  var footRow = document.getElementById("footRow");
+  var countdownTimer = null; // interval id
+  var countdownEndsAt = 0;   // epoch ms
 
   /* ---------- palette ---------- */
   var PALETTE = ["#6E1F1B","#C9922F","#2A7F7A","#8E4B22","#4A3D6B","#7C7A2E"];
   function colorFor(i,n){
     var c = PALETTE[i % PALETTE.length];
+    // avoid the last slice matching the first when the count wraps the palette
     if(n > 1 && i === n-1 && c === PALETTE[0]) c = PALETTE[Math.floor(PALETTE.length/2)];
     return c;
-  }
-  function sudsColor(v){
-    if(v === null || v === undefined) return "#6A5D51";
-    if(v >= 70) return "#C4564E";
-    if(v >= 40) return "#C9922F";
-    return "#2A7F7A";
   }
 
   /* ---------- elements ---------- */
@@ -425,27 +509,22 @@
   var listEl = document.getElementById("list");
   var countEl = document.getElementById("count");
   var input = document.getElementById("newOption");
-  var rpInput = document.getElementById("newRp");
   var verdict = document.getElementById("verdict");
   var vLabel = document.getElementById("verdictLabel");
   var vValue = document.getElementById("verdictValue");
-  var vFull = document.getElementById("verdictFull");
-  var vRp = document.getElementById("verdictRp");
-  var prevLine = document.getElementById("prevLine");
-  var sudsInput = document.getElementById("sudsInput");
-  var logBtn = document.getElementById("logSuds");
-  var loggedMsg = document.getElementById("loggedMsg");
+  var vNote = document.getElementById("verdictNote");
   var elimBox = document.getElementById("eliminate");
   elimBox.checked = eliminate;
+  var wheelNameEl = document.getElementById("wheelName");
+  var tabButtons = Array.prototype.slice.call(document.querySelectorAll(".tab"));
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // hold the item itself, not its index — the list can be edited between
-  // spinning and logging, and an index would then point at the wrong exposure
-  var currentItem = null;
-  var pendingRemoval = null;
 
   /* ---------- wheel drawing ---------- */
-  var rotation = 0, velocity = 0, spinning = false, lastPeg = -1;
+  var rotation = 0;      // radians, clockwise positive
+  var velocity = 0;
+  var spinning = false;
+  var lastPeg = -1;
 
   function sizeCanvas(){
     var rect = cv.getBoundingClientRect();
@@ -464,8 +543,8 @@
     }
     if(ctx.measureText(text).width > maxPx){
       var t = text;
-      while(t.length > 1 && ctx.measureText(t + "…").width > maxPx) t = t.slice(0,-1);
-      text = t + "…";
+      while(t.length > 1 && ctx.measureText(t + "\u2026").width > maxPx) t = t.slice(0,-1);
+      text = t + "\u2026";
     }
     return text;
   }
@@ -473,7 +552,7 @@
   function draw(){
     var S = cv.width, R = S/2, cx = R, cy = R;
     ctx.clearRect(0,0,S,S);
-    var n = items.length;
+    var n = options.length;
 
     if(n === 0){
       ctx.fillStyle = "#1E1715";
@@ -488,9 +567,10 @@
     var seg = (Math.PI*2)/n;
     for(var i=0;i<n;i++){
       var a0 = -Math.PI/2 + i*seg;
+      var a1 = a0 + seg;
       ctx.beginPath();
       ctx.moveTo(cx,cy);
-      ctx.arc(cx,cy,R,a0,a0+seg);
+      ctx.arc(cx,cy,R,a0,a1);
       ctx.closePath();
       ctx.fillStyle = colorFor(i,n);
       ctx.fill();
@@ -500,13 +580,15 @@
         ctx.stroke();
       }
 
+      // label, reading outward
       ctx.save();
       ctx.translate(cx,cy);
       ctx.rotate(a0 + seg/2);
       ctx.textAlign = "right";
       ctx.textBaseline = "middle";
+      var maxW = R * 0.62;
       var base = Math.min(Math.round(S*0.042), Math.round(seg * R * 0.55));
-      var label = fitText(String(items[i].short), R*0.60, Math.max(10, base));
+      var label = fitText(String(options[i].text), maxW, Math.max(10, base));
       ctx.fillStyle = "#F3ECE0";
       ctx.shadowColor = "rgba(0,0,0,.45)";
       ctx.shadowBlur = S*0.008;
@@ -514,6 +596,7 @@
       ctx.restore();
     }
 
+    // pegs at each boundary
     for(var j=0;j<n;j++){
       var pa = -Math.PI/2 + j*seg;
       ctx.beginPath();
@@ -522,6 +605,7 @@
       ctx.fill();
     }
 
+    // inner rings
     ctx.beginPath(); ctx.arc(cx,cy,R*0.985,0,Math.PI*2);
     ctx.strokeStyle = "rgba(21,16,14,.5)"; ctx.lineWidth = Math.max(2,S*0.012); ctx.stroke();
     ctx.beginPath(); ctx.arc(cx,cy,R*0.20,0,Math.PI*2);
@@ -532,7 +616,7 @@
   function apply(){ cv.style.transform = "rotate(" + rotation + "rad)"; }
 
   function pointerIndex(){
-    var n = items.length;
+    var n = options.length;
     if(!n) return -1;
     var seg = (Math.PI*2)/n;
     var a = (-rotation) % (Math.PI*2);
@@ -562,23 +646,15 @@
 
   /* ---------- spin ---------- */
   function spin(){
-    // a winner marked for removal last time comes off now, not at settle,
-    // so there was a window in which to log its SUDS
-    if(pendingRemoval){
-      var pi = items.indexOf(pendingRemoval);
-      if(pi > -1) items.splice(pi,1);
-      pendingRemoval = null;
-      persist(); render();
-    }
-    if(spinning || items.length < 2) return;
+    if(spinning || options.length < 2) return;
+    stopCountdown();
     spinning = true;
     spinBtn.disabled = true;
-    spinBtn.textContent = "• • •";
+    spinBtn.textContent = "\u2022 \u2022 \u2022";
     verdict.classList.remove("is-set");
     vLabel.textContent = "Deciding";
-    vValue.textContent = "—";
-    loggedMsg.textContent = "";
-    sudsInput.value = "";
+    vValue.textContent = "\u2014";
+    vNote.style.display = "none";
 
     velocity = (reduced ? 9 : 17) + Math.random() * (reduced ? 3 : 9);
     lastPeg = pointerIndex();
@@ -588,213 +664,209 @@
 
     function step(now){
       var dt = Math.min(48, now - last); last = now;
-      velocity *= Math.pow(friction, dt);
+      var f = Math.pow(friction, dt);
+      velocity *= f;
       rotation += velocity * (dt/1000);
       apply();
 
       var p = pointerIndex();
       if(p !== lastPeg && p !== -1){ lastPeg = p; clack(Math.min(1, velocity/8)); }
 
-      if(velocity > 0.05) requestAnimationFrame(step);
-      else settle();
+      if(velocity > 0.05){
+        requestAnimationFrame(step);
+      }else{
+        settle();
+      }
     }
     requestAnimationFrame(step);
   }
 
   function settle(){
-    var n = items.length, seg = (Math.PI*2)/n;
+    // nudge off an exact boundary so the ticker never straddles two slices
+    var n = options.length, seg = (Math.PI*2)/n;
     var a = (-rotation) % (Math.PI*2); if(a < 0) a += Math.PI*2;
     var within = a % seg;
     if(within < seg*0.03 || within > seg*0.97){ rotation += seg*0.06; apply(); }
 
     var idx = pointerIndex();
-    var it = items[idx];
-    currentItem = it;
-
+    var winner = options[idx];
     spinning = false;
-    spinBtn.disabled = items.length < 2;
+    spinBtn.disabled = options.length < 2;
     spinBtn.textContent = "Spin";
-
     vLabel.textContent = "The wheel says";
-    vValue.textContent = it.short;
-    vFull.textContent = it.full;
-    vRp.textContent = it.rp || "—";
-
-    if(it.suds === null){
-      prevLine.innerHTML = "Never rated — <b>set the baseline</b>";
-    }else{
-      prevLine.innerHTML = "Last time it was <b>" + it.suds + "</b>. Replace it.";
-    }
-
+    vValue.textContent = winner.text;
+    vNote.textContent = winner.note || "";
+    vNote.style.display = winner.note ? "block" : "none";
     verdict.classList.add("is-set");
+
     if(navigator.vibrate && !reduced){ try{ navigator.vibrate([14,40,26]); }catch(e){} }
 
-    if(elimBox.checked) pendingRemoval = it;
-  }
-
-  /* ---------- suds ---------- */
-  function logSuds(){
-    if(!currentItem) return;
-    var raw = sudsInput.value.trim();
-    if(raw === "") { sudsInput.focus(); return; }
-    var v = Math.round(Number(raw));
-    if(!isFinite(v)) { sudsInput.focus(); return; }
-    v = Math.max(0, Math.min(100, v));
-
-    var it = currentItem;
-    var was = it.suds;
-    it.prev = was;
-    it.suds = v;
-    persist(); render();
-
-    if(was === null){
-      loggedMsg.textContent = "Baseline set at " + v;
-    }else if(v < was){
-      loggedMsg.textContent = was + " → " + v + " · down " + (was - v);
-    }else if(v > was){
-      loggedMsg.textContent = was + " → " + v + " · up " + (v - was);
-    }else{
-      loggedMsg.textContent = "Held at " + v;
+    if(elimBox.checked){
+      options.splice(idx,1);
+      persist(); render();
     }
-    prevLine.innerHTML = "Now logged at <b>" + v + "</b>";
-    sudsInput.value = "";
-    sudsInput.blur();
+
+    if(state.active === "timed" && winner.minutes){
+      startCountdown(winner.minutes);
+    }else{
+      stopCountdown();
+    }
   }
 
-  /* ---------- list ---------- */
-  function persist(){ save({items:items, eliminate:elimBox.checked}); }
+  /* ---------- timed/spam countdown ---------- */
+  function startCountdown(mins){
+    stopCountdown();
+    var m = mins > 0 ? mins : 5;
+    countdownEndsAt = Date.now() + m*60*1000;
+    timerBar.classList.add("show");
+    countdownEl.classList.add("is-live");
+    tickCountdown();
+    countdownTimer = setInterval(tickCountdown, 250);
+  }
 
-  function render(){
-    countEl.textContent = items.length;
-    listEl.innerHTML = "";
+  function stopCountdown(){
+    if(countdownTimer){ clearInterval(countdownTimer); countdownTimer = null; }
+    timerBar.classList.remove("show");
+    countdownEl.classList.remove("is-live");
+    countdownEl.textContent = "—";
+  }
 
-    if(items.length === 0){
-      var li0 = document.createElement("li");
-      li0.className = "empty";
-      li0.textContent = "Nothing on the wheel. Add at least two to spin.";
-      listEl.appendChild(li0);
-      spinBtn.disabled = true;
-      draw();
+  function tickCountdown(){
+    var remaining = countdownEndsAt - Date.now();
+    if(remaining <= 0){
+      countdownEl.textContent = "0:00";
+      clearInterval(countdownTimer); countdownTimer = null;
+      // no reprieve — the next spin starts on its own
+      if(!spinning) spin();
       return;
     }
+    var secs = Math.ceil(remaining/1000);
+    var m = Math.floor(secs/60), s = secs%60;
+    countdownEl.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+  }
 
-    items.forEach(function(it,i){
-      var li = document.createElement("li");
-      li.className = "item";
+  /* ---------- wheel switching ---------- */
+  function switchWheel(id){
+    if(spinning || id === state.active) return;
+    stopCountdown();
+    state.active = id;
+    options = state.options[id];
+    persist();
+    updateTabs();
+    resetVerdict();
+    render();
+  }
 
-      var row = document.createElement("div");
-      row.className = "row";
-
-      var sw = document.createElement("span");
-      sw.className = "swatch";
-      sw.style.background = colorFor(i, items.length);
-
-      var nm = document.createElement("span");
-      nm.className = "name";
-      nm.textContent = it.short;
-
-      var badge = document.createElement("span");
-      badge.className = "badge" + (it.suds === null ? "" : " has");
-      badge.textContent = (it.suds === null) ? "—" : it.suds;
-      badge.style.borderColor = sudsColor(it.suds);
-      if(it.suds !== null) badge.style.color = sudsColor(it.suds);
-
-      var delta = document.createElement("span");
-      delta.className = "delta";
-      if(it.suds !== null && it.prev !== null){
-        var d = it.suds - it.prev;
-        if(d < 0){ delta.className += " down"; delta.textContent = "↓" + Math.abs(d); }
-        else if(d > 0){ delta.className += " up"; delta.textContent = "↑" + d; }
-        else { delta.textContent = "–"; }
-      }
-
-      row.appendChild(sw); row.appendChild(nm); row.appendChild(badge); row.appendChild(delta);
-
-      var det = document.createElement("div");
-      det.className = "detail";
-
-      var full = document.createElement("div");
-      full.className = "full";
-      full.textContent = it.full;
-
-      var rpm = document.createElement("div");
-      rpm.className = "rp-mini";
-      var rpLab = document.createElement("span");
-      rpLab.textContent = "No matter what";
-      rpm.appendChild(rpLab);
-      rpm.appendChild(document.createTextNode(it.rp || "—"));
-
-      var acts = document.createElement("div");
-      acts.className = "acts";
-      var del = document.createElement("button");
-      del.className = "btn sm danger"; del.type = "button";
-      del.textContent = "Remove";
-      del.addEventListener("click", function(e){
-        e.stopPropagation();
-        if(spinning) return;
-        if(currentItem === it) currentItem = null;
-        if(pendingRemoval === it) pendingRemoval = null;
-        items.splice(i,1);
-        persist(); render();
-      });
-      acts.appendChild(del);
-
-      det.appendChild(full); det.appendChild(rpm); det.appendChild(acts);
-
-      row.addEventListener("click", function(){ li.classList.toggle("open"); });
-
-      li.appendChild(row); li.appendChild(det);
-      listEl.appendChild(li);
+  function updateTabs(){
+    tabButtons.forEach(function(btn){
+      btn.classList.toggle("is-active", btn.dataset.wheel === state.active);
+      btn.setAttribute("aria-selected", btn.dataset.wheel === state.active ? "true" : "false");
     });
+    var isTimed = state.active === "timed";
+    wheelNameEl.textContent = "On the wheel — " + WHEELS[state.active].label;
+    derivedNote.classList.toggle("show", isTimed);
+    itemMinutesInput.classList.toggle("hide", !isTimed);
+  }
 
-    spinBtn.disabled = spinning || items.length < 2;
+  function resetVerdict(){
+    verdict.classList.remove("is-set");
+    vLabel.textContent = "Awaiting fate";
+    vValue.textContent = "—";
+    vNote.style.display = "none";
+  }
+
+  tabButtons.forEach(function(btn){
+    btn.addEventListener("click", function(){ switchWheel(btn.dataset.wheel); });
+  });
+
+  /* ---------- list ---------- */
+  function persist(){
+    state.options[state.active] = options;
+    state.eliminate = elimBox.checked;
+    var toSave = {active: state.active, eliminate: state.eliminate,
+      options: {home: state.options.home, inperson: state.options.inperson, timed: state.options.timed}};
+    save(toSave);
+  }
+
+  function render(){
+    countEl.textContent = options.length;
+    listEl.innerHTML = "";
+    if(options.length === 0){
+      var li = document.createElement("li");
+      li.className = "empty";
+      li.textContent = "Nothing on the wheel. Add at least two options to spin.";
+      listEl.appendChild(li);
+    }else{
+      options.forEach(function(opt,i){
+        var li = document.createElement("li");
+        var sw = document.createElement("span");
+        sw.className = "swatch";
+        sw.style.background = colorFor(i, options.length);
+        var col = document.createElement("span");
+        col.className = "textcol";
+        var nm = document.createElement("span");
+        nm.className = "name"; nm.textContent = opt.text;
+        col.appendChild(nm);
+        if(opt.minutes){
+          var mn = document.createElement("span");
+          mn.className = "mins"; mn.textContent = opt.minutes + " min \u2014 no reprieve";
+          col.appendChild(mn);
+        }
+        if(opt.note){
+          var nt = document.createElement("span");
+          nt.className = "note"; nt.textContent = opt.note;
+          col.appendChild(nt);
+        }
+        li.appendChild(sw); li.appendChild(col);
+        var kill = document.createElement("button");
+        kill.className = "kill"; kill.type = "button";
+        kill.setAttribute("aria-label", "Remove " + opt.text);
+        kill.textContent = "\u00d7";
+        kill.addEventListener("click", function(){
+          if(spinning) return;
+          options.splice(i,1); persist(); render();
+        });
+        li.appendChild(kill);
+        listEl.appendChild(li);
+      });
+    }
+    spinBtn.disabled = spinning || options.length < 2;
     draw();
   }
 
-  function shorten(s){
-    var t = s.trim();
-    if(t.length <= 22) return t;
-    var cut = t.slice(0,22);
-    var sp = cut.lastIndexOf(" ");
-    if(sp > 10) cut = cut.slice(0,sp);
-    return cut + "…";
-  }
-
-  function addItem(){
+  function addOption(){
     var v = input.value.trim();
-    if(!v){ input.focus(); return; }
-    if(items.length >= 24){ vLabel.textContent = "Wheel is full at 24"; return; }
-    items.push({
-      n:null, short:shorten(v), full:v, rp:rpInput.value.trim(), suds:null, prev:null
-    });
-    input.value = ""; rpInput.value = "";
+    if(!v) { input.focus(); return; }
+    if(options.length >= 40){ vLabel.textContent = "Wheel is full at 40"; return; }
+    var item = {text: v, note: "", minutes: null};
+    if(state.active === "timed"){
+      var mv = parseInt(itemMinutesInput.value, 10);
+      if(mv > 0) item.minutes = Math.min(60, mv);
+      itemMinutesInput.value = "";
+    }
+    options.push(item);
+    input.value = "";
     persist(); render();
     input.focus();
   }
 
-  document.getElementById("add").addEventListener("click", addItem);
-  input.addEventListener("keydown", function(e){ if(e.key === "Enter") rpInput.focus(); });
-  rpInput.addEventListener("keydown", function(e){ if(e.key === "Enter") addItem(); });
+  document.getElementById("add").addEventListener("click", addOption);
+  input.addEventListener("keydown", function(e){ if(e.key === "Enter") addOption(); });
   spinBtn.addEventListener("click", spin);
   cv.addEventListener("click", spin);
   elimBox.addEventListener("change", persist);
-  logBtn.addEventListener("click", logSuds);
-  sudsInput.addEventListener("keydown", function(e){ if(e.key === "Enter") logSuds(); });
-
-  document.getElementById("reset").addEventListener("click", function(){
+  document.getElementById("clear").addEventListener("click", function(){
     if(spinning) return;
-    if(confirm("Reset to the default active list? Your SUDS numbers will be cleared.")){
-      items = seed(); currentItem = null; pendingRemoval = null;
-      persist(); render();
-      verdict.classList.remove("is-set");
-      vLabel.textContent = "Awaiting fate"; vValue.textContent = "—";
-      loggedMsg.textContent = "";
+    if(!options.length || confirm("Clear every option?")){
+      options = []; persist(); render();
+      resetVerdict();
     }
   });
 
   window.addEventListener("resize", sizeCanvas);
   if(document.fonts && document.fonts.ready){ document.fonts.ready.then(draw); }
 
+  updateTabs();
   render();
   sizeCanvas();
   apply();

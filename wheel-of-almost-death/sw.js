@@ -1,12 +1,12 @@
 /* Wheel of Almost Death — offline shell */
-const VERSION = "woad-v2";
+const VERSION = "woad-v5";
 const SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./icon-192.png",
-  "./icon-512.png",
-  "./icon-maskable-512.png"
+  "./icons/icon-192.png",
+  "./icons/icon-512.png",
+  "./icons/icon-maskable-512.png"
 ];
 
 self.addEventListener("install", (e) => {
