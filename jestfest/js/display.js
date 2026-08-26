@@ -50,6 +50,13 @@ let relayError = null;
 let selectedGameId = null;
 let lastDisplayFrame = null;
 
+// -- host tools: Display-only score correction + bug report (PROTOCOL.md
+// v1.1). None of this is game state -- it's UI-only scratch, same spirit as
+// `selectedGameId` above -- so it's fine as plain module-level variables.
+let hostPanelOpen = false;
+let bugNote = '';
+let bugReportText = null; // set only if clipboard copy fails, so the host can select-all by hand
+
 boot();
 
 async function boot() {
@@ -159,9 +166,13 @@ function shellChrome(mainContent) {
   return el('div', { class: 'jf-display-shell' },
     el('header', { class: 'jf-display-header' },
       el('span', { class: 'jf-wordmark' }, 'Jest Fest'),
-      connBannerMount()
+      el('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+        connBannerMount(),
+        hostToolsButton()
+      )
     ),
-    el('main', { class: 'jf-display-main' }, mainContent)
+    el('main', { class: 'jf-display-main' }, mainContent),
+    hostPanelOverlay()
   );
 }
 
@@ -285,4 +296,170 @@ function inGamePanel() {
     mount.appendChild(loadingScreen('Starting the game…'));
   }
   return mount;
+}
+
+// ---------------------------------------------------------------------
+// Host tools (PROTOCOL.md v1.1): Display-only score correction + bug
+// report. Deliberately independent of which game (if any) is running —
+// this lives in the shared shell, not a per-game renderer, so every
+// current and future game gets it for free per PROTOCOL.md §5's optional
+// onHostAction() hook.
+// ---------------------------------------------------------------------
+
+/** Best-effort read of "this game's own score" out of the last frame the
+ *  Display actually received. There's no protocol-wide guarantee every
+ *  view's `data` carries a per-player score (Kwiplash's writing/voting
+ *  screens don't), so this returns null rather than showing stale or
+ *  invented numbers — the panel falls back to an explanatory line instead. */
+function extractGameScores(gameId, frame) {
+  if (!frame || !frame.data) return null;
+  if (gameId === 'fish-and-slips' && Array.isArray(frame.data.standings)) {
+    return { label: 'Stash', rows: frame.data.standings.map((p) => ({ id: p.id, name: p.name, value: p.stash })) };
+  }
+  if (gameId === 'kwiplash') {
+    const rows = frame.data.rows || frame.data.overall;
+    if (Array.isArray(rows)) {
+      return { label: 'Points', rows: rows.map((p) => ({ id: p.id, name: p.name, value: p.score })) };
+    }
+  }
+  return null;
+}
+
+function hostToolsButton() {
+  return el('button', {
+    class: 'jf-btn jf-btn-ghost',
+    style: { padding: '6px 10px', fontSize: '11.5px' },
+    onClick: () => { hostPanelOpen = !hostPanelOpen; bugReportText = null; render(); },
+  }, hostPanelOpen ? 'Close host tools' : 'Host tools');
+}
+
+function hostPanelOverlay() {
+  if (!hostPanelOpen) return null;
+  const gameScores = room.state === 'in-game' ? extractGameScores(room.currentGame, lastDisplayFrame) : null;
+  return el('div', {
+    class: 'jf-host-overlay',
+    style: {
+      position: 'fixed', inset: '0', background: 'rgba(18,20,10,0.6)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: '60', padding: '20px',
+    },
+    onClick: (e) => { if (e.target === e.currentTarget) { hostPanelOpen = false; render(); } },
+  },
+    el('div', {
+      style: {
+        width: '100%', maxWidth: '480px', maxHeight: '86vh', overflow: 'auto',
+        background: 'var(--gradient-dark)', color: 'var(--text-on-dark)',
+        border: '1px solid var(--border-inset)', borderRadius: 'var(--radius-card)', padding: '28px',
+      },
+    },
+      el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' } },
+        el('h2', { style: { fontFamily: 'var(--font-display)', fontWeight: '400', fontSize: '22px', textTransform: 'uppercase' } }, 'Host tools'),
+        el('button', { class: 'jf-btn jf-btn-ghost', onClick: () => { hostPanelOpen = false; render(); } }, 'Close')
+      ),
+      el('p', { style: { fontSize: '12.5px', color: 'var(--text-on-dark-muted)', marginTop: '-10px', marginBottom: '20px' } },
+        'Only visible on this screen — players never see this panel.'),
+
+      el('div', { class: 'jf-section-title' }, 'Bragging Rights'),
+      brEditorRows(),
+
+      el('div', { style: { marginTop: '22px' } },
+        el('div', { class: 'jf-section-title' }, gameScores ? `This game (${gameScores.label})` : "This game's score"),
+        gameScores
+          ? gameScoreEditorRows(gameScores)
+          : el('p', { style: { fontSize: '12.5px', color: 'var(--text-on-dark-muted)' } },
+              room.state === 'in-game'
+                ? 'Not visible on the current screen — check back during a results/standings screen.'
+                : 'Start a game to correct its own score.')
+      ),
+
+      el('div', { style: { marginTop: '24px' } },
+        el('div', { class: 'jf-section-title' }, 'Report a bug'),
+        el('textarea', {
+          class: 'jf-field', rows: 3, placeholder: 'What went wrong? (optional)',
+          value: bugNote, onInput: (e) => { bugNote = e.target.value; },
+          style: { width: '100%', resize: 'vertical', boxSizing: 'border-box' },
+        }),
+        el('button', { class: 'jf-btn jf-btn-primary', style: { marginTop: '10px' }, onClick: copyBugReport },
+          'Copy bug report'),
+        bugReportText
+          ? el('div', { style: { marginTop: '10px' } },
+              el('p', { style: { fontSize: '12px', color: 'var(--text-on-dark-muted)', marginBottom: '6px' } },
+                "Clipboard copy didn't work here — select all the text below and copy it by hand."),
+              el('textarea', {
+                class: 'jf-field', rows: 6, readOnly: true, value: bugReportText,
+                style: { width: '100%', fontSize: '11px', fontFamily: 'monospace', boxSizing: 'border-box' },
+                onClick: (e) => e.target.select(),
+              })
+            )
+          : null
+      )
+    )
+  );
+}
+
+function brEditorRows() {
+  if (!room.players.length) {
+    return el('p', { style: { fontSize: '12.5px', color: 'var(--text-on-dark-muted)' } }, 'No players in the room yet.');
+  }
+  return el('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
+    room.players.map((p) => scoreEditRow(p.name, p.brTotal || 0, (value) => {
+      socket && socket.hostAction('editBrTotal', { playerId: p.id, value });
+    }))
+  );
+}
+
+function gameScoreEditorRows(gameScores) {
+  return el('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
+    gameScores.rows.map((p) => scoreEditRow(p.name, p.value ?? 0, (value) => {
+      socket && socket.hostAction('setGameScore', { playerId: p.id, value });
+    }))
+  );
+}
+
+/** One "name [number field] [Save]" row. Keeps its own draft in a plain DOM
+ *  input (uncontrolled) rather than module state — this panel re-renders
+ *  on every server push, and a controlled input here would fight the host
+ *  mid-keystroke every time a `room`/`display` frame arrives. */
+function scoreEditRow(name, currentValue, onSave) {
+  const input = el('input', {
+    class: 'jf-field', type: 'number', step: '1', value: String(currentValue),
+    style: { width: '90px', padding: '8px 10px', fontSize: '14px' },
+  });
+  return el('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+    el('span', { style: { flex: '1', fontSize: '13.5px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, name),
+    input,
+    el('button', {
+      class: 'jf-btn jf-btn-ghost', style: { padding: '8px 12px', fontSize: '12px' },
+      onClick: () => {
+        const v = Math.round(Number(input.value));
+        if (!Number.isFinite(v)) return;
+        onSave(v);
+        showToast({ level: 'info', text: `${name} set to ${v}.` });
+      },
+    }, 'Save')
+  );
+}
+
+async function copyBugReport() {
+  const payload = {
+    createdAt: new Date().toISOString(),
+    roomCode: room.code,
+    currentGame: room.currentGame,
+    roomState: room.state,
+    note: bugNote,
+    players: room.players,
+    lastDisplayFrame,
+  };
+  const text = JSON.stringify(payload, null, 2);
+  try {
+    if (!navigator.clipboard) throw new Error('no clipboard API');
+    await navigator.clipboard.writeText(text);
+    bugReportText = null;
+    showToast({ level: 'info', text: 'Copied — paste it into a chat with Claude next time.' });
+  } catch {
+    // Clipboard blocked (no permission, insecure context, older browser) —
+    // fall back to a selectable textarea instead of silently failing.
+    bugReportText = text;
+    showToast({ level: 'warn', text: "Couldn't copy automatically — select the text below by hand." });
+  }
+  render();
 }

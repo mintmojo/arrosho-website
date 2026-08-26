@@ -215,6 +215,18 @@ export default class FishAndSlips {
     }
   }
 
+  // PROTOCOL.md §5 v1.1, OPTIONAL: a Display-only correction for when a
+  // Stash ends up wrong (e.g. a scoring bug already paid out badly before
+  // the fix landed) -- room.js only calls this for {action:'setGameScore'}
+  // and has already validated playerId/value shape. This directly
+  // overwrites the seated player's Stash; it does not touch the Bank
+  // (still just the live average of this.stashes) or anyone else's Stash.
+  onHostAction(action) {
+    if (!action || action.action !== "setGameScore") return;
+    if (!this._seatedIds().includes(action.playerId)) return;
+    this.stashes[action.playerId] = action.value;
+  }
+
   // ------------------------------------------------------------------
   // connected/seated helpers
   // ------------------------------------------------------------------

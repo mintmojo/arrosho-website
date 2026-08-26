@@ -410,6 +410,9 @@ export class Room {
       case "action":
         if (att.role === "controller") await this.handleAction(att.playerId, msg);
         break;
+      case "hostAction":
+        if (att.role === "display") await this.handleHostAction(msg);
+        break;
       case "advance":
         if (att.role === "display") await this.handleAdvance();
         break;
@@ -595,6 +598,44 @@ export class Room {
     // The game may have ended itself via ctx.end() inside onAction, in
     // which case this.game is now null -- pushAll() is a safe no-op then.
     this.pushAll();
+  }
+
+  /** PROTOCOL.md §3 v1.1: Display-only score corrections. Two flavors --
+   *  'editBrTotal' is pure room state (works in lobby or in-game, no game
+   *  module involved); 'setGameScore' only makes sense while a game is
+   *  running and is forwarded to that module's OPTIONAL onHostAction() hook
+   *  so each game decides what "the score" means for it (Stash, internal
+   *  points, whatever). Anything malformed is dropped silently, same
+   *  posture PROTOCOL.md already takes for an illegal `action` frame --
+   *  this is a host convenience, not something worth erroring the room over. */
+  async handleHostAction(msg) {
+    if (!this.meta) return;
+    const action = msg && msg.action;
+    const playerId = msg && msg.playerId;
+    const value = Number(msg && msg.value);
+    if (typeof playerId !== "string" || !Number.isFinite(value)) return;
+    const rounded = Math.round(value);
+
+    if (action === "editBrTotal") {
+      const player = this.players.find((p) => p.id === playerId);
+      if (!player) return;
+      player.brTotal = rounded;
+      this.broadcastRoom();
+      return;
+    }
+
+    if (action === "setGameScore") {
+      if (this.meta.state !== "in-game") return;
+      const game = await this.ensureGameLoaded();
+      if (!game || typeof game.onHostAction !== "function") return;
+      try {
+        game.onHostAction({ action, playerId, value: rounded });
+      } catch (e) {
+        this.logGameError("onHostAction", e);
+        return;
+      }
+      this.pushAll();
+    }
   }
 
   async handleAdvance() {

@@ -251,6 +251,17 @@ export default class Kwiplash {
     }
   }
 
+  // PROTOCOL.md §5 v1.1, OPTIONAL: a Display-only correction for this
+  // round's running internal point total (the thing standingsData()/
+  // finalRevealData() show and finishGame() reads to decide the BR award) --
+  // room.js only calls this for {action:'setGameScore'} and has already
+  // validated playerId/value shape.
+  onHostAction(action) {
+    if (!action || action.action !== "setGameScore") return;
+    if (!(action.playerId in this.scores)) return;
+    this.scores[action.playerId] = action.value;
+  }
+
   // -- round / prompt setup -------------------------------------------------
 
   drawPrompt() {

@@ -3,6 +3,12 @@
 Authority: `Jest fest-spec.md` §3.2 — the relay is the referee. Clients render, never decide.
 Any parallel build MUST conform to this file exactly. Do not "improve" it mid-build.
 
+**Extension, v1.1 (added 2026-08-23):** added `hostAction` (§3) and the
+optional `onHostAction(action)` module hook (§5), for a Display-only "fix a
+score" control. This is a deliberate, documented addition — not a "mid-build
+improvement" — made because there was no way for a host to correct a score
+once a bug had already paid it out wrong. Everything else in v1 is untouched.
+
 ## 0. Roles
 - **Display** — one per room. The shared screen. Picks games, advances the room. Never plays.
 - **Controller** — one per player phone. Sends actions, sees only its own secret info.
@@ -37,6 +43,7 @@ All frames are JSON objects with a `t` (type) field. Unknown `t` MUST be ignored
 | --- | --- | --- | --- |
 | `start` | `{gameId}` | display | Begin a game. Server validates min players; replies `error/too_few_players` if short. |
 | `action` | `{action, ...fields}` | controller | A move. `action` is game-defined. Server validates EVERYTHING. |
+| `hostAction` | `{action, ...fields}` | display | **v1.1.** A Display-only correction, separate from `action` (which is controller-only and game-defined). `action: 'editBrTotal'` — `{playerId, value}`, works in lobby or in-game, sets that player's Bragging Rights total directly. `action: 'setGameScore'` — `{playerId, value}`, in-game only, forwarded to the running game module's optional `onHostAction()`; a no-op if that module doesn't implement it. Both round `value` to an integer and reject anything non-finite. Not a `toast`-worthy action if rejected — it's silently dropped, same posture as an illegal `action` frame. |
 | `advance` | `{}` | display | Display-driven "next" (e.g. leave a results screen). Games may ignore. |
 | `endgame` | `{}` | display | Abandon current game, return to lobby, award nothing. |
 | `endroom` | `{}` | display | Close the room. Server deletes all state, sends `ended/explicit`. |
@@ -72,6 +79,9 @@ export default class Game {
   onPlayerLeave(playerId) {}          // dropped past grace, or left
   onPlayerReconnect(player) {}        // seat resumed; re-push their controller view
   onTimer(name) {}                    // fires from ctx.setTimer
+  onHostAction(action) {}             // OPTIONAL, v1.1. {action:'setGameScore',playerId,value}
+                                       // from the Display's host panel. Omit entirely if this
+                                       // game has no single "the score" to correct.
 
   displayView() { return { view: 'x', data: {} }; }      // room stamps gameId
   controllerView(playerId) { return { view: 'x', data: {} }; }  // room stamps gameId

@@ -332,6 +332,10 @@ export class RoomSocket extends EventTarget {
   start(gameId) { return this.send('start', { gameId }); }
   endGame() { return this.send('endgame', {}); }
   endRoom() { return this.send('endroom', {}); }
+  /** PROTOCOL.md §3 v1.1 — Display-only. Throws (well, no-ops the same as
+   *  `send`) if called from a controller socket; display.js is the only
+   *  caller. */
+  hostAction(action, fields = {}) { return this.send('hostAction', { action, ...fields }); }
 
   close() {
     this._explicitlyClosed = true;
