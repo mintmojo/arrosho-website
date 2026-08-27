@@ -331,7 +331,7 @@
   <section id="listSection">
     <div class="derivedNote" id="derivedNote">
       Everything is the wheel you can run wherever you are — the items you can start on demand, plus the six that need your team in the room.
-      Left off on purpose: the passive ones that only happen when something triggers them, and the ones that need your own space or screen. Those live on Home.
+      Left off on purpose: the passive ones that only happen when something triggers them, and the two that are physically tied to the house — the starter and the laundry pile. Those live on Home.
       It's a derived view, so it isn't editable — edit Home and this follows.
     </div>
 
@@ -389,12 +389,15 @@
   /* ---------- two wheels ----------
      Every item carries a scope. `passive` means it can't be started on demand —
      it only happens when a trigger arrives (someone asks you something, you
-     already sent the thing). `own` means it needs your own space, tools or
-     screen. `team` means it needs the room.
+     already sent the thing). `own` means physically tied to this house — the
+     starter, the laundry pile. A laptop is not own-space: doing desk work
+     somewhere you aren't set up is the point, not a problem. `team` means it
+     needs the room.
 
      Home is the stored, editable wheel: everything except the team items.
-     Everything is the wheel you can run wherever you are — no passives, no
-     own-space items, plus the team ones. Edit Home and Everything follows. */
+     Everything is the wheel you can run wherever you are — no passives, nothing
+     physically tied to the house, plus the team ones. Edit Home and Everything
+     follows. */
   var WHEELS = {
     everything: { label: "Everything", derived: true },
     home: {
@@ -423,11 +426,11 @@
         {"text": "Dial the developer list within 15 seconds", "note": "Open the call list and dial. No rereading the outreach script first, no skimming objection handling."},
         {"text": "Work the unanswered SMS replies, top to bottom", "note": "In order. No triaging which ones look promising first — the order is the order."},
         {"text": "Follow up a lead who went quiet, no rewrite", "note": "No rereading before send. No softening."},
-        {"text": "Sort 10 Texas names spec-vs-custom, one pass, then dial", "note": "No re-sorting. A wrong sort gets found on the call, not before it.", "own": true},
-        {"text": "Upload the next list and launch the same sitting", "note": "No verification pass beyond the one the SOP actually requires.", "own": true},
-        {"text": "Write one SMS template, launch it", "note": "No second version held in reserve. No \u201cI'll test both.\u201d", "own": true},
-        {"text": "State an offer number after one pass of comps", "note": "Don't recalculate. Don't re-pull. Say it and let it stand. (Scope question open with your team.)", "own": true},
-        {"text": "Push one change to arrosho.com live", "note": "No checking how it looks. Not tonight either.", "own": true}
+        {"text": "Sort 10 Texas names spec-vs-custom, one pass, then dial", "note": "No re-sorting. A wrong sort gets found on the call, not before it."},
+        {"text": "Upload the next list and launch the same sitting", "note": "No verification pass beyond the one the SOP actually requires."},
+        {"text": "Write one SMS template, launch it", "note": "No second version held in reserve. No \u201cI'll test both.\u201d"},
+        {"text": "State an offer number after one pass of comps", "note": "Don't recalculate. Don't re-pull. Say it and let it stand. (Scope question open with your team.)"},
+        {"text": "Push one change to arrosho.com live", "note": "No checking how it looks. Not tonight either."}
       ]
     }
   };
@@ -499,7 +502,7 @@
   // Everything is derived from Home, never stored.
   function listFor(id){
     if(id === "everything"){
-      // wherever you are: nothing that waits for a trigger, nothing that needs your desk
+      // wherever you are: nothing that waits for a trigger, nothing tied to the house
       return state.options.home.filter(function(it){ return !it.passive && !it.own; })
                               .concat(normalizeList(TEAM_ONLY));
     }
