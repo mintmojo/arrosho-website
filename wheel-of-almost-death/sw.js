@@ -1,5 +1,5 @@
 /* Wheel of Almost Death — offline shell */
-const VERSION = "woad-v7";
+const VERSION = "woad-v8";
 const SHELL = [
   "./",
   "./index.html",
