@@ -484,6 +484,14 @@
   if(migrated && migrated.options && Array.isArray(migrated.options.home) && migrated.options.home.length){
     var retired = {}; RETIRED.forEach(function(t){ retired[t] = true; });
     state.options = normalizeList(migrated.options.home).filter(function(it){ return !retired[it.text]; });
+    // The defaults are the authority on scope. A list saved before `own` existed
+    // has every item flagged false, which would put the starter and the laundry
+    // pile on Default. Re-stamp by text so old saves self-heal.
+    var scope = {};
+    DEFAULTS.forEach(function(d){ scope[d.text] = !!d.own; });
+    state.options.forEach(function(it){
+      if(Object.prototype.hasOwnProperty.call(scope, it.text)) it.own = scope[it.text];
+    });
     var have = {}; state.options.forEach(function(it){ have[it.text] = true; });
     DEFAULTS.forEach(function(d){ if(!have[d.text]) state.options.push(normalizeItem(d)); });
   }else{
