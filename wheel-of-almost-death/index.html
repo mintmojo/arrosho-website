@@ -68,26 +68,6 @@
   }
   .hr{height:1px;background:var(--rule);margin:22px 0 8px}
 
-  /* ---------- wheel tabs ---------- */
-  .tabs{
-    display:flex;gap:6px;margin:16px 0 0;
-  }
-  .tab{
-    flex:1;border:1px solid var(--rule);border-radius:3px;background:#1B1412;
-    color:#A29684;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
-    letter-spacing:.1em;text-transform:uppercase;padding:10px 6px;cursor:pointer;
-    text-align:center;line-height:1.3;
-  }
-  .tab:hover{border-color:var(--brass);color:var(--brass)}
-  .tab.is-active{
-    background:#241A17;border-color:var(--oxblood);color:var(--bone);
-    box-shadow:inset 0 0 0 1px var(--oxblood);
-  }
-  .tab:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
-  .tab .sub{display:block;font-size:9px;letter-spacing:.06em;color:#6A5D51;margin-top:2px;text-transform:none}
-  .tab.is-active .sub{color:#A29684}
-
-  /* ---------- stage ---------- */
   .stage{
     position:relative;width:var(--stage);height:var(--stage);
     margin:14px auto 0;
@@ -194,14 +174,6 @@
     font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#8A7D6E;
   }
 
-  .derivedNote{
-    display:none;
-    font-size:12.5px;color:#8A7D6E;line-height:1.5;
-    padding:12px 14px;margin:14px 0 0;
-    border:1px dashed var(--rule);border-radius:3px;
-    background:#1B1412;
-  }
-  .derivedNote.show{display:block}
   #adderRow.hide, #footRow.hide{display:none}
   #list.readonly .kill{display:none}
   #list.readonly li{opacity:.9}
@@ -295,11 +267,6 @@
 
   <div class="hr"></div>
 
-  <div class="tabs" id="tabs" role="tablist" aria-label="Which wheel">
-    <button class="tab" type="button" role="tab" data-wheel="everything">Everything<span class="sub">every item, pooled</span></button>
-    <button class="tab" type="button" role="tab" data-wheel="home">Home<span class="sub">your own time and tools</span></button>
-  </div>
-
   <div class="stage">
     <canvas id="wheel" width="800" height="800" aria-label="Option wheel"></canvas>
     <svg class="ticker" viewBox="0 0 26 52" aria-hidden="true">
@@ -329,12 +296,6 @@
   </div>
 
   <section id="listSection">
-    <div class="derivedNote" id="derivedNote">
-      Everything is the wheel you can run wherever you are — the items you can start on demand, plus the six that need your team in the room.
-      Left off on purpose: the passive ones that only happen when something triggers them, and the two that are physically tied to the house — the starter and the laundry pile. Those live on Home.
-      It's a derived view, so it isn't editable — edit Home and this follows.
-    </div>
-
     <div class="sec-head">
       <h2 id="wheelName">On the wheel</h2>
       <span class="count" id="count">0</span>
@@ -369,8 +330,9 @@
   "use strict";
 
   /* ---------- storage (degrades to memory if blocked) ---------- */
-  var KEY = "woad.v4";
-  var V3_KEY = "woad.v3"; // v3 had timed/home/inperson; only Home carries forward
+  var KEY = "woad.v5";
+  var V4_KEY = "woad.v4"; // v4 had everything/home; v5 is one wheel, passives removed
+  var V3_KEY = "woad.v3"; // v3 had timed/home/inperson
   var V2_KEY = "woad.v2"; // v2 had home/inperson only; timed was a derived union, never stored
   var V1_KEY = "woad.v1"; // v1 was a single flat wheel
   var mem = null;
@@ -386,57 +348,36 @@
     try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
   }
 
-  /* ---------- two wheels ----------
-     Every item carries a scope. `passive` means it can't be started on demand —
-     it only happens when a trigger arrives (someone asks you something, you
-     already sent the thing). `own` means physically tied to this house — the
-     starter, the laundry pile. A laptop is not own-space: doing desk work
-     somewhere you aren't set up is the point, not a problem. `team` means it
-     needs the room.
+  /* ---------- one wheel ----------
+     Everything on it has to be startable on demand. Passive items — the ones
+     that only happen when something triggers them (someone asks you a question,
+     you already sent the thing) — came off on 2026-08-27: you can't spin for an
+     opportunity that hasn't arrived. They're still real exposures, they just
+     belong on a when-it-happens card, not a randomizer.
 
-     Home is the stored, editable wheel: everything except the team items.
-     Everything is the wheel you can run wherever you are — no passives, nothing
-     physically tied to the house, plus the team ones. Edit Home and Everything
-     follows. */
-  var WHEELS = {
-    everything: { label: "Everything", derived: true },
-    home: {
-      label: "Home",
-      defaults: [
-        {"text": "Answer from memory, don't look it up after", "note": "e.g. someone asks what year the Provo temple was dedicated — give your best guess and don't Google it after, not even that night.", "passive": true},
-        {"text": "Give an estimate, no hedge", "note": "e.g. \u201chow long will the bake take?\u201d — say \u201c40 minutes\u201d flat, not \u201cmaybe 35\u201345ish, not totally sure.\u201d", "passive": true},
-        {"text": "Misremember a detail, catch it, say nothing", "note": "e.g. you say the meeting was Tuesday, realize mid-sentence it was actually Wednesday — let it stand.", "passive": true},
-        {"text": "Tell someone from memory who'd know better", "note": "e.g. tell a baker friend your starter's hydration % from memory instead of checking your notes first, even though they'd catch it if you're off."},
-        {"text": "Say \u201cI don't know.\u201d Full stop.", "note": "e.g. someone asks a real estate question you're fuzzy on — say \u201cI don't know\u201d and stop, no guessing, no \u201cbut probably\u2026\u201d", "passive": true},
-        {"text": "Let someone find their own word", "note": "e.g. mid-conversation someone's fishing for a word (\u201cit's like\u2026 the thing where\u2026\u201d) — let them find it instead of supplying it.", "passive": true},
-        {"text": "Don't correct someone who needs help", "note": "e.g. a roommate is measuring flour by volume instead of weight — let them keep doing it their way without stepping in.", "passive": true},
-        {"text": "Think of it, just do it — no revisiting for 24h", "note": "e.g. an idea for an Arrosho post pops up — post it as-is, don't reopen or tweak it for a full day."},
-        {"text": "Finish a task halfway, stop when your phone timer says", "note": "e.g. set a timer on your phone for a length you don't get to choose carefully, start folding laundry or writing, and stop dead when it goes — no finishing the thought."},
-        {"text": "Admit \u201cyou were right,\u201d no explaining", "note": "e.g. your mom pointed out you mismeasured a recipe last week — text her \u201cyou were right about that,\u201d nothing else added."},
-        {"text": "Send a deliverable, zero framing", "note": "e.g. send the Arrosho outreach draft with no \u201cquick draft, lmk what you think\u201d — just the file."},
-        {"text": "15-min single draft, just send it", "note": "e.g. set a 15-min timer on your phone, write toward a book outline, send whatever exists when it goes off — don't call it a draft."},
-        {"text": "Ask what I've been wrong about, agree", "note": "e.g. ask a roommate \u201cwhat have I been wrong about that I haven't admitted?\u201d and agree with the first thing they say, no debating."},
-        {"text": "Submit the moment it's complete, no re-read", "note": "e.g. finish an EXSC assignment — submit it immediately, skip the proofread pass.", "passive": true},
-        {"text": "Leave a known error in something already sent", "note": "e.g. you notice after sending a text you wrote \u201cthere\u201d instead of \u201ctheir\u201d — leave it, no follow-up correcting it.", "passive": true},
-        {"text": "Notice a typo, don't send the correction", "note": "e.g. same shape — you catch a typo in an email you already sent and don't send a \u201csorry, meant to say\u2026\u201d follow-up.", "passive": true},
-        {"text": "Sourdough: commit at hour 2, ready or not", "note": "e.g. feed the starter, and at the 2-hour mark mix and shape the dough even if you're not sure it's peaked.", "own": true},
-        {"text": "Fold laundry, first item within 10 sec", "note": "e.g. walk up to the pile and fold the very first item you touch within 10 seconds — no sorting by color first.", "own": true},
-        {"text": "One real sentence toward the BYU essay", "note": "e.g. open one of the actual prompts and write one honest sentence toward it before outlining or reading example essays."},
-        {"text": "Cold-call solo, zero rehearsal", "note": "e.g. pick up the phone and dial a real lead within 15 seconds of deciding to call — no mental rehearsal of what you'll say."},
-        {"text": "Dial the developer list within 15 seconds", "note": "Open the call list and dial. No rereading the outreach script first, no skimming objection handling."},
-        {"text": "Work the unanswered SMS replies, top to bottom", "note": "In order. No triaging which ones look promising first — the order is the order."},
-        {"text": "Follow up a lead who went quiet, no rewrite", "note": "No rereading before send. No softening."},
-        {"text": "Sort 10 Texas names spec-vs-custom, one pass, then dial", "note": "No re-sorting. A wrong sort gets found on the call, not before it."},
-        {"text": "Upload the next list and launch the same sitting", "note": "No verification pass beyond the one the SOP actually requires."},
-        {"text": "Write one SMS template, launch it", "note": "No second version held in reserve. No \u201cI'll test both.\u201d"},
-        {"text": "State an offer number after one pass of comps", "note": "Don't recalculate. Don't re-pull. Say it and let it stand. (Scope question open with your team.)"},
-        {"text": "Push one change to arrosho.com live", "note": "No checking how it looks. Not tonight either."}
-      ]
-    }
-  };
-
-  /* Needs the room. Only ever on Everything. */
-  var TEAM_ONLY = [
+     `own` marks the two that are physically tied to this house (the starter,
+     the laundry pile). A laptop is not own-space — doing desk work somewhere
+     you aren't set up is the point, not a problem. */
+  var DEFAULTS = [
+    {"text": "Tell someone from memory who'd know better", "note": "e.g. tell a baker friend your starter's hydration % from memory instead of checking your notes first, even though they'd catch it if you're off."},
+    {"text": "Think of it, just do it — no revisiting for 24h", "note": "e.g. an idea for an Arrosho post pops up — post it as-is, don't reopen or tweak it for a full day."},
+    {"text": "Finish a task halfway, stop when your phone timer says", "note": "e.g. set a timer on your phone for a length you don't get to choose carefully, start folding laundry or writing, and stop dead when it goes — no finishing the thought."},
+    {"text": "Admit \u201cyou were right,\u201d no explaining", "note": "e.g. your mom pointed out you mismeasured a recipe last week — text her \u201cyou were right about that,\u201d nothing else added."},
+    {"text": "Send a deliverable, zero framing", "note": "e.g. send the Arrosho outreach draft with no \u201cquick draft, lmk what you think\u201d — just the file."},
+    {"text": "15-min single draft, just send it", "note": "e.g. set a 15-min timer on your phone, write toward a book outline, send whatever exists when it goes off — don't call it a draft."},
+    {"text": "Ask what I've been wrong about, agree", "note": "e.g. ask a roommate \u201cwhat have I been wrong about that I haven't admitted?\u201d and agree with the first thing they say, no debating."},
+    {"text": "One real sentence toward the BYU essay", "note": "e.g. open one of the actual prompts and write one honest sentence toward it before outlining or reading example essays."},
+    {"text": "Cold-call solo, zero rehearsal", "note": "e.g. pick up the phone and dial a real lead within 15 seconds of deciding to call — no mental rehearsal of what you'll say."},
+    {"text": "Dial the developer list within 15 seconds", "note": "Open the call list and dial. No rereading the outreach script first, no skimming objection handling."},
+    {"text": "Work the unanswered SMS replies, top to bottom", "note": "In order. No triaging which ones look promising first — the order is the order."},
+    {"text": "Follow up a lead who went quiet, no rewrite", "note": "No rereading before send. No softening."},
+    {"text": "Sort 10 Texas names spec-vs-custom, one pass, then dial", "note": "No re-sorting. A wrong sort gets found on the call, not before it."},
+    {"text": "Upload the next list and launch the same sitting", "note": "No verification pass beyond the one the SOP actually requires."},
+    {"text": "Write one SMS template, launch it", "note": "No second version held in reserve. No \u201cI'll test both.\u201d"},
+    {"text": "State an offer number after one pass of comps", "note": "Don't recalculate. Don't re-pull. Say it and let it stand. (Scope question open with your team.)"},
+    {"text": "Push one change to arrosho.com live", "note": "No checking how it looks. Not tonight either."},
+    {"text": "Sourdough: commit at hour 2, ready or not", "note": "e.g. feed the starter, and at the 2-hour mark mix and shape the dough even if you're not sure it's peaked.", "own": true},
+    {"text": "Fold laundry, first item within 10 sec", "note": "e.g. walk up to the pile and fold the very first item you touch within 10 seconds — no sorting by color first.", "own": true},
     {"text": "Cards: answer instantly, as absolute fact", "note": "e.g. someone flips a card with a question on it — answer the instant it's asked, out loud, stated as fact, no \u201cI think\u201d or \u201cmaybe.\u201d"},
     {"text": "Get corrected publicly, say thanks, stop", "note": "e.g. someone in group corrects something you said — reply only \u201cyou're right, thanks\u201d and don't defend the original point, then or later."},
     {"text": "Board confession: taught it, didn't do it", "note": "e.g. write on the board something you've taught or written that you personally haven't followed through on, say it out loud — no self-punishing wrap-up."},
@@ -444,14 +385,31 @@
     {"text": "Procrastinated task, no extra time or materials", "note": "e.g. pull out the Arrosho analysis or book outline you've been avoiding and work on it inside session — no extra time, no missing materials excused."},
     {"text": "Cold-call from session, zero rehearsal", "note": "e.g. if logistics allow, dial a real lead from the room, zero rehearsal, in front of your team."}
   ];
-  var WHEEL_ORDER = ["everything","home"];
+
+  /* Retired 2026-08-27 — passive, so they can't be spun for. Stripped out of any
+     saved list on upgrade so they don't linger from an older version. */
+  var RETIRED = [
+    "Answer from memory, don't look it up after",
+    "Give an estimate, no hedge",
+    "Misremember a detail, catch it, say nothing",
+    "Say \u201cI don't know.\u201d Full stop.",
+    "Let someone find their own word",
+    "Don't correct someone who needs help",
+    "Submit the moment it's complete, no re-read",
+    "Leave a known error in something already sent",
+    "Notice a typo, don't send the correction"
+  ];
 
   var saved = load();
   var v3Saved = null, v2Saved = null, v1Saved = null;
   if(!saved){
     try{
-      var rawV3 = localStorage.getItem(V3_KEY);
-      if(rawV3) v3Saved = JSON.parse(rawV3);
+      var rawV4 = localStorage.getItem(V4_KEY);
+      if(rawV4) v3Saved = JSON.parse(rawV4);
+      if(!v3Saved){
+        var rawV3 = localStorage.getItem(V3_KEY);
+        if(rawV3) v3Saved = JSON.parse(rawV3);
+      }
     }catch(e){}
     if(!v3Saved){
       try{
@@ -483,42 +441,21 @@
   }
 
   var state = {
-    active: (migrated && WHEEL_ORDER.indexOf(migrated.active) !== -1) ? migrated.active : "home",
     eliminate: !!(migrated && migrated.eliminate),
-    options: {}
+    options: []
   };
   if(migrated && migrated.options && Array.isArray(migrated.options.home) && migrated.options.home.length){
-    state.options.home = normalizeList(migrated.options.home);
-    // carry forward: any default Home item added since the saved list was written
-    var have = {};
-    state.options.home.forEach(function(it){ have[it.text] = true; });
-    WHEELS.home.defaults.forEach(function(d){
-      if(!have[d.text]) state.options.home.push(d);
-    });
+    var retired = {}; RETIRED.forEach(function(t){ retired[t] = true; });
+    state.options = normalizeList(migrated.options.home).filter(function(it){ return !retired[it.text]; });
+    var have = {}; state.options.forEach(function(it){ have[it.text] = true; });
+    DEFAULTS.forEach(function(d){ if(!have[d.text]) state.options.push(normalizeItem(d)); });
   }else{
-    state.options.home = WHEELS.home.defaults.slice();
+    state.options = normalizeList(DEFAULTS);
   }
 
-  // Everything is derived from Home, never stored.
-  function listFor(id){
-    if(id === "everything"){
-      // wherever you are: nothing that waits for a trigger, nothing tied to the house
-      return state.options.home.filter(function(it){ return !it.passive && !it.own; })
-                              .concat(normalizeList(TEAM_ONLY));
-    }
-    return state.options[id];
-  }
-  // one-time migration: an old single-wheel custom list becomes the starting Home list
-  if(!saved && !v2Saved && v1Saved && Array.isArray(v1Saved.options) && v1Saved.options.length){
-    state.options.home = normalizeList(v1Saved.options);
-    state.eliminate = !!v1Saved.eliminate;
-  }
-
-  // `options` stays a live reference to the active wheel's array — mutate in place (push/splice)
-  // so the rest of the app doesn't need to change; reassigned only on tab switch, see switchWheel().
-  var options = listFor(state.active);
+  // mutated in place (push/splice) so the rest of the app doesn't need to change
+  var options = state.options;
   var eliminate = state.eliminate;
-  var derivedNote = document.getElementById("derivedNote");
   var adderRow = document.getElementById("adderRow");
   var footRow = document.getElementById("footRow");
 
@@ -545,8 +482,6 @@
   var vNote = document.getElementById("verdictNote");
   var elimBox = document.getElementById("eliminate");
   elimBox.checked = eliminate;
-  var wheelNameEl = document.getElementById("wheelName");
-  var tabButtons = Array.prototype.slice.call(document.querySelectorAll(".tab"));
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -739,31 +674,6 @@
     showLog();
   }
 
-  /* ---------- wheel switching ---------- */
-  function switchWheel(id){
-    if(spinning || id === state.active) return;
-    hideLog();
-    state.active = id;
-    options = listFor(id);
-    persist();
-    updateTabs();
-    resetVerdict();
-    render();
-  }
-
-  function updateTabs(){
-    tabButtons.forEach(function(btn){
-      btn.classList.toggle("is-active", btn.dataset.wheel === state.active);
-      btn.setAttribute("aria-selected", btn.dataset.wheel === state.active ? "true" : "false");
-    });
-    var isDerived = !!WHEELS[state.active].derived;
-    wheelNameEl.textContent = "On the wheel — " + WHEELS[state.active].label;
-    derivedNote.classList.toggle("show", isDerived);
-    adderRow.classList.toggle("hide", isDerived);
-    footRow.classList.toggle("hide", isDerived);
-    listEl.classList.toggle("readonly", isDerived);
-  }
-
   function resetVerdict(){
     verdict.classList.remove("is-set");
     vLabel.textContent = "Awaiting fate";
@@ -771,10 +681,6 @@
     vNote.style.display = "none";
     hideLog();
   }
-
-  tabButtons.forEach(function(btn){
-    btn.addEventListener("click", function(){ switchWheel(btn.dataset.wheel); });
-  });
 
   /* ---------- done / skipped tracker ---------- */
   var LOG_KEY = "woad.log.v1";
@@ -821,11 +727,9 @@
 
   /* ---------- list ---------- */
   function persist(){
-    if(!WHEELS[state.active].derived) state.options[state.active] = options;
+    state.options = options;
     state.eliminate = elimBox.checked;
-    var toSave = {active: state.active, eliminate: state.eliminate,
-      options: {home: state.options.home}};
-    save(toSave);
+    save({eliminate: state.eliminate, options: {home: options}});
   }
 
   function render(){
@@ -873,7 +777,6 @@
     var v = input.value.trim();
     if(!v) { input.focus(); return; }
     if(options.length >= 40){ vLabel.textContent = "Wheel is full at 40"; return; }
-    if(WHEELS[state.active].derived) return;
     var item = {text: v, note: "", passive: false, own: false};
     options.push(item);
     input.value = "";
@@ -887,7 +790,7 @@
   cv.addEventListener("click", spin);
   elimBox.addEventListener("change", persist);
   document.getElementById("clear").addEventListener("click", function(){
-    if(spinning || WHEELS[state.active].derived) return;
+    if(spinning) return;
     if(!options.length || confirm("Clear every option?")){
       options = []; persist(); render();
       resetVerdict();
@@ -897,7 +800,6 @@
   window.addEventListener("resize", sizeCanvas);
   if(document.fonts && document.fonts.ready){ document.fonts.ready.then(draw); }
 
-  updateTabs();
   render();
   sizeCanvas();
   apply();
