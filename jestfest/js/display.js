@@ -12,7 +12,7 @@
 // library" and "Host: lobby (TV)" from the design file are combined into
 // one lobby panel here: code/QR/roster always visible, game picker below it.
 
-import { el, clear } from './el.js';
+import { el, clear, captureFocus } from './el.js';
 import { createRoom, RoomSocket, joinUrl } from './net.js';
 import { renderQR } from './qr.js';
 import { renderGameFrame, makeApi, showToast, renderConnBanner } from './shell.js';
@@ -57,10 +57,28 @@ let hostPanelOpen = false;
 let bugNote = '';
 let bugReportText = null; // set only if clipboard copy fails, so the host can select-all by hand
 
+// render() clears and rebuilds the entire tree, which destroys whatever the
+// host is typing into the bug-note box (and the caret with it) -- and the
+// relay pushes `room`/`display` frames constantly, most of which change
+// nothing on screen. Same fix as controller.js: fingerprint exactly what
+// render() reads and skip the rebuild when none of it moved. `bugNote` is
+// deliberately NOT in the key -- it's read only when the textarea is built,
+// so keystrokes must not trigger a re-render at all.
+let lastRenderKey = null;
+
+function renderKey() {
+  return JSON.stringify([
+    relayError ? String(relayError.message || relayError) : null,
+    endedReason, room.code, connStatus, room.state, room.currentGame,
+    room.players, selectedGameId, lastDisplayFrame,
+    hostPanelOpen, bugReportText,
+  ]);
+}
+
 boot();
 
 async function boot() {
-  render();
+  render({ force: true });
   let code;
   try {
     code = await createRoom();
@@ -100,16 +118,24 @@ function describeError(code) {
 // Top-level render dispatch
 // ---------------------------------------------------------------------
 
-function render() {
+function render({ force = false } = {}) {
+  const key = renderKey();
+  if (!force && key === lastRenderKey) return;
+  lastRenderKey = key;
+
+  // Carry the focused field (currently the host tools' bug note) and its
+  // caret across the rebuilds that genuinely are needed.
+  const restore = captureFocus(app);
   clear(app);
-  if (relayError) { app.appendChild(relayUnreachableScreen()); return; }
-  if (endedReason) { app.appendChild(endedScreen()); return; }
-  if (!room.code) { app.appendChild(loadingScreen('Creating your room…')); return; }
-  if (connStatus === 'lost') { app.appendChild(lostScreen()); return; }
+  if (relayError) { app.appendChild(relayUnreachableScreen()); restore(); return; }
+  if (endedReason) { app.appendChild(endedScreen()); restore(); return; }
+  if (!room.code) { app.appendChild(loadingScreen('Creating your room…')); restore(); return; }
+  if (connStatus === 'lost') { app.appendChild(lostScreen()); restore(); return; }
 
   app.appendChild(shellChrome(
     room.state === 'in-game' ? inGamePanel() : lobbyPanel()
   ));
+  restore();
 }
 
 // ---------------------------------------------------------------------
@@ -376,6 +402,7 @@ function hostPanelOverlay() {
         el('textarea', {
           class: 'jf-field', rows: 3, placeholder: 'What went wrong? (optional)',
           value: bugNote, onInput: (e) => { bugNote = e.target.value; },
+          dataset: { jfFocus: 'host-bug-note' },
           style: { width: '100%', resize: 'vertical', boxSizing: 'border-box' },
         }),
         el('button', { class: 'jf-btn jf-btn-primary', style: { marginTop: '10px' }, onClick: copyBugReport },
@@ -403,7 +430,7 @@ function brEditorRows() {
   return el('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
     room.players.map((p) => scoreEditRow(p.name, p.brTotal || 0, (value) => {
       socket && socket.hostAction('editBrTotal', { playerId: p.id, value });
-    }))
+    }, `br-${p.id}`))
   );
 }
 
@@ -411,7 +438,7 @@ function gameScoreEditorRows(gameScores) {
   return el('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
     gameScores.rows.map((p) => scoreEditRow(p.name, p.value ?? 0, (value) => {
       socket && socket.hostAction('setGameScore', { playerId: p.id, value });
-    }))
+    }, `game-${p.id}`))
   );
 }
 
@@ -419,10 +446,13 @@ function gameScoreEditorRows(gameScores) {
  *  input (uncontrolled) rather than module state — this panel re-renders
  *  on every server push, and a controlled input here would fight the host
  *  mid-keystroke every time a `room`/`display` frame arrives. */
-function scoreEditRow(name, currentValue, onSave) {
+function scoreEditRow(name, currentValue, onSave, focusKey) {
   const input = el('input', {
     class: 'jf-field', type: 'number', step: '1', value: String(currentValue),
     style: { width: '90px', padding: '8px 10px', fontSize: '14px' },
+    // Keyed per player so a rebuild mid-correction keeps the host's cursor
+    // and half-typed number in the right row (captureFocus in el.js).
+    dataset: { jfFocus: `score-${focusKey}` },
   });
   return el('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
     el('span', { style: { flex: '1', fontSize: '13.5px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, name),

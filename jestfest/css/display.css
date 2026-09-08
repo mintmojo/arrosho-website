@@ -12,6 +12,23 @@ body.jf-display{background:var(--surface-mist); min-height:100vh;}
   display:flex; align-items:center; justify-content:space-between;
   padding:20px var(--gutter);
 }
+
+/* The header sits on --surface-page (light), but .jf-btn-ghost is defined
+   for dark surfaces: color:var(--text-on-dark) is white, its background is
+   8% white and its border 14% white. On the light page that renders as
+   white text on cream with an invisible border -- the "Host tools" button
+   was being drawn every frame, just completely unreadable, which is why
+   the bug report looked like it had been removed. Re-tint it for a light
+   background here rather than changing .jf-btn-ghost itself, which is
+   correct everywhere else it's used (all dark panels). */
+.jf-display-header .jf-btn-ghost{
+  background:rgba(27,31,10,0.06);
+  color:var(--text-body);
+  border:1px solid var(--border-hairline);
+}
+.jf-display-header .jf-btn-ghost:hover:not(:disabled){
+  background:rgba(27,31,10,0.12);
+}
 @media (max-width:860px){ .jf-display-header{padding:16px var(--gutter-mobile);} }
 
 .jf-display-main{

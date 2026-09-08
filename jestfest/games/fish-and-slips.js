@@ -218,6 +218,9 @@ function biddingController(data, api) {
   const numInput = el('input', {
     class: 'jf-field', type: 'number', inputmode: 'numeric', min: '0', step: '1',
     placeholder: 'How many fish?', value: draftValue,
+    // Lets controller.js's captureFocus() restore cursor + caret if the
+    // tree is rebuilt while this field is focused.
+    dataset: { jfFocus: 'fas-bid' },
     onInput: (e) => { draftValue = e.target.value; },
   });
 

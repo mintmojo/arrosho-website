@@ -228,6 +228,7 @@ function controllerWriting(data, api) {
       countdownEl(api, data.endsAt, 'Time left')
     );
   }
+  pruneDrafts(prompts);
   return panel(
     eyebrow(data.round),
     countdownEl(api, data.endsAt, 'Time left'),
@@ -235,6 +236,19 @@ function controllerWriting(data, api) {
       prompts.map((p) => writingCard(p, api))
     )
   );
+}
+
+// Drafts live here, not in a per-render closure: the controller rebuilds
+// its whole tree on state changes, and a draft held in a closure died with
+// the old <textarea>, silently reverting the box to the server's copy
+// (empty). Keyed by promptId so a rebuild -- or a reconnect -- restores
+// exactly what the player had typed. Cleared on submit and whenever a new
+// set of prompts arrives.
+const drafts = new Map();
+
+function pruneDrafts(prompts) {
+  const live = new Set(prompts.map((p) => p.promptId));
+  for (const id of drafts.keys()) if (!live.has(id)) drafts.delete(id);
 }
 
 function writingCard(p, api) {
@@ -245,15 +259,19 @@ function writingCard(p, api) {
       api.el('p', { style: { margin: '6px 0 0', fontSize: '14px', opacity: 0.8 } }, p.myAnswer)
     );
   }
-  let value = p.myAnswer || '';
+  if (!drafts.has(p.promptId)) drafts.set(p.promptId, p.myAnswer || '');
   const textarea = api.el('textarea', {
     class: 'jf-field', rows: '2', maxlength: '140', placeholder: 'Your funniest answer…',
-    value,
-    onInput: (e) => { value = e.target.value; },
+    value: drafts.get(p.promptId),
+    // Lets the controller's captureFocus() put the cursor back in this exact
+    // box, at the same caret position, if a rebuild is unavoidable.
+    dataset: { jfFocus: `kwiplash-answer-${p.promptId}` },
+    onInput: (e) => { drafts.set(p.promptId, e.target.value); },
   });
   const submit = () => {
-    const trimmed = value.trim();
+    const trimmed = (drafts.get(p.promptId) || '').trim();
     if (!trimmed) return;
+    drafts.delete(p.promptId);
     api.send('submit', { promptId: p.promptId, text: trimmed });
   };
   return api.el('div', { class: 'jf-card-inset', style: { padding: '18px' } },

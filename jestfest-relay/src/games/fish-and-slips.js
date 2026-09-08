@@ -95,6 +95,15 @@ export default class FishAndSlips {
     this.overtimeExtensions = 0;
     /** @type {Record<string, number>} playerId -> Stash (integer fish count) */
     this.stashes = {};
+    // The Bank is a real, frozen pot -- NOT a live average. The note: "The
+    // Bank starts at 10 fish, and after every round, resets to the average
+    // of all players' Stashes." Recomputing it on every read (the old
+    // _bank() did) meant it silently moved mid-round -- a Bust or a Slip
+    // collision resets a Stash to 10, which changed the average, so the
+    // cascade winner was paid a different number than the one the table
+    // had been staring at all round, and every join/leave nudged it too.
+    // Frozen here, recomputed exactly once per round in _startRound().
+    this.bank = STARTING_STASH;
     /** 'bidding' | 'revealed' | 'duel' | 'poach' */
     this.phase = "bidding";
     this.round = null; // current round working state, see _startRound()
@@ -249,16 +258,18 @@ export default class FishAndSlips {
     return p ? p.name : "?";
   }
 
-  /** Bank is always the live average of current Stashes (note: "after every
-   *  round, resets to the average of all players' Stashes" -- computing it
-   *  as a continuously-true derived value, rather than an event we might
-   *  forget to fire after every one of the several different ways a round
-   *  can end, is equivalent at t=0 (everyone starts at 10) and stays
-   *  correct through Busts, Slip collisions, and Poaches alike.) */
+  /** The Bank currently on the table. Constant for the whole round -- see
+   *  the comment on this.bank in _resetState(). */
   _bank() {
+    return this.bank;
+  }
+
+  /** Note: "after every round, resets to the average of all players'
+   *  Stashes." Called once, from _startRound(), so the value the table sees
+   *  while bidding is the exact value the winner is paid. */
+  _recomputeBank() {
     const values = Object.values(this.stashes);
-    if (values.length === 0) return STARTING_STASH;
-    return Math.round(sum(values) / values.length);
+    this.bank = values.length === 0 ? STARTING_STASH : Math.round(sum(values) / values.length);
   }
 
   // ------------------------------------------------------------------
@@ -266,6 +277,7 @@ export default class FishAndSlips {
   // ------------------------------------------------------------------
 
   _startRound() {
+    this._recomputeBank();
     this.phase = "bidding";
     this.duelStack = [];
     this.round = {
@@ -421,7 +433,22 @@ export default class FishAndSlips {
 
     this._resolveTierThen("highest", entries, [], meta, (highestId, highestValue, rest) => {
       if (rest.length === 0) {
-        this._settleLeader(highestId, highestValue, 0, meta);
+        // SOLE SURVIVOR. Confirmed by Ethan 2026-09-06 after a live round:
+        // the note's "Toll = highest - second-highest" presumes a second
+        // cast exists to measure against, and its "paid to the
+        // second-highest bidder" presumes a recipient. With nobody left --
+        // every other cast nulled by a Slip collision, or capsized out of
+        // the cascade -- there is neither, so the Toll is 0 and the lone
+        // survivor simply takes the Market.
+        //
+        // The previous reading passed a literal 0 as the second-highest
+        // value, which made the Toll the survivor's ENTIRE cast: a Slip
+        // collision reliably capsized the one honest bidder too, and the
+        // round died with no winner and no Market movement. See the
+        // 2026-09-06 bug report (Ethan 200000/SLIP, b 2000, kaj 666/SLIP,
+        // A 1/SLIP -> "No survivors this round"); b now wins that round
+        // and takes the Market.
+        this._settleLeader(highestId, highestValue, highestValue, meta);
         return;
       }
       this._resolveTierThen(
@@ -526,10 +553,8 @@ export default class FishAndSlips {
       return;
     }
 
-    // Snapshot the Bank BEFORE paying it out -- _bank() is a live average
-    // over this.stashes, so computing it again after mutating the leader's
-    // own entry below would silently report (and the leader would actually
-    // receive) a *different*, self-referential number.
+    // The Bank is frozen for the round (see this.bank), so this is exactly
+    // the number the table saw while bidding.
     const bankAwarded = this._bank();
     this.stashes[leaderId] = stash - tariff + bankAwarded;
     // The Tariff is PAID TO the second-highest bidder, not burned. The note
@@ -1104,6 +1129,7 @@ export default class FishAndSlips {
       roundsPlayed: this.roundsPlayed,
       overtimeExtensions: this.overtimeExtensions,
       stashes: this.stashes,
+      bank: this.bank,
       phase: this.phase,
       round: this.round,
       // Functions (`onResolved`) obviously can't survive JSON. Persist just
@@ -1140,6 +1166,12 @@ export default class FishAndSlips {
     this.roundsPlayed = saved.roundsPlayed ?? 0;
     this.overtimeExtensions = saved.overtimeExtensions ?? 0;
     this.stashes = saved.stashes ?? {};
+    // Older saves predate the frozen Bank; fall back to the average so a
+    // room hibernated on the previous build restores to a sane number.
+    this.bank = saved.bank ?? (() => {
+      const v = Object.values(this.stashes);
+      return v.length === 0 ? STARTING_STASH : Math.round(sum(v) / v.length);
+    })();
     this.phase = saved.phase ?? "bidding";
     this.round = saved.round ?? null;
     this.poach = saved.poach ?? null;
@@ -1208,7 +1240,9 @@ export default class FishAndSlips {
 
       if (d.reason === "highest") {
         if (rest.length === 0) {
-          this._settleLeader(winnerId, d.value, 0, meta);
+          // Sole survivor -- no second-highest, so no Toll. Must match the
+          // live path in _resolveRanked() exactly; see the long comment there.
+          this._settleLeader(winnerId, d.value, d.value, meta);
           return;
         }
         this._resolveTierThen(

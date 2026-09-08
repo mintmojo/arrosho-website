@@ -8,7 +8,7 @@
 // 'status' events as a calm "Reconnecting…" banner instead of anything
 // alarming.
 
-import { el, clear, icon } from './el.js';
+import { el, clear, icon, captureFocus } from './el.js';
 import {
   RoomSocket, sanitizeRoomCode, isCompleteRoomCode, CODE_LENGTH,
   loadReconnect, clearReconnect, buildRoomCodeInput,
@@ -28,6 +28,25 @@ let room = { code: '', state: 'lobby', currentGame: null, players: [] };
 let me = null; // {id, name, brTotal} — filled in from `hello` + kept in sync via `room`
 let endedReason = null;
 let lastControllerFrame = null;
+
+// render() tears the whole tree down (clear(app)) and rebuilds it, which
+// destroys any focused <textarea> along with whatever the player had typed
+// into it -- on a phone that reads as "the keyboard closed and ate my
+// answer". Sockets push `room` frames constantly (every join, leave,
+// submit, reconnect), and almost none of them change anything this view
+// actually renders. So: fingerprint exactly the state render() reads, and
+// skip the rebuild when nothing in it moved. Anything not listed here is,
+// by definition, not on screen.
+let lastRenderKey = null;
+
+function renderKey() {
+  return JSON.stringify([
+    !!socket, connStatus, endedReason, code,
+    me && [me.id, me.name, me.brTotal],
+    room.state, room.currentGame,
+    lastControllerFrame,
+  ]);
+}
 
 // A stored reconnectToken for this exact code means a page reload mid-game
 // can rejoin without asking again — sessionStorage is what makes that
@@ -64,8 +83,7 @@ function connect() {
   connStatus = 'connecting';
   me = null;
   endedReason = null;
-  render();
-
+  render({ force: true });
   socket = new RoomSocket({ role: 'controller', code, name });
   socket.addEventListener('status', (e) => { connStatus = e.detail; render(); });
   socket.addEventListener('hello', (e) => {
@@ -109,17 +127,31 @@ function describeJoinError(errCode) {
 // Top-level render dispatch
 // ---------------------------------------------------------------------
 
-function render() {
+function render({ force = false } = {}) {
+  const key = renderKey();
+  if (!force && key === lastRenderKey) return;
+  lastRenderKey = key;
+
+  // A rebuild is genuinely needed -- carry the focused field's identity,
+  // text and caret across it so an unavoidable re-render (a view change, a
+  // reconnect) doesn't silently discard what is being typed.
+  const restore = captureFocus(app);
   clear(app);
   document.body.classList.add('jf-controller');
 
-  if (!socket) { app.appendChild(joinScreen()); return; }
-  if (endedReason) { app.appendChild(shell(endedBody())); return; }
-  if (connStatus === 'lost') { app.appendChild(shell(lostBody())); return; }
-  if (!me) { app.appendChild(shell(centerState('spinner', 'Joining…', ''))); return; }
-  if (room.state === 'in-game' && lastControllerFrame) { app.appendChild(shell(inGameBody())); return; }
+  if (!socket) { app.appendChild(joinScreen()); restore(); return; }
+  if (endedReason) { app.appendChild(shell(endedBody())); restore(); return; }
+  if (connStatus === 'lost') { app.appendChild(shell(lostBody())); restore(); return; }
+  if (!me) { app.appendChild(shell(centerState('spinner', 'Joining…', ''))); restore(); return; }
+  if (room.state === 'in-game' && lastControllerFrame) {
+    app.appendChild(shell(inGameBody()));
+    restore();
+    return;
+  }
   app.appendChild(shell(waitingBody()));
+  restore();
 }
+
 
 function shell(bodyNode) {
   return el('div', { class: 'jf-controller-shell' },

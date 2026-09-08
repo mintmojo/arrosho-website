@@ -63,6 +63,41 @@ function appendKids(node, kids) {
   }
 }
 
+/**
+ * Snapshots which field inside `root` currently has focus, plus its caret,
+ * and returns a function that re-applies both to the equivalent field after
+ * a re-render. Both clients rebuild their whole tree on state changes, which
+ * destroys the focused node — on a phone that reads as "the keyboard closed
+ * mid-sentence". Fields opt in by setting `dataset: { jfFocus: '<stable
+ * key>' }`; the key must survive the rebuild (an id, not an array index).
+ *
+ * Returns a no-op when nothing relevant was focused, so callers can always
+ * call the result unconditionally.
+ *
+ * @param {HTMLElement} root  the container about to be cleared and rebuilt
+ * @returns {() => void}
+ */
+export function captureFocus(root) {
+  const active = document.activeElement;
+  const key = active && active.dataset ? active.dataset.jfFocus : null;
+  if (!key) return () => {};
+  const start = active.selectionStart;
+  const end = active.selectionEnd;
+  // The rebuilt field is constructed from server state, so a field the host
+  // is mid-way through typing into would otherwise snap back to the old
+  // value under their cursor. If it was focused, what they typed wins.
+  const value = active.value;
+  return () => {
+    const next = root.querySelector(`[data-jf-focus="${CSS.escape(key)}"]`);
+    if (!next) return;
+    if (value !== undefined && next.value !== value) next.value = value;
+    next.focus({ preventScroll: true });
+    // Not every focusable field exposes a selection range (checkboxes,
+    // number inputs in some engines) — restoring focus alone is still right.
+    try { next.setSelectionRange(start, end); } catch { /* no selection API here */ }
+  };
+}
+
 /** Removes every child of a node — the safe, innerHTML-free way to clear a mount point. */
 export function clear(node) {
   while (node.firstChild) node.removeChild(node.firstChild);
