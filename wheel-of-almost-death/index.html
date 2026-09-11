@@ -266,6 +266,22 @@
   #install{display:none}
   #install.show{display:inline-block}
 
+  .presetSec{margin-top:18px}
+  .presetPanel{
+    display:none;margin-top:12px;padding:14px 14px 16px;
+    border:1px dashed var(--rule);border-radius:3px;
+    background:linear-gradient(#1B1412,#171110);
+  }
+  .presetPanel.show{display:block}
+  .presetPanel ul{list-style:none;margin:0 0 14px;padding:0}
+  .presetPanel li{
+    padding:8px 4px;border-bottom:1px solid #241C19;
+    font-size:13.5px;color:#C9BDAC;line-height:1.4;
+  }
+  .presetPanel li:last-child{border-bottom:0}
+  .presetPanel li.have{color:#6A5D51}
+  .presetActions{display:flex;gap:8px}
+
   @media (prefers-reduced-motion:reduce){
     .ticker{transition:none}
     .verdict.is-set .value{animation:none}
@@ -343,6 +359,17 @@
     <span><button class="linkish" id="install" type="button" style="letter-spacing:.2em">Install app</button></span>
     <a href="https://arrosho.com">arrosho.com</a>
   </div>
+
+  <div class="presetSec">
+    <button class="linkish" id="presetToggle" type="button">Add Ethan&rsquo;s perfectionism exposure list</button>
+    <div class="presetPanel" id="presetPanel">
+      <ul id="presetList"></ul>
+      <div class="presetActions">
+        <button class="btn" id="presetAdd" type="button">Add</button>
+        <button class="linkish" id="presetCancel" type="button">Cancel</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -384,7 +411,11 @@
 
      `own` marks the two that are physically tied to this house (the starter,
      the laundry pile). A laptop is not own-space — doing desk work somewhere
-     you aren't set up is the point, not a problem. */
+     you aren't set up is the point, not a problem.
+
+     DEFAULTS is no longer auto-seeded. A fresh install starts with an empty
+     wheel; this list only gets added if you tap "Add Ethan's perfectionism
+     exposure list" at the bottom of the page and confirm it. */
   var DEFAULTS = [
     {"text": "15-min single draft, just send it", "note": "e.g. set a 15-min timer on your phone, write toward a book outline, send whatever exists when it goes off — don't call it a draft."},
     {"text": "Ask what I've been wrong about, agree", "note": "e.g. ask a roommate \u201cwhat have I been wrong about that I haven't admitted?\u201d and agree with the first thing they say, no debating."},
@@ -493,10 +524,9 @@
     state.options.forEach(function(it){
       if(Object.prototype.hasOwnProperty.call(scope, it.text)) it.own = scope[it.text];
     });
-    var have = {}; state.options.forEach(function(it){ have[it.text] = true; });
-    DEFAULTS.forEach(function(d){ if(!have[d.text]) state.options.push(normalizeItem(d)); });
+    // Deletions are final: a removed default does not come back on reload.
   }else{
-    state.options = normalizeList(DEFAULTS);
+    state.options = [];
   }
 
   // Home is the live master array (mutated in place). Default is a derived copy,
@@ -873,6 +903,47 @@
     if(!options.length || confirm("Clear every option?")){
       options = []; persist(); render();
       resetVerdict();
+    }
+  });
+
+  /* ---------- preset: Ethan's perfectionism exposure list ---------- */
+  var presetToggle = document.getElementById("presetToggle");
+  var presetPanel = document.getElementById("presetPanel");
+  var presetListEl = document.getElementById("presetList");
+  var presetAddBtn = document.getElementById("presetAdd");
+  var presetCancelBtn = document.getElementById("presetCancel");
+
+  function renderPresetList(){
+    presetListEl.innerHTML = "";
+    var have = {}; state.options.forEach(function(it){ have[it.text] = true; });
+    DEFAULTS.forEach(function(d){
+      var li = document.createElement("li");
+      var already = !!have[d.text];
+      if(already) li.className = "have";
+      li.textContent = d.text + (already ? " \u2014 already on the wheel" : "");
+      presetListEl.appendChild(li);
+    });
+  }
+
+  presetToggle.addEventListener("click", function(){
+    var willShow = !presetPanel.classList.contains("show");
+    if(willShow) renderPresetList();
+    presetPanel.classList.toggle("show", willShow);
+  });
+  presetCancelBtn.addEventListener("click", function(){
+    presetPanel.classList.remove("show");
+  });
+  presetAddBtn.addEventListener("click", function(){
+    var have = {}; state.options.forEach(function(it){ have[it.text] = true; });
+    var added = 0;
+    DEFAULTS.forEach(function(d){
+      if(!have[d.text]){ state.options.push(normalizeItem(d)); have[d.text] = true; added++; }
+    });
+    presetPanel.classList.remove("show");
+    if(added){
+      options = listFor(state.active);
+      persist();
+      render();
     }
   });
 
