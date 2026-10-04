@@ -1,5 +1,5 @@
 {
-  "version": 8,
+  "version": 9,
   "course": "Spanish",
   "lessons": [
     {
@@ -27,6 +27,15 @@
         },
         {
           "t": "context",
+          "title": "How Bedrock's flashcards work",
+          "text": "Bedrock does the spacing for you with a <b>spaced repetition system</b>, or SRS. It's a deck of flashcards that schedules itself.<br><br>Every card starts at level 1. Get it right and it waits longer before it comes back: 1 day, then 2, 4, 8, 16, 32 and 64. Miss it and it drops back to level 1, and you'll see it again a few cards later in the same session.<br><br>So the words you know drift out to months, and the ones you don't keep coming back until they stick. You never have to decide what to review. You just clear what's due."
+        },
+        {
+          "t": "teach",
+          "text": "Where the cards come from:<br><br>• <b>Your lessons.</b> When you finish a lesson, the words it taught become cards. Rules don't, because you can work those out.<br>• <b>The core list,</b> if you want it. The first time you tap <b>Review vocabulary</b>, Bedrock offers to download the 4,000 most common words in Spanish.<br><br>New cards come in 15 a day, so the pile never buries you. And if one word keeps slipping, after three misses Bedrock offers to let you attach your own picture or a note about what it reminds you of."
+        },
+        {
+          "t": "context",
           "title": "Why input matters most",
           "text": "Here's the part most apps won't tell you. <b>Grammar is absorbed, not installed.</b> You pick it up by understanding lots of real Spanish (podcasts, shows, conversation, YouTube), not by drilling rules."
         },
@@ -42,6 +51,11 @@
           "t": "context",
           "title": "How to use these lessons",
           "text": "Say every answer <b>out loud</b> before you check. Silent guessing barely works.<br><br>Be wrong often. That's how it works, not a failure.<br><br>Short and daily beats long and rare."
+        },
+        {
+          "t": "context",
+          "title": "What to expect",
+          "text": "Go through the lessons fairly quickly. They're short on purpose, and each one only has to make you aware of one thing. Don't wait until you've mastered a lesson to start the next.<br><br>Once you're through them, the work moves to review: your flashcards here each day, and practice with an AI using the robot button next to each lesson. That, plus listening, is where it turns into Spanish you can actually use."
         },
         {
           "t": "teach",
@@ -123,7 +137,7 @@
         {
           "t": "context",
           "title": "How to keep going with an AI",
-          "text": "At the end of every lesson there's a button: <b>Keep practising with an AI</b>. It copies a prompt you paste into ChatGPT, Claude, Gemini or any AI chat. The home screen has one too, covering everything you've finished.<br><br>The prompt sends the AI to this site to read the course itself, and tells it which lesson you just did and every rule you've learned so far. It asks for sentences that use only those rules, and words from Bedrock's core list: the 4,000 most common words in Spanish.<br><br>You won't know most of those words yet, and that's on purpose. <b>When one comes up that you don't know, guess.</b> Say what you think it means, and try the sentence anyway. The AI tells you if you were right and explains it. A wrong guess sticks far better than being told, the same way your mistakes in these lessons do.<br><br>Two more things. AIs make mistakes, so if one disagrees with a lesson, trust the lesson and ask it to explain. And Bedrock never sees that conversation. It happens in your AI app, not here."
+          "text": "Next to every lesson there's a small robot button, and there's one at the end of each lesson too. Tap it and it copies a prompt you paste into ChatGPT, Claude, Gemini or any AI chat.<br><br>The prompt sends the AI to this site to read the course itself, and tells it which lesson you're on and every rule you've learned so far. It asks for sentences that use only those rules, and words from Bedrock's core list: the 4,000 most common words in Spanish.<br><br>You won't know most of those words yet, and that's on purpose. <b>When one comes up that you don't know, guess.</b> Say what you think it means, and try the sentence anyway. The AI tells you if you were right and explains it. A wrong guess sticks far better than being told, the same way your mistakes in these lessons do.<br><br>Two more things. AIs make mistakes, so if one disagrees with a lesson, trust the lesson and ask it to explain. And Bedrock never sees that conversation. It happens in your AI app, not here."
         },
         {
           "t": "context",
@@ -787,7 +801,7 @@
         "no goes in front of the verb, and nothing else moves",
         "ser and estar can follow any opening as base forms"
       ],
-      "ai": "Practise puedo and negation with no, mixed with tengo que and debo. Include sentences where ser or estar follow an opening (tengo que estar aquí), so I still have to choose between them."
+      "ai": "Practice puedo and negation with no, mixed with tengo que and debo. Include sentences where ser or estar follow an opening (tengo que estar aquí), so I still have to choose between them."
     },
     {
       "id": 12,
@@ -1022,9 +1036,9 @@
       "unlocks": [
         "me gusta + a thing or a base form: I like (it pleases me)",
         "no me gusta",
-        "plural things take gustan (only met, not practised)"
+        "plural things take gustan (only met, not practiced)"
       ],
-      "ai": "Practise me gusta and no me gusta with my nouns and base-form verbs. Watch for 'yo gusto' or 'me gusto' and explain the it-pleases-me logic when I slip. Keep to singular things; don't make me use gustan yet."
+      "ai": "Practice me gusta and no me gusta with my nouns and base-form verbs. Watch for 'yo gusto' or 'me gusto' and explain the it-pleases-me logic when I slip. Keep to singular things; don't make me use gustan yet."
     },
     {
       "id": 16,
@@ -1330,7 +1344,7 @@
         "estás and eres",
         "questions keep the same word order, with rising voice and ¿ ?"
       ],
-      "ai": "Talk to me as tú. Give me sentences addressed to a friend, and questions to ask them. Mix statements and questions so I practise both the -as/-es endings and the rising-voice questions."
+      "ai": "Talk to me as tú. Give me sentences addressed to a friend, and questions to ask them. Mix statements and questions so I practice both the -as/-es endings and the rising-voice questions."
     },
     {
       "id": 20,
@@ -1944,7 +1958,7 @@
         "conditional: the whole base form + -ía (prepararía, decidiría)",
         "debería (I ought to), podría (I could), me gustaría (I'd like)"
       ],
-      "ai": "Practise would-sentences, and polite requests with me gustaría, podría and debería. Sometimes give me a blunt sentence (quiero visitar) and ask me to make it polite."
+      "ai": "Practice would-sentences, and polite requests with me gustaría, podría and debería. Sometimes give me a blunt sentence (quiero visitar) and ask me to make it polite."
     },
     {
       "id": 29,
@@ -2068,7 +2082,7 @@
         {
           "t": "context",
           "title": "Where this leaves you",
-          "text": "That's the map. Every structure Spanish uses most is now something you've met. The course can't make them automatic. Only hours of listening do that.<br><br>What it can do is make sure that when you hear <b>si pudiera</b> in a song or a show, you know exactly what's going on. Keep listening, and keep using the AI button to practise whatever still feels slow."
+          "text": "That's the map. Every structure Spanish uses most is now something you've met. The course can't make them automatic. Only hours of listening do that.<br><br>What it can do is make sure that when you hear <b>si pudiera</b> in a song or a show, you know exactly what's going on. Keep listening, and keep using the robot button to practice whatever still feels slow."
         }
       ],
       "vocab": [

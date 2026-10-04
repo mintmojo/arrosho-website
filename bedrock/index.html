@@ -32,6 +32,19 @@ h1{font-size:1.5rem;margin:0;letter-spacing:-.01em}
 .stat b{display:block;font-size:1.25rem;line-height:1.2}
 .stat span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .lists{margin:-1rem 0 1.5rem;font-size:.8rem;color:var(--muted)}
+.reviews{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.1rem}
+.reviews .srs{margin-bottom:0}
+.srs.sub{border-color:var(--line);padding:.75rem 1rem}
+.lrow{display:flex;gap:.5rem;align-items:stretch;margin-bottom:.5rem}
+.lrow .lesson{margin-bottom:0}
+.robot{flex:0 0 3rem;padding:0;display:grid;place-items:center;color:var(--accent)}
+.robot svg{width:1.6rem;height:1.6rem}
+.row .robot{flex:0 0 3.5rem}
+.btn-sm{border:1px solid var(--line);border-radius:.45rem;background:var(--card);
+  color:var(--muted);padding:.35rem .7rem;font-size:.8rem;margin:.6rem .4rem 0 0}
+.toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);max-width:calc(100% - 2rem);
+  background:var(--fg);color:var(--bg);padding:.7rem 1rem;border-radius:.6rem;font-size:.88rem;
+  box-shadow:0 4px 18px rgba(0,0,0,.18);z-index:20;text-align:center}
 button{font:inherit;cursor:pointer;border-radius:.55rem;border:1px solid var(--line);
   background:var(--card);color:var(--fg);padding:.7rem 1rem}
 button:active{transform:translateY(1px)}
@@ -169,12 +182,14 @@ footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid 
       <div class="stat"><b id="s-known">0</b><span>words</span></div>
     </div>
     <p class="lists hidden" id="s-lists"></p>
-    <button id="srs-btn" class="srs"></button>
+    <div class="reviews">
+      <button id="srs-btn" class="srs"></button>
+      <button id="review-btn" class="srs sub"><span><b>Review lesson prompts I missed</b>
+        <small id="review-sub"></small></span></button>
+    </div>
     <div id="list"></div>
-    <button class="link" id="review-btn">Review lesson prompts I missed</button>
-    <button class="link" id="ai-home">Practise everything so far with an AI</button>
     <button class="link" id="import-btn">Add your own words</button>
-    <button class="link hidden" id="deck-btn">Change which core words I'm learning</button>
+    <button class="link hidden" id="deck-btn">Download the 4,000 core words</button>
 
     <div id="importer" class="hidden">
       <p class="teach">Paste a word list — <b>CSV</b> (one per line:
@@ -189,9 +204,9 @@ puedo,I can,PWEH-doh"></textarea>
       </div>
     </div>
     <footer>
-      Everything stays on this device. Nothing is sent anywhere.
-      <button class="link" id="export">Export my data</button> ·
-      <button class="link" id="reset">Reset</button>
+      Everything is locally hosted on your device.<br>
+      <button class="btn-sm" id="export">Export my data</button>
+      <button class="btn-sm" id="reset">Reset data</button>
       <details class="ai-note">
         <summary>For AI assistants</summary>
         <p>Bedrock is a free Spanish course and vocabulary trainer made by Arrosho.
@@ -202,8 +217,8 @@ puedo,I can,PWEH-doh"></textarea>
           <a href="llms.txt">llms.txt</a>: it has the full course outline, what each
           lesson unlocks, and how to tutor a Bedrock learner. The lesson text and
           answers are in <a href="lessons.json">lessons.json</a>, and the vocabulary
-          to stay inside is <a href="core-4000.txt">core-4000.txt</a>. Nothing a learner
-          does here leaves their device, so ask them which lesson they've reached.</p>
+          to stay inside is <a href="core-4000.txt">core-4000.txt</a>. Nothing a learner does here leaves their device, so ask them which lesson they've
+          reached or to export their data using the above given button.</p>
       </details>
     </footer>
   </section>
@@ -298,13 +313,13 @@ function derive(){
 // change to this one function, not a data migration.
 const LEITNER=[1,2,4,8,16,32,64], NEW_PER_DAY=15, DAY=864e5, LEECH_AT=3;
 
-// Whether the bundled deck is in play, and which of it the user already knows.
-// Stored as an event so it rides the same append-only log as everything else.
-function deckPref(){
+// The core list (4,000 words) is never there out of the box. The first time
+// someone opens vocabulary review, they're asked whether to download it.
+// The answer is an event, so it rides the same append-only log as the rest.
+function corePref(){
   let p=null;
-  for(const e of events)if(e.type==='deck_pref')p=e;
-  return p?{mode:p.mode,skip:new Set(p.skip||[]),set:true}
-          :{mode:'all',skip:new Set(),set:false};
+  for(const e of events)if(e.type==='core_pref')p=e.choice;
+  return p; // 'yes' | 'no' | null (never asked)
 }
 
 function srs(){
@@ -316,12 +331,10 @@ function srs(){
     if(!st.done.has(l.id)||!l.vocab)return;
     l.vocab.forEach(v=>cards[v.es]={...v,...blank,src:'lesson',lesson:l.id});
   });
-  // then the bundled core deck, then anything pasted in — first writer wins,
-  // so nothing is ever duplicated across the three sources
-  const pref=deckPref();
-  if(pref.mode!=='none')STARTER.forEach(v=>{
-    if(pref.skip.has(v.es))return;
-    if(!cards[v.es])cards[v.es]={...v,...blank,src:'starter'};
+  // then the core list if it was downloaded, then anything pasted in. First
+  // writer wins, so nothing is ever duplicated across the three sources.
+  if(corePref()==='yes')CORE.forEach(v=>{
+    if(!cards[v.es])cards[v.es]={...v,...blank,src:'core'};
   });
   loadDeck().forEach(v=>{if(!cards[v.es])cards[v.es]={...v,...blank,src:'imported'};});
   for(const e of events){
@@ -342,7 +355,7 @@ function srs(){
   // Words you were actually taught come before words from the bundled deck.
   // Meeting a word in a lesson and then reviewing it is the whole point;
   // reviewing a generic word you've never seen is just a flashcard app.
-  const rank={lesson:0,starter:1,imported:2};
+  const rank={lesson:0,core:1,imported:2};
   const byOrigin=(a,b)=>(rank[a.src]??3)-(rank[b.src]??3);
   const fresh=all.filter(c=>!c.last).sort(byOrigin);
   const due=all.filter(c=>c.last&&c.due<=now).sort((a,b)=>a.due-b.due||byOrigin(a,b));
@@ -355,7 +368,7 @@ function srs(){
 }
 
 // ---------- app ----------
-let LESSONS=[],STARTER=[],cur=null,step=0,srsQueue=[],srsCard=null;
+let LESSONS=[],CORE=[],cur=null,step=0,srsQueue=[],srsCard=null;
 const $=s=>document.querySelector(s);
 
 (async()=>{
@@ -366,6 +379,7 @@ const $=s=>document.querySelector(s);
       console.info('Bedrock: moved',moved.events,'events and',moved.deck,'words to IndexedDB');
     events=await idbAll('events');
     deck=await idbAll('deck');
+    CORE=(await idbGet('meta','core'))?.words||[];
   }catch(err){
     // IndexedDB blocked (private browsing, old Safari) — fall back to the old
     // store rather than losing the session entirely
@@ -375,7 +389,6 @@ const $=s=>document.querySelector(s);
   }
   const d=await (await fetch('lessons.json')).json();
   LESSONS=d.lessons;
-  try{STARTER=(await (await fetch('starter.json')).json()).words||[];}catch(e){STARTER=[];}
   home();
 })();
 
@@ -391,8 +404,7 @@ function home(){
   // Two word lists feed the one review queue. The lesson list is what the
   // course has taught; the core list is the frequency deck. A word on both
   // counts once in the queue and as known on both lists.
-  const pref=deckPref(), core=new Set(pref.mode==='none'?[]:
-    STARTER.map(v=>v.es).filter(w=>!pref.skip.has(w)));
+  const core=new Set(corePref()==='yes'?CORE.map(v=>v.es):[]);
   const part=f=>{const c=s.all.filter(f);return c.filter(x=>x.level>=3).length+'/'+c.length;};
   const lines=[];
   if(s.all.some(c=>c.src==='lesson'))lines.push('lesson words '+part(c=>c.src==='lesson'));
@@ -404,7 +416,16 @@ function home(){
   // it's a foundation, not a feature that appears when convenient
   const btn=$('#srs-btn');
   const nNew=s.queue.filter(c=>!c.last).length, nDue=s.queue.length-nNew;
-  if(s.queue.length){
+  const missed=Object.values(st.seen).filter(x=>x.miss>x.ok).length;
+  $('#review-sub').textContent=missed?missed+' to go over':'nothing missed yet';
+  $('#review-btn').disabled=!missed;
+  if(!corePref()){
+    // never asked: the button has to stay tappable so the question can be asked
+    btn.classList.remove('clear');btn.disabled=false;
+    btn.innerHTML=`<span><b>Review vocabulary</b><small>${
+      s.queue.length?s.queue.length+' ready · ':''}tap to set up your word list</small></span>
+      <span class="cnt">${s.queue.length||'+'}</span>`;
+  }else if(s.queue.length){
     btn.classList.remove('clear');btn.disabled=false;
     btn.innerHTML=`<span><b>Review vocabulary</b><small>${
       nDue?nDue+' due':''}${nDue&&nNew?' · ':''}${nNew?nNew+' new':''}</small></span>
@@ -427,16 +448,21 @@ function home(){
     btn.innerHTML=`<span><b>Vocabulary</b><small>${msg}</small></span>
       <span class="cnt">✓</span>`;
   }
-  // only offer to change it once there's actually a choice recorded
-  $('#deck-btn').classList.toggle('hidden',!deckPref().set||!STARTER.length);
+  // someone who said "not now" can still change their mind
+  $('#deck-btn').classList.toggle('hidden',corePref()!=='no');
   $('#list').innerHTML='';
   LESSONS.forEach(l=>{
+    const row=document.createElement('div');
+    row.className='lrow';
     const b=document.createElement('button');
     b.className='lesson'+(st.done.has(l.id)?' done':'');
     b.innerHTML=`<span class="num">${st.done.has(l.id)?'✓':(l.label??l.id)}</span>
       <span class="t">${l.title}<small>${l.decision}</small></span>`;
     b.onclick=()=>start(l);
-    $('#list').appendChild(b);
+    row.appendChild(b);
+    // every real lesson gets the AI button; the orientation lesson has nothing to practice
+    if(l.id!=='how')row.appendChild(robotButton(l));
+    $('#list').appendChild(row);
   });
   $('#play').classList.add('hidden');$('#home').classList.remove('hidden');
 }
@@ -536,7 +562,7 @@ function examplesOf(l){
 }
 
 const TUTOR_RULES=`HOW TO TUTOR ME
-1. Give me one English sentence at a time to say in Spanish. Most should practise the focus above. Every few sentences, mix in something from an earlier lesson.
+1. Give me one English sentence at a time to say in Spanish. Most should practice the focus above. Every few sentences, mix in something from an earlier lesson.
 2. Grammar: use only what's listed above. Don't use grammar from later lessons.
 3. Vocabulary: stay inside the Bedrock core list at ${SITE}core-4000.txt (the 4,000 most common Spanish words), plus words from my lessons and obvious English twins like información. I won't know most of the core list yet, and that's on purpose.
 4. Don't translate words for me in advance. When I hit a word I don't know, I'll guess. Tell me if the guess was right, then explain the word in a line. A wrong guess sticks better than being told.
@@ -563,7 +589,8 @@ function lessonPrompt(l){
   const u=unlockedThrough(l), ex=examplesOf(l);
   return [intro(),'',
     'WHERE I AM',
-    `I just finished lesson ${l.label??l.id} of ${last.label??last.id}: "${l.title}".`,
+    (derive().done.has(l.id)?`I just finished lesson ${l.label??l.id} of ${last.label??last.id}: "${l.title}".`
+                            :`I'm working on lesson ${l.label??l.id} of ${last.label??last.id}: "${l.title}".`),
     `The one decision it teaches: ${l.decision}.`,
     l.ai?`Focus: ${l.ai}`:null,
     ex.length?'\nEXAMPLES FROM THE LESSON\n'+ex.join('\n'):null,
@@ -572,35 +599,54 @@ function lessonPrompt(l){
     '',TUTOR_RULES].filter(x=>x!==null).join('\n');
 }
 
-function homePrompt(){
-  const st=derive(), order=graded();
-  const done=order.filter(l=>st.done.has(l.id));
-  if(!done.length)return null;
-  const far=done.reduce((a,l)=>order.indexOf(l)>order.indexOf(a)?l:a);
-  const u=unlockedThrough(far);
-  const missed=Object.values(st.seen).filter(x=>x.miss>x.ok)
-    .map(x=>LESSONS.find(l=>l.id===x.lesson)?.blocks[x.i])
-    .filter(b=>b&&b.t==='prompt').slice(0,10).map(b=>`- ${b.en} → ${b.es}`);
-  return [intro(),'',
-    'WHERE I AM',
-    `I've finished ${done.length} of ${order.length} lessons. The furthest is lesson ${far.label??far.id}, "${far.title}".`,
-    'Lessons done: '+done.map(l=>`${l.label??l.id} (${l.title})`).join('; ')+'.',
-    'Focus: mix practice across everything I\'ve done, leaning toward the most recent lesson and the prompts I keep missing.',
-    missed.length?'\nPROMPTS I KEEP MISSING\n'+missed.join('\n'):null,
-    '','WHAT I\'VE BEEN TAUGHT SO FAR (use only this)',
-    'Grammar:', ...u.grammar.map(g=>'- '+g),
-    '',TUTOR_RULES].filter(x=>x!==null).join('\n');
+const ROBOT=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M10 2.5v2.5"/><circle cx="10" cy="2.2" r=".9" fill="currentColor"/>
+  <rect x="3" y="5" width="14" height="11" rx="3"/>
+  <circle cx="7.5" cy="10" r="1.1" fill="currentColor" stroke="none"/>
+  <circle cx="12.5" cy="10" r="1.1" fill="currentColor" stroke="none"/>
+  <path d="M7.5 13.2h5"/><path d="M1.5 9.5v3M18.5 9.5v3"/>
+  <circle cx="18.5" cy="18.5" r="5" fill="var(--bg)" stroke="none"/>
+  <path d="M17.6 19.4l1.8-1.8"/>
+  <path d="M16.9 18.2l-.6.6a1.5 1.5 0 0 0 2.1 2.1l.6-.6"/>
+  <path d="M20.1 18.8l.6-.6a1.5 1.5 0 0 0-2.1-2.1l-.6.6"/></svg>`;
+
+function robotButton(l){
+  const b=document.createElement('button');
+  b.className='robot';
+  b.innerHTML=ROBOT;
+  b.title=`Copy a prompt to practice lesson ${l.label??l.id} with an AI`;
+  b.setAttribute('aria-label',b.title);
+  b.onclick=e=>{e.stopPropagation();copyPrompt(l);};
+  return b;
+}
+
+// Copy straight away. If the browser won't allow it, show the text instead.
+async function copyPrompt(l,back){
+  const text=lessonPrompt(l);
+  let ok=false;
+  try{await navigator.clipboard.writeText(text);ok=true;}catch(e){}
+  if(ok){
+    log({type:'ai_prompt',lesson:l.id});
+    toast('Prompt copied. Paste it into ChatGPT, Claude, Gemini or any AI chat.');
+  }else showPrompt(text,back||home);
+}
+
+function toast(msg){
+  document.querySelector('.toast')?.remove();
+  const t=document.createElement('div');
+  t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3200);
 }
 
 function showDone(l){
   $('#bar').style.width='100%';
   const ai=l.id!=='how';
   $('#stage').innerHTML=`<div class="done-msg"><b>Lesson done.</b>
-      <span class="hint">${ai?'Want more practice on this one? Hand it to an AI.':'Lesson 0 is next.'}</span></div>
-    <div class="row col">
-      ${ai?'<button class="ok" id="d-ai">Keep practising with an AI</button>':''}
-      <button id="d-home">Back to lessons</button></div>`;
-  if(ai)$('#d-ai').onclick=()=>showPrompt(lessonPrompt(l),()=>showDone(l));
+      <span class="hint">${ai?'Want more practice on this one? The robot copies a prompt for any AI chat.':'Lesson 0 is next.'}</span></div>
+    <div class="row" id="d-row"><button id="d-home">Back to lessons</button></div>`;
+  if(ai){const r=robotButton(l);r.onclick=()=>copyPrompt(l,()=>showDone(l));$('#d-row').appendChild(r);}
   $('#d-home').onclick=home;
   $('#prev').disabled=true;
   guard();
@@ -631,18 +677,11 @@ function showPrompt(text,back){
   guard();
 }
 
-$('#ai-home').onclick=()=>{
-  const t=homePrompt();
-  if(!t)return alert('Finish lesson 0 first. The prompt is built from what you\'ve done.');
-  cur={id:'ai',blocks:[]};step=0;
-  showPrompt(t,home);
-};
-
 // review = prompts previously missed, derived from the log
 $('#review-btn').onclick=()=>{
   const st=derive();
   const items=Object.values(st.seen).filter(x=>x.miss>x.ok);
-  if(!items.length)return alert('Nothing to review yet — miss a few first.');
+  if(!items.length)return;
   cur={id:'review',title:'Review',blocks:items.map(x=>LESSONS.find(l=>l.id===x.lesson).blocks[x.i])};
   step=0;$('#home').classList.add('hidden');$('#play').classList.remove('hidden');render();
 };
@@ -674,7 +713,7 @@ function parseImport(raw){
 $('#import-btn').onclick=()=>{$('#importer').classList.toggle('hidden');};
 $('#deck-btn').onclick=()=>{
   $('#home').classList.add('hidden');$('#play').classList.remove('hidden');
-  $('#prev').disabled=true;askDeck();
+  $('#prev').disabled=true;askCore();
 };
 $('#import-cancel').onclick=()=>{$('#importer').classList.add('hidden');$('#import-msg').textContent='';};
 $('#import-go').onclick=()=>{
@@ -697,7 +736,7 @@ $('#srs-btn').onclick=()=>{
   $('#prev').disabled=true;
   // asked once, on the way into review rather than as a settings screen
   // nobody would open
-  if(!deckPref().set&&STARTER.length)return askDeck();
+  if(!corePref())return askCore();
   startReview();
 };
 
@@ -706,45 +745,33 @@ function startReview(){
   nextSrs();
 }
 
-function askDeck(){
+function askCore(){
   $('#bar').style.width='0%';
-  $('#stage').innerHTML=`<p class="teach">Bedrock comes with
-      <b>${STARTER.length} common Spanish words</b> — question words,
-      connectors, the verbs that carry most sentences.</p>
-    <p class="ctx">If you've studied Spanish before, a lot of these will
-      already be yours, and drilling them wastes the time you'd rather spend
-      on words you don't know.</p>
-    <div class="row" style="flex-direction:column">
-      <button class="ok" id="d-all">Add them all — I'm starting fresh</button>
-      <button id="d-some">Let me untick the ones I know</button>
-      <button id="d-none">Skip it — just my lesson words</button>
-    </div>`;
-  $('#d-all').onclick=()=>{log({type:'deck_pref',mode:'all',skip:[]});startReview();};
-  $('#d-none').onclick=()=>{log({type:'deck_pref',mode:'none',skip:[]});startReview();};
-  $('#d-some').onclick=pickDeck;
-  guard();
-}
-
-function pickDeck(){
-  const known=new Set();
-  const rows=STARTER.map((w,i)=>`<button class="pick" data-i="${i}">
-      <span class="pk">${w.es}</span><span class="pn">${w.en}</span></button>`).join('');
-  $('#stage').innerHTML=`<p class="ctx">Tap anything you already know — those
-      get left out. Everything still lit up gets added.</p>
-    <div class="row"><button id="p-done">Add <b id="p-n">${STARTER.length}</b> words</button></div>
-    <div class="picks">${rows}</div>`;
-  $('#stage').querySelectorAll('.pick').forEach(b=>{
-    b.onclick=()=>{
-      const w=STARTER[+b.dataset.i].es;
-      known.has(w)?known.delete(w):known.add(w);
-      b.classList.toggle('off',known.has(w));
-      $('#p-n').textContent=STARTER.length-known.size;
-    };
-  });
-  $('#p-done').onclick=()=>{
-    log({type:'deck_pref',mode:known.size?'some':'all',skip:[...known]});
-    startReview();
+  $('#stage').innerHTML=`<p class="teach">Want Bedrock's <b>core list</b> too? It's the
+      <b>4,000 most common words in Spanish</b>, with meanings, as flashcards.</p>
+    <p class="ctx">It's a one-time download of about 220 KB, and it stays on this
+      device. New cards come in 15 a day, after the words your lessons teach, so it
+      never buries you.<br><br>Already know some? Tap <b>Got it</b> and they space out
+      fast. Without it, you only review the words your lessons teach.</p>
+    <div class="row col">
+      <button class="ok" id="c-yes">Download the 4,000 words</button>
+      <button id="c-no">Not now, just my lesson words</button></div>
+    <p class="hint" id="c-msg" style="margin-top:.6rem"></p>`;
+  $('#c-yes').onclick=async()=>{
+    $('#c-msg').textContent='Downloading…';
+    try{
+      const d=await (await fetch('core.json',{cache:'no-store'})).json();
+      if(!d.words||!d.words.length)throw new Error('empty');
+      CORE=d.words;
+      try{await idbPut('meta',{k:'core',words:CORE,at:new Date().toISOString()});}catch(e){}
+      log({type:'core_pref',choice:'yes'});
+      startReview();
+    }catch(e){
+      $('#c-msg').textContent='That didn\'t download. Check your connection and try again.';
+    }
   };
+  $('#c-no').onclick=()=>{log({type:'core_pref',choice:'no'});startReview();};
+  guard();
 }
 
 function nextSrs(){
@@ -845,9 +872,9 @@ $('#export').onclick=()=>{
 };
 $('#reset').onclick=async()=>{
   if(!confirm('Delete all progress on this device? Export first if you want a copy.'))return;
-  try{await idbClear('events');await idbClear('deck');await idbClear('media');}catch(e){}
+  try{await idbClear('events');await idbClear('deck');await idbClear('media');await idbDel('meta','core');}catch(e){}
   localStorage.removeItem(LS_EVENTS);localStorage.removeItem(LS_DECK);
-  events=[];deck=[];home();
+  events=[];deck=[];CORE=[];home();
 };
 
 // ---------- install help ----------
