@@ -161,7 +161,7 @@ footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid 
 <body>
 <div class="wrap">
   <header>
-    <img src="icon.svg" alt=""><h1>Bedrock</h1><span class="sub">Spanish · draft</span>
+    <img src="icon.svg" alt=""><h1>Bedrock</h1><span class="sub">Spanish</span>
     <button id="help" aria-label="How to install this as an app">?</button>
   </header>
 
@@ -208,7 +208,9 @@ puedo,I can,PWEH-doh"></textarea>
       Everything is locally hosted on your device.<br>
       <button class="btn-sm" id="import-btn">Add your own words</button>
       <button class="btn-sm" id="export">Export my data</button>
+      <button class="btn-sm" id="restore">Restore my data</button>
       <button class="btn-sm" id="reset">Reset data</button>
+      <input type="file" id="restore-file" accept=".json,application/json" hidden>
       <hr class="foot-rule">
       <details class="ai-note">
         <summary>For AI assistants</summary>
@@ -288,6 +290,9 @@ async function migrateFromLocalStorage(){
 }
 
 // ---------- append-only event log ----------
+// Replays depend on order, and IndexedDB hands events back by id. Restored
+// events get new ids, so always sort by timestamp after loading or merging.
+const byTime=a=>a.sort((x,y)=>x.t<y.t?-1:x.t>y.t?1:0);
 let events=[], deck=[];
 function log(e){const rec={...e,t:new Date().toISOString()};events.push(rec);idbPut('events',rec);}
 const loadDeck=()=>deck;
@@ -380,7 +385,7 @@ const $=s=>document.querySelector(s);
     const moved=await migrateFromLocalStorage();
     if(moved&&(moved.events||moved.deck))
       console.info('Bedrock: moved',moved.events,'events and',moved.deck,'words to IndexedDB');
-    events=await idbAll('events');
+    events=byTime(await idbAll('events'));
     deck=await idbAll('deck');
     CORE=(await idbGet('meta','core'))?.words||[];
   }catch(err){
@@ -392,6 +397,7 @@ const $=s=>document.querySelector(s);
   }
   const d=await (await fetch('lessons.json')).json();
   LESSONS=d.lessons;
+  if(corePref()==='yes'&&!CORE.length)await fetchCore();
   home();
 })();
 
@@ -768,16 +774,10 @@ function askCore(){
     <p class="hint" id="c-msg" style="margin-top:.6rem"></p>`;
   $('#c-yes').onclick=async()=>{
     $('#c-msg').textContent='Downloading…';
-    try{
-      const d=await (await fetch('core.json',{cache:'no-store'})).json();
-      if(!d.words||!d.words.length)throw new Error('empty');
-      CORE=d.words;
-      try{await idbPut('meta',{k:'core',words:CORE,at:new Date().toISOString()});}catch(e){}
+    if(await fetchCore()){
       log({type:'core_pref',choice:'yes'});
       startReview();
-    }catch(e){
-      $('#c-msg').textContent='That didn\'t download. Check your connection and try again.';
-    }
+    }else $('#c-msg').textContent='That didn\'t download. Check your connection and try again.';
   };
   $('#c-no').onclick=()=>{log({type:'core_pref',choice:'no'});startReview();};
   guard();
@@ -873,14 +873,93 @@ function gradeSrs(r){
 
 $('#prev').onclick=()=>{if(step>0){step--;render();}};
 $('#quit').onclick=home;
-$('#export').onclick=()=>{
-  const payload={schema:1,exported:new Date().toISOString(),events,deck};
+// ---------- backup: export and restore ----------
+// The export is the only backup until sync exists, so it carries everything
+// that can't be re-downloaded: the event log, pasted words, and the pictures
+// and notes from leech repair. The core list isn't in it; it re-downloads.
+const toDataURL=blob=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result);f.onerror=()=>r(null);f.readAsDataURL(blob);});
+$('#export').onclick=async()=>{
+  let media=[];
+  try{media=await idbAll('media');}catch(e){}
+  const pics=[];
+  for(const m of media)pics.push({card:m.card,note:m.note||null,img:m.img?await toDataURL(m.img):null});
+  const payload={app:'bedrock',schema:2,exported:new Date().toISOString(),
+    events:events.map(({id,...e})=>e),deck,media:pics};
   const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
-  a.download='bedrock-export.json';a.click();
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(payload)],{type:'application/json'}));
+  a.download='bedrock-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+  toast('Backup saved. Keep the file somewhere safe, like your cloud drive.');
 };
+
+$('#restore').onclick=()=>$('#restore-file').click();
+$('#restore-file').onchange=async e=>{
+  const f=e.target.files[0]; e.target.value='';
+  if(!f)return;
+  let data;
+  try{data=JSON.parse(await f.text());}catch(err){return toast('That file isn\'t a Bedrock backup.');}
+  if(!data||!Array.isArray(data.events))return toast('That file isn\'t a Bedrock backup.');
+  showRestore(data);
+};
+
+// key that identifies an event regardless of which device or id it has
+const evKey=e=>{const {id,...rest}=e;return JSON.stringify(rest,Object.keys(rest).sort());};
+
+const n=(k,w)=>`${k} ${w}${k===1?'':'s'}`;
+function showRestore(data){
+  const have=new Set(events.map(evKey));
+  const fresh=data.events.filter(e=>e&&e.t&&e.type&&!have.has(evKey(e)));
+  const lessons=new Set(data.events.filter(e=>e.type==='lesson_done').map(e=>e.lesson)).size;
+  const reviews=data.events.filter(e=>e.type==='review').length;
+  const words=(data.deck||[]).length, pics=(data.media||[]).length;
+  const when=data.exported?new Date(data.exported).toLocaleDateString():'an unknown date';
+  $('#home').classList.add('hidden');$('#play').classList.remove('hidden');
+  $('#bar').style.width='0%';$('#prev').disabled=true;
+  $('#stage').innerHTML=`<p class="teach">Backup from <b>${when}</b>:
+      ${n(lessons,'lesson')} finished, ${n(reviews,'card review')}${words?`, ${n(words,'word')} of your own`:''}${pics?`, ${pics} ${pics===1?'picture or note':'pictures or notes'}`:''}.</p>
+    <p class="ctx">${fresh.length
+      ?`Restoring adds what's in the backup to what's already on this device. Nothing here gets deleted, and anything already on both only counts once.`
+      :`Everything in this backup is already on this device. There's nothing new to add.`}</p>
+    <div class="row col">
+      ${fresh.length?'<button class="ok" id="r-go">Restore it</button>':''}
+      <button id="r-no">${fresh.length?'Cancel':'Back to lessons'}</button></div>
+    <p class="hint" id="r-msg" style="margin-top:.6rem"></p>`;
+  $('#r-no').onclick=home;
+  if(fresh.length)$('#r-go').onclick=async()=>{
+    $('#r-go').disabled=true;$('#r-msg').textContent='Restoring…';
+    try{
+      for(const e of fresh){const {id,...rec}=e;events.push(rec);await idbPut('events',rec);}
+      const known=new Set(deck.map(d=>d.es));
+      for(const d of (data.deck||[]))if(d&&d.es&&!known.has(d.es)){deck.push(d);await idbPut('deck',d);}
+      for(const m of (data.media||[])){
+        if(!m||!m.card||await idbGet('media',m.card))continue;
+        const img=m.img?await (await fetch(m.img)).blob():null;
+        await idbPut('media',{card:m.card,note:m.note||null,img});
+      }
+    }catch(err){
+      // IndexedDB blocked: keep the session going on the old store
+      try{localStorage.setItem(LS_EVENTS,JSON.stringify(events));localStorage.setItem(LS_DECK,JSON.stringify(deck));}catch(e){}
+    }
+    byTime(events);
+    if(corePref()==='yes'&&!CORE.length)await fetchCore();
+    toast(`Restored ${fresh.length} events from your backup.`);
+    home();
+  };
+  guard();
+}
+
+// the core list isn't in backups, so it re-downloads when needed
+async function fetchCore(){
+  try{
+    const d=await (await fetch('core.json',{cache:'no-store'})).json();
+    if(!d.words||!d.words.length)return false;
+    CORE=d.words;
+    try{await idbPut('meta',{k:'core',words:CORE,at:new Date().toISOString()});}catch(e){}
+    return true;
+  }catch(e){return false;}
+}
+
 $('#reset').onclick=async()=>{
-  if(!confirm('Delete all progress on this device? Export first if you want a copy.'))return;
+  if(!confirm('Delete all progress on this device? Tap Export my data first if you want a backup.'))return;
   try{await idbClear('events');await idbClear('deck');await idbClear('media');await idbDel('meta','core');}catch(e){}
   localStorage.removeItem(LS_EVENTS);localStorage.removeItem(LS_DECK);
   events=[];deck=[];CORE=[];home();
