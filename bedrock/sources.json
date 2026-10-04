@@ -1,25 +1,127 @@
 {
   "note": "Where to find Spanish to listen to and read. Edit this file to change the list; no code changes needed. The rule for picking: you should mostly understand it, and you should actually want to.",
   "levels": [
-    {"id": "learners", "name": "Made for learners", "blurb": "The gentlest start. They slow down and use pictures."},
-    {"id": "children", "name": "Made for children", "blurb": "Simple grammar, repeated constantly, short enough to finish."},
-    {"id": "everyone", "name": "Made for everyone else", "blurb": "For when you can follow the gist."}
+    {
+      "id": "learners",
+      "name": "Made for learners",
+      "blurb": "The gentlest start. They slow down and use pictures."
+    },
+    {
+      "id": "children",
+      "name": "Made for children",
+      "blurb": "Simple grammar, repeated constantly, short enough to finish."
+    },
+    {
+      "id": "everyone",
+      "name": "Made for everyone else",
+      "blurb": "For when you can follow the gist."
+    }
   ],
   "sources": [
-    {"name": "Dreaming Spanish", "level": "learners", "kind": "video", "url": "https://www.dreamingspanish.com", "note": "Graded from complete beginner to advanced. The most recommended thing there is"},
-    {"name": "Easy Spanish", "level": "learners", "kind": "video", "url": "https://www.youtube.com/results?search_query=Easy+Spanish+street+interviews", "note": "Real street interviews, with subtitles in both languages"},
-    {"name": "Español con Juan", "level": "learners", "kind": "video", "url": "https://www.youtube.com/results?search_query=Espa%C3%B1ol+con+Juan", "note": "Slow, funny, all in Spanish"},
-    {"name": "Coffee Break Spanish", "level": "learners", "kind": "podcast", "url": "https://coffeebreaklanguages.com", "note": "Short and structured, half English at first"},
-    {"name": "Duolingo Spanish Podcast", "level": "learners", "kind": "podcast", "url": "https://podcast.duolingo.com", "note": "True stories told in easy Spanish, with English narration"},
-    {"name": "Language Transfer", "level": "learners", "kind": "audio", "url": "https://www.languagetransfer.org", "note": "A free audio course built on reasoning, not memorizing"},
-    {"name": "Pocoyó", "level": "children", "kind": "video", "url": "https://www.youtube.com/results?search_query=Pocoy%C3%B3+espa%C3%B1ol", "note": "Almost no dialogue. Great at the very start"},
-    {"name": "Peppa Pig in Spanish", "level": "children", "kind": "video", "url": "https://www.youtube.com/results?search_query=Peppa+Pig+en+espa%C3%B1ol", "note": "Short episodes, everyday words"},
-    {"name": "Bluey in Spanish", "level": "children", "kind": "video", "url": "https://www.youtube.com/results?search_query=Bluey+en+espa%C3%B1ol", "note": "Everyday family Spanish"},
-    {"name": "Plaza Sésamo", "level": "children", "kind": "video", "url": "https://www.youtube.com/results?search_query=Plaza+S%C3%A9samo", "note": "Sesame Street, in Spanish"},
-    {"name": "Short Stories in Spanish (Olly Richards)", "level": "children", "kind": "book", "url": "https://www.google.com/search?q=Olly+Richards+Short+Stories+in+Spanish", "note": "Graded readers built for exactly this"},
-    {"name": "Something you already know, dubbed", "level": "everyone", "kind": "video", "url": "", "note": "A show or film you've seen in English. Knowing the plot does the work subtitles would"},
-    {"name": "Radio Ambulante", "level": "everyone", "kind": "podcast", "url": "https://radioambulante.org", "note": "Real journalism and proper stories, worth hearing for their own sake"},
-    {"name": "Shows and films from Spain, Mexico and Argentina", "level": "everyone", "kind": "video", "url": "", "note": "The accents differ, and that's worth hearing early"},
-    {"name": "Music you actually like", "level": "everyone", "kind": "music", "url": "", "note": "With the lyrics up"}
+    {
+      "name": "Dreaming Spanish",
+      "level": "learners",
+      "kind": "video",
+      "url": "https://www.dreamingspanish.com",
+      "note": "Graded from complete beginner to advanced. The most recommended thing there is"
+    },
+    {
+      "name": "Easy Spanish",
+      "level": "learners",
+      "kind": "video",
+      "url": "https://www.youtube.com/results?search_query=Easy+Spanish+street+interviews",
+      "note": "Real street interviews, with subtitles in both languages"
+    },
+    {
+      "name": "Español con Juan",
+      "level": "learners",
+      "kind": "video",
+      "url": "https://www.youtube.com/results?search_query=Espa%C3%B1ol+con+Juan",
+      "note": "Slow, funny, all in Spanish"
+    },
+    {
+      "name": "Coffee Break Spanish",
+      "level": "learners",
+      "kind": "podcast",
+      "url": "https://coffeebreaklanguages.com",
+      "note": "Short and structured, half English at first"
+    },
+    {
+      "name": "Duolingo Spanish Podcast",
+      "level": "learners",
+      "kind": "podcast",
+      "url": "https://podcast.duolingo.com",
+      "note": "True stories told in easy Spanish, with English narration"
+    },
+    {
+      "name": "Language Transfer",
+      "level": "learners",
+      "kind": "audio",
+      "url": "https://www.languagetransfer.org",
+      "note": "A free audio course built on reasoning, not memorizing"
+    },
+    {
+      "name": "Pocoyó",
+      "level": "children",
+      "kind": "video",
+      "url": "https://www.youtube.com/results?search_query=Pocoy%C3%B3+espa%C3%B1ol",
+      "note": "Almost no dialogue. Great at the very start"
+    },
+    {
+      "name": "Peppa Pig in Spanish",
+      "level": "children",
+      "kind": "video",
+      "url": "https://www.youtube.com/results?search_query=Peppa+Pig+en+espa%C3%B1ol",
+      "note": "Short episodes, everyday words"
+    },
+    {
+      "name": "Bluey in Spanish",
+      "level": "children",
+      "kind": "video",
+      "url": "https://www.youtube.com/results?search_query=Bluey+en+espa%C3%B1ol",
+      "note": "Everyday family Spanish"
+    },
+    {
+      "name": "Plaza Sésamo",
+      "level": "children",
+      "kind": "video",
+      "url": "https://www.youtube.com/results?search_query=Plaza+S%C3%A9samo",
+      "note": "Sesame Street, in Spanish"
+    },
+    {
+      "name": "Short Stories in Spanish (Olly Richards)",
+      "level": "children",
+      "kind": "book",
+      "url": "https://www.google.com/search?q=Olly+Richards+Short+Stories+in+Spanish",
+      "note": "Graded readers built for exactly this"
+    },
+    {
+      "name": "Something you already know, dubbed",
+      "level": "everyone",
+      "kind": "video",
+      "url": "",
+      "note": "A show or film you've seen in English. Knowing the plot does the work subtitles would"
+    },
+    {
+      "name": "Radio Ambulante",
+      "level": "everyone",
+      "kind": "podcast",
+      "url": "https://radioambulante.org",
+      "note": "Real journalism and proper stories, worth hearing for their own sake"
+    },
+    {
+      "name": "Shows and films from Spain, Mexico and Argentina",
+      "level": "everyone",
+      "kind": "video",
+      "url": "",
+      "note": "The accents differ, and that's worth hearing early"
+    },
+    {
+      "name": "Music you actually like",
+      "level": "everyone",
+      "kind": "music",
+      "url": "",
+      "note": "Music is mostly for fun & new vocab and slang. Not recommended as a main source of native input"
+    }
   ]
 }

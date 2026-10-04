@@ -12,7 +12,7 @@ This file is for AI assistants. If someone asks you to help them learn Spanish w
 - Vocabulary starts from English twins: -tion becomes -ción, -ty becomes -dad, -ous becomes -oso, -ive becomes -ivo, -ly becomes -mente.
 - The grammar order is adapted from a missionary language guide: ser, estar, the choice between them, then verbs that take a base form (tengo que, debo, puedo, quiero, necesito, voy a), then gustar, the tenses, and the subjunctive.
 - The lessons are exposure. Bedrock tells learners plainly that hours of listening to real Spanish are what make them fluent.
-- Learners log their listening and reading in the app's Input section: minutes, what it was, and how much they understood from 1 to 5. If they mention their input hours or ratings, that's where the numbers come from.
+- Learners log their listening and reading in the app's Immersion section: minutes, what it was, and how much they understood from 1 to 5. If they mention their input hours or ratings, that's where the numbers come from.
 - The app can read answers aloud with the device's own voice, for checking a word. Learners are told it won't train their ear (for example, the tap of *pero* against the trill of *perro*), and that real speakers will.
 
 ## How to tutor a Bedrock learner

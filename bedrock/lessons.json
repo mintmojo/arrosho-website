@@ -1,5 +1,5 @@
 {
-  "version": 11,
+  "version": 12,
   "course": "Spanish",
   "lessons": [
     {
@@ -55,16 +55,16 @@
         {
           "t": "context",
           "title": "What to expect",
-          "text": "Go through the lessons fairly quickly. They're short on purpose, and each one only has to make you aware of one thing. Don't wait until you've mastered a lesson to start the next.<br><br>Once you're through them, the work moves to review: your flashcards here each day, and practice with an AI using the robot button next to each lesson. That, plus listening (log it in the <b>Input</b> section), is where it turns into Spanish you can actually use."
+          "text": "Go through the lessons fairly quickly. They're short on purpose, and each one only has to make you aware of one thing. Don't wait until you've mastered a lesson to start the next.<br><br>Once you're through them, the work moves to review: your flashcards here each day, and practice with an AI using the robot button next to each lesson. That, plus listening (log it in the <b>Immersion</b> section), is where it turns into Spanish you can actually use."
         },
         {
           "t": "context",
           "title": "Why you need real voices",
-          "text": "Tap the speaker next to any Spanish answer and Bedrock reads it aloud with your phone's built-in voice. That's fine for checking how a word goes. It won't train your ear, and the clearest example is <b>r</b> against <b>rr</b>.<br><br>Spanish has two r sounds. A single <b>r</b> between vowels is one quick tap of the tongue, close to the <i>tt</i> in American <i>butter</i> said fast. <b>rr</b> is a trill: the tongue rattles several times. An <b>r</b> at the start of a word, or after <i>n</i>, <i>l</i> or <i>s</i>, is trilled too, as in <i>rojo</i> and <i>Enrique</i>.<br><br>And they change the word. <b>Pero</b> is <i>but</i> and <b>perro</b> is <i>dog</i>. <b>Caro</b> is <i>expensive</i> and <b>carro</b> is <i>car</i>."
+          "text": "Tap the speaker next to any Spanish answer and Bedrock reads it aloud with your phone's built-in voice. That's fine for checking how a word goes. It won't train your ear.<br><br>Phone voices often blur sounds that change the meaning of a word. <b>Pero</b> and <b>perro</b> are a good example: one means <i>but</i>, the other <i>dog</i>, and a generated voice can make them sound almost the same. It also says every word exactly the same way every time, and real people never do."
         },
         {
           "t": "teach",
-          "text": "Computer voices often blur that difference, and they say a word exactly the same way every time. Real people don't. The trill gets longer or shorter, faster or slower, depending on who's talking and how. Your ear learns where the line is by hearing hundreds of real speakers cross it, and a generated voice can't give you that.<br><br>So use the speaker to check a word, and get your ear from real Spanish: shows, podcasts, music and people. The <b>Input</b> section at the top of the home screen has places to start and keeps track of your hours."
+          "text": "Your ear learns those differences by hearing hundreds of real speakers, each saying things a little differently. A phone voice can't give you that.<br><br>So use the speaker to check a word, and get your ear from real Spanish: shows, podcasts and people. The <b>Immersion</b> section at the top of the home screen has places to start and keeps track of your hours."
         },
         {
           "t": "teach",
