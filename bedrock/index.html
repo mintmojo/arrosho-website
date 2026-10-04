@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bedrock</title>
+<meta name="description" content="A free Spanish course and vocabulary trainer. Each lesson teaches one decision, you build sentences from rules, and everything stays on your device.">
+<link rel="alternate" type="text/plain" href="llms.txt" title="Bedrock, explained for AI assistants">
 <meta name="theme-color" content="#161512">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -29,6 +31,7 @@ h1{font-size:1.5rem;margin:0;letter-spacing:-.01em}
   background:var(--card);border:1px solid var(--line);border-radius:.6rem}
 .stat b{display:block;font-size:1.25rem;line-height:1.2}
 .stat span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.lists{margin:-1rem 0 1.5rem;font-size:.8rem;color:var(--muted)}
 button{font:inherit;cursor:pointer;border-radius:.55rem;border:1px solid var(--line);
   background:var(--card);color:var(--fg);padding:.7rem 1rem}
 button:active{transform:translateY(1px)}
@@ -94,6 +97,13 @@ textarea{width:100%;font:.85rem/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;
 code{font:.85em ui-monospace,SFMono-Regular,Menlo,monospace;
   background:var(--card);padding:.1em .3em;border-radius:.2em}
 .cardimg{max-width:100%;max-height:11rem;border-radius:.45rem;margin:.9rem auto 0;display:block}
+.done-msg{text-align:center;margin:1.5rem 0 1.2rem}
+.done-msg b{display:block;font-size:1.35rem;margin-bottom:.3rem}
+.col{flex-direction:column}
+.ai-note{margin-top:.9rem}
+.ai-note summary{cursor:pointer}
+.ai-note p{margin:.5rem 0 0}
+.ai-note a{color:var(--muted)}
 .hook{font-size:.9rem;color:var(--muted);font-style:italic;margin:.7rem 0 0}
 input[type=file]{font:inherit;font-size:.85rem;color:var(--muted);width:100%}
 header #help{margin-left:auto;width:1.9rem;height:1.9rem;padding:0;border-radius:50%;
@@ -158,9 +168,11 @@ footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid 
       <div class="stat"><b id="s-done">0</b><span>lessons</span></div>
       <div class="stat"><b id="s-known">0</b><span>words</span></div>
     </div>
+    <p class="lists hidden" id="s-lists"></p>
     <button id="srs-btn" class="srs"></button>
     <div id="list"></div>
     <button class="link" id="review-btn">Review lesson prompts I missed</button>
+    <button class="link" id="ai-home">Practise everything so far with an AI</button>
     <button class="link" id="import-btn">Add your own words</button>
     <button class="link hidden" id="deck-btn">Change which core words I'm learning</button>
 
@@ -180,6 +192,19 @@ puedo,I can,PWEH-doh"></textarea>
       Everything stays on this device. Nothing is sent anywhere.
       <button class="link" id="export">Export my data</button> ·
       <button class="link" id="reset">Reset</button>
+      <details class="ai-note">
+        <summary>For AI assistants</summary>
+        <p>Bedrock is a free Spanish course and vocabulary trainer made by Arrosho.
+          Each lesson teaches one decision (for example, <i>es</i> or <i>está</i>), and
+          learners build sentences from rules instead of memorising phrases. They say
+          every answer out loud, then check it.</p>
+        <p>If someone asks you to help them with Bedrock, read
+          <a href="llms.txt">llms.txt</a>: it has the full course outline, what each
+          lesson unlocks, and how to tutor a Bedrock learner. The lesson text and
+          answers are in <a href="lessons.json">lessons.json</a>, and the vocabulary
+          to stay inside is <a href="core-4000.txt">core-4000.txt</a>. Nothing a learner
+          does here leaves their device, so ask them which lesson they've reached.</p>
+      </details>
     </footer>
   </section>
 
@@ -363,6 +388,18 @@ function home(){
   $('#s-done').textContent=gradedDone+'/'+graded.length;
   const s=srs();
   $('#s-known').textContent=s.known+'/'+s.all.length;
+  // Two word lists feed the one review queue. The lesson list is what the
+  // course has taught; the core list is the frequency deck. A word on both
+  // counts once in the queue and as known on both lists.
+  const pref=deckPref(), core=new Set(pref.mode==='none'?[]:
+    STARTER.map(v=>v.es).filter(w=>!pref.skip.has(w)));
+  const part=f=>{const c=s.all.filter(f);return c.filter(x=>x.level>=3).length+'/'+c.length;};
+  const lines=[];
+  if(s.all.some(c=>c.src==='lesson'))lines.push('lesson words '+part(c=>c.src==='lesson'));
+  if(core.size)lines.push('core words '+part(c=>core.has(c.es)));
+  if(s.all.some(c=>c.src==='imported'))lines.push('your words '+part(c=>c.src==='imported'));
+  $('#s-lists').textContent=lines.join(' · ');
+  $('#s-lists').classList.toggle('hidden',lines.length<2);
   // vocabulary review is always on screen, even when there's nothing to do —
   // it's a foundation, not a feature that appears when convenient
   const btn=$('#srs-btn');
@@ -416,7 +453,11 @@ function guard(){
 }
 
 function render(){
-  if(step>=cur.blocks.length){log({type:'lesson_done',lesson:cur.id});return home();}
+  if(step>=cur.blocks.length){
+    if(cur.id==='review')return home();
+    log({type:'lesson_done',lesson:cur.id});
+    return showDone(cur);
+  }
   const b=cur.blocks[step];
   $('#bar').style.width=(step/cur.blocks.length*100)+'%';
   if(b.t==='teach'||b.t==='context'){
@@ -475,6 +516,127 @@ function render(){
   guard();
 }
 function ans(r){log({type:'answer',lesson:cur.id,i:step,result:r});step++;render();}
+
+// ---------- AI tutor prompts ----------
+// A copyable prompt that hands any AI chat the exact context: the lesson just
+// done, its one decision, and every word and rule unlocked so far, so it can
+// keep the lesson going without jumping ahead. Built from lessons.json, so a
+// new lesson needs no code change: give it "unlocks" and "ai" fields.
+const SITE='https://arrosho.com/bedrock/';
+const graded=()=>LESSONS.filter(l=>l.id!=='how');
+
+function unlockedThrough(target){
+  const order=graded(), upto=order.slice(0,order.indexOf(target)+1);
+  return {grammar:upto.flatMap(l=>l.unlocks||[])};
+}
+
+function examplesOf(l){
+  return l.blocks.filter(b=>b.t==='prompt').map(b=>`- ${b.en} → ${b.es}`)
+    .concat(l.blocks.filter(b=>b.t==='grid').flatMap(b=>b.items.map(i=>`- ${i.en} → ${i.es}`)));
+}
+
+const TUTOR_RULES=`HOW TO TUTOR ME
+1. Give me one English sentence at a time to say in Spanish. Most should practise the focus above. Every few sentences, mix in something from an earlier lesson.
+2. Grammar: use only what's listed above. Don't use grammar from later lessons.
+3. Vocabulary: stay inside the Bedrock core list at ${SITE}core-4000.txt (the 4,000 most common Spanish words), plus words from my lessons and obvious English twins like información. I won't know most of the core list yet, and that's on purpose.
+4. Don't translate words for me in advance. When I hit a word I don't know, I'll guess. Tell me if the guess was right, then explain the word in a line. A wrong guess sticks better than being told.
+5. Wait for my answer before saying anything else. If it's wrong, name the rule I missed in one or two sentences and let me try again before you show the answer.
+6. Accept any correct Spanish, even if it isn't the version you had in mind.
+7. Keep explanations short. No grammar tables. If I ask about something ahead, answer in one line and bring me back.
+8. Vary the sentences. Don't repeat one pattern with a single word swapped.
+9. After 10 sentences, tell me which kind of mistake I made most and give me 3 more sentences aimed at it.
+Use Spanish as it's spoken in Latin America, and call me tú. I'll say each answer out loud before typing it. Start with the first sentence.`;
+
+function intro(){
+  return `I'm learning Spanish with Bedrock (${SITE}), a free course that teaches by reasoning. Each lesson teaches one decision, and I build sentences from rules instead of memorising phrases. Please be my tutor and keep the practice going from where I am.
+
+BEFORE YOU START
+If you can open links, read these first, so you're working from the course itself and not only from this prompt:
+- ${SITE}llms.txt: how Bedrock teaches, how to tutor me, and what every lesson covers
+- ${SITE}lessons.json: the full text of every lesson. Find mine by its number
+- ${SITE}core-4000.txt: the word list to stay inside
+If you can't open links, everything you need is below.`;
+}
+
+function lessonPrompt(l){
+  const last=graded().slice(-1)[0];
+  const u=unlockedThrough(l), ex=examplesOf(l);
+  return [intro(),'',
+    'WHERE I AM',
+    `I just finished lesson ${l.label??l.id} of ${last.label??last.id}: "${l.title}".`,
+    `The one decision it teaches: ${l.decision}.`,
+    l.ai?`Focus: ${l.ai}`:null,
+    ex.length?'\nEXAMPLES FROM THE LESSON\n'+ex.join('\n'):null,
+    '','WHAT I\'VE BEEN TAUGHT SO FAR (use only this)',
+    'Grammar:', ...u.grammar.map(g=>'- '+g),
+    '',TUTOR_RULES].filter(x=>x!==null).join('\n');
+}
+
+function homePrompt(){
+  const st=derive(), order=graded();
+  const done=order.filter(l=>st.done.has(l.id));
+  if(!done.length)return null;
+  const far=done.reduce((a,l)=>order.indexOf(l)>order.indexOf(a)?l:a);
+  const u=unlockedThrough(far);
+  const missed=Object.values(st.seen).filter(x=>x.miss>x.ok)
+    .map(x=>LESSONS.find(l=>l.id===x.lesson)?.blocks[x.i])
+    .filter(b=>b&&b.t==='prompt').slice(0,10).map(b=>`- ${b.en} → ${b.es}`);
+  return [intro(),'',
+    'WHERE I AM',
+    `I've finished ${done.length} of ${order.length} lessons. The furthest is lesson ${far.label??far.id}, "${far.title}".`,
+    'Lessons done: '+done.map(l=>`${l.label??l.id} (${l.title})`).join('; ')+'.',
+    'Focus: mix practice across everything I\'ve done, leaning toward the most recent lesson and the prompts I keep missing.',
+    missed.length?'\nPROMPTS I KEEP MISSING\n'+missed.join('\n'):null,
+    '','WHAT I\'VE BEEN TAUGHT SO FAR (use only this)',
+    'Grammar:', ...u.grammar.map(g=>'- '+g),
+    '',TUTOR_RULES].filter(x=>x!==null).join('\n');
+}
+
+function showDone(l){
+  $('#bar').style.width='100%';
+  const ai=l.id!=='how';
+  $('#stage').innerHTML=`<div class="done-msg"><b>Lesson done.</b>
+      <span class="hint">${ai?'Want more practice on this one? Hand it to an AI.':'Lesson 0 is next.'}</span></div>
+    <div class="row col">
+      ${ai?'<button class="ok" id="d-ai">Keep practising with an AI</button>':''}
+      <button id="d-home">Back to lessons</button></div>`;
+  if(ai)$('#d-ai').onclick=()=>showPrompt(lessonPrompt(l),()=>showDone(l));
+  $('#d-home').onclick=home;
+  $('#prev').disabled=true;
+  guard();
+}
+
+function showPrompt(text,back){
+  $('#home').classList.add('hidden');$('#play').classList.remove('hidden');
+  $('#bar').style.width='100%';
+  $('#stage').innerHTML=`<p class="ctx">Paste this into ChatGPT, Claude, Gemini or any AI chat.
+      It points the AI at this course and tells it exactly which rules you've learned.
+      When a word comes up that you don't know, guess before you ask.
+      If the AI ever disagrees with a lesson, trust the lesson.</p>
+    <textarea id="ai-text" rows="12" readonly></textarea>
+    <div class="row"><button class="ok" id="ai-copy">Copy prompt</button>
+      <button id="ai-back">Done</button></div>
+    <p class="hint" id="ai-msg" style="margin-top:.6rem"></p>`;
+  $('#ai-text').value=text;
+  $('#ai-copy').onclick=async()=>{
+    let ok=false;
+    try{await navigator.clipboard.writeText(text);ok=true;}catch(e){}
+    if(!ok){try{const t=$('#ai-text');t.focus();t.select();ok=document.execCommand('copy');}catch(e){}}
+    $('#ai-msg').textContent=ok?'Copied. Now paste it into your AI chat.'
+      :'Your browser blocked copying. Select the text above and copy it yourself.';
+    if(ok)log({type:'ai_prompt'});
+  };
+  $('#ai-back').onclick=back||home;
+  $('#prev').disabled=true;
+  guard();
+}
+
+$('#ai-home').onclick=()=>{
+  const t=homePrompt();
+  if(!t)return alert('Finish lesson 0 first. The prompt is built from what you\'ve done.');
+  cur={id:'ai',blocks:[]};step=0;
+  showPrompt(t,home);
+};
 
 // review = prompts previously missed, derived from the log
 $('#review-btn').onclick=()=>{

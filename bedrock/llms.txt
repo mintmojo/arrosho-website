@@ -1,0 +1,161 @@
+# Bedrock
+
+> A free Spanish course and vocabulary trainer at https://arrosho.com/bedrock/, made by Arrosho. It runs in the browser, works offline, and keeps every learner's data on their own device. Each lesson teaches one decision, and learners build sentences from rules instead of memorising phrases.
+
+This file is for AI assistants. If someone asks you to help them learn Spanish with Bedrock, it has what you need: how the course works, how to tutor its learners, and what every lesson unlocks.
+
+## How Bedrock teaches
+
+- One decision per lesson. Lesson 7, for example, is only the choice between es and está.
+- If something can be worked out from a rule, a lesson teaches the rule and it never becomes a flashcard. Flashcards hold only arbitrary words, like aquí (here).
+- Learners say every answer out loud, then reveal it and grade themselves.
+- Vocabulary starts from English twins: -tion becomes -ción, -ty becomes -dad, -ous becomes -oso, -ive becomes -ivo, -ly becomes -mente.
+- The grammar order is adapted from a missionary language guide: ser, estar, the choice between them, then verbs that take a base form (tengo que, debo, puedo, quiero, necesito, voy a), then gustar, the tenses, and the subjunctive.
+- The lessons are exposure. Bedrock tells learners plainly that hours of listening to real Spanish are what make them fluent.
+
+## How to tutor a Bedrock learner
+
+- Ask which lesson they've reached if they don't say. Their progress is stored only on their device, so you can't look it up.
+- Learners can copy a ready-made prompt from the end of any lesson. If they paste one, follow it: it lists exactly what they've been taught.
+- Use only the grammar up to their lesson, listed below.
+- Keep your vocabulary inside the Bedrock core list ([core-4000.txt](https://arrosho.com/bedrock/core-4000.txt), the 4,000 most common Spanish words), plus words from their lessons and obvious English twins. They won't know most of the core list yet, and that's intended.
+- Don't translate words in advance. When they meet a word they don't know, they're taught to guess first. Tell them whether the guess was right, then explain the word in a line. Lesson 0 tells them a wrong guess sticks better than being told.
+- Give one English sentence at a time to put into Spanish, and wait for their answer.
+- When they're wrong, name the rule they missed in a sentence or two and let them try again before giving the answer. Don't lecture, and don't teach grammar from later lessons.
+- Accept any correct Spanish. Use Latin American Spanish, and call them tú.
+- If you disagree with a lesson, say so and explain, but tell them the lesson is what the course expects.
+
+## Course outline
+
+There are 31 lessons, 0 to 30, after a short orientation on how learning works. "New words" lists the Spanish words each lesson uses for the first time.
+
+### Lesson 0: Two languages, two ways of being
+Decision: Why Spanish makes you say things English lets you dodge
+Unlocks: the idea of ser (what something is) against estar (how or where it is), not yet used in sentences; gender as a filing system: -o usually takes el, -a usually takes la, with exceptions like el problema and la mano
+### Lesson 1: Words you already own
+Decision: English -tion becomes Spanish -ción
+Unlocks: -tion → -ción: English -tion words have a Spanish twin ending in -ción
+New words: nación, información, situación, educación, conversación
+### Lesson 2: Where the emphasis goes
+Decision: The accent tells you which syllable to hit
+Unlocks: Spanish vowels are short and pure: a ah, e eh, i ee, o oh, u oo; stress: ends in a vowel, -n or -s → second-to-last syllable; any other consonant → last syllable; an accent mark overrides both
+New words: importante, universidad
+### Lesson 3: All of them are "la"
+Decision: -ción words are feminine
+Unlocks: -ción words are feminine and take la
+New words: la
+### Lesson 4: Four more rules
+Decision: -dad, -oso, -ivo, -mente
+Unlocks: -ty → -dad (also feminine); -ous → -oso; -ive → -ivo; -ly → -mente; describing words agree: -o with el words, -a with la words
+New words: posibilidad, famoso, delicioso, activo, exactamente, el
+### Lesson 5: Ser — what something is
+Decision: es for identity and essence
+Unlocks: es (from ser): what something is, its identity or kind
+New words: es, famosa, activa
+### Lesson 6: Estar — how something is
+Decision: está for state and location
+Unlocks: está (from estar): where something is, or how it's doing right now; aquí (here) and allí (there)
+New words: está, aquí, allí
+### Lesson 7: Ser or estar
+Decision: Which "is" to reach for
+Unlocks: choosing es or está: essence or category → ser; condition or place → estar
+New words: frío, joven
+### Lesson 8: Verbs you already own
+Decision: Base-form verbs end -ar, -er, -ir
+Unlocks: base-form verbs end in -ar, -er or -ir, and they don't change after an opening
+New words: organizar, decidir, permitir, visitar
+### Lesson 9: Tener que — having to
+Decision: tengo que + base form
+Unlocks: tengo que + base form: I have to
+New words: tengo, que
+### Lesson 10: Deber — ought to
+Decision: debo + base form
+Unlocks: debo + base form: I should
+New words: debo, preparar
+### Lesson 11: Poder — being able, and saying no
+Decision: puedo + base form, no in front, then ser and estar after any opening
+Unlocks: puedo + base form: I can; no goes in front of the verb, and nothing else moves; ser and estar can follow any opening as base forms
+New words: puedo, no, estar, ser, flexible
+### Lesson 12: Querer — wanting
+Decision: quiero + base form
+Unlocks: quiero + base form: I want to
+New words: quiero, presentación
+### Lesson 13: Necesitar — needing
+Decision: necesito + base form
+Unlocks: necesito + base form: I need to
+New words: necesito
+### Lesson 14: Ir a — going to
+Decision: voy a + base form, then all six openings mixed
+Unlocks: voy a + base form: I'm going to
+New words: voy, a, aceptar, original
+### Lesson 15: Gustar — what pleases you
+Decision: me gusta + a thing or a base form
+Unlocks: me gusta + a thing or a base form: I like (it pleases me); no me gusta; plural things take gustan (only met, not practised)
+New words: me, gusta
+### Lesson 16: Estoy + -ando — happening right now
+Decision: estoy + -ando / -iendo for what's in progress
+Unlocks: estoy: I am, in the estar sense; -ando (for -ar) and -iendo (for -er, -ir): the -ing form; estoy + -ando/-iendo only for what's in progress right now; plans use voy a
+New words: estoy, preparando, decidiendo, organizando
+### Lesson 17: Preparo — saying you do it
+Decision: drop the ending, add -o
+Unlocks: any regular verb, I form: drop -ar/-er/-ir, add -o (preparo, decido); the -o already means I, so yo is only for stress; stress on preparo falls on the second-to-last syllable; y: and
+New words: preparo, decido, acepto, visito, y
+### Lesson 18: Lo and la — it
+Decision: lo or la for 'it', in front of the verb
+Unlocks: lo / la = it (masculine / feminine), in front of a conjugated verb; no + lo/la + verb; with an opening, lo/la can attach to the base form (prepararla) or go in front (la quiero preparar)
+New words: lo, prepararla, decidirlo
+### Lesson 19: Tú — talking to you
+Decision: -as for -ar verbs, -es for -er and -ir
+Unlocks: tú (familiar you): -as for -ar verbs, -es for -er and -ir; tú forms of the openings: tienes que, debes, puedes, quieres, necesitas, vas a; estás and eres; questions keep the same word order, with rising voice and ¿ ?
+New words: preparas, decides, puedes, quieres, estás, tienes, aceptarla, vas
+### Lesson 20: Él, ella, usted — one form, three people
+Decision: the tú form without its -s
+Unlocks: él / ella / usted share one form: the tú form without its -s (prepara, decide); usted is the polite you; tú for friends, family, children, people your age; puede, quiere, tiene que, debe, necesita, va a
+New words: ella, prepara, él, decide, puede, usted, quiere, tiene
+### Lesson 21: He decidido — the perfect
+Decision: he + -ado / -ido
+Unlocks: he / has / ha + -ado (for -ar) or -ido (for -er, -ir): have done; lo/la go in front of he, has, ha; he and the -ado/-ido form never split
+New words: he, decidido, preparado, visitado, has, ha, aceptado
+### Lesson 22: Commands — telling a friend
+Decision: the tú command is the he/she form
+Unlocks: the tú command is the he/she form: ¡prepara!, ¡decide!; lo/la attach to the end of a command, with a written accent: ¡prepárala!
+New words: visita, prepárala, acéptala
+### Lesson 23: Preparé — it happened
+Decision: -é / -í for I, -ó / -ió for he and she
+Unlocks: preterite: I -é / -í; you -aste / -iste; he, she, usted -ó / -ió; stress separates preparo (I prepare) from preparó (she prepared); fui, tuve, pude (common irregulars, met)
+New words: preparé, decidí, preparó, visitó, acepté, decidiste, fui
+### Lesson 24: Preparaba — how things were
+Decision: -aba / -ía for the scene, not the event
+Unlocks: imperfect: -aba (for -ar), -ía (for -er, -ir), same for I and he/she; era (ser) and estaba (estar) keep the ser/estar split in the past
+New words: visitaba, preparaba, decidía, era, estaba
+### Lesson 25: Preterite or imperfect
+Decision: the event, or the scene around it
+Unlocks: preterite for events that started and finished; imperfect for the scene, the ongoing and the repeated; cuando: when; quería (I wanted) against quise (I tried) and no quise (I refused)
+New words: cuando, visité
+### Lesson 26: Saber or conocer
+Decision: knowing facts, or knowing someone
+Unlocks: sé / sabes: facts and how-to (sé + base form = I know how to); conozco / conoces: people and places
+New words: sé, conozco, sabes, conoces
+### Lesson 27: Se — when nobody in particular does it
+Decision: se + the he/she form
+Unlocks: se + he/she form: one does it, it gets done (se habla, se puede); ¿se puede? as 'may I?'
+New words: se, acepta
+### Lesson 28: Prepararía — would
+Decision: the whole base form + -ía
+Unlocks: conditional: the whole base form + -ía (prepararía, decidiría); debería (I ought to), podría (I could), me gustaría (I'd like)
+New words: visitaría, decidiría, debería, gustaría, podría
+### Lesson 29: Quiero que decidas — wanting someone else to
+Decision: que + the flipped vowel
+Unlocks: present subjunctive: the opposite vowel (-ar verbs → e, -er/-ir verbs → a); after quiero que, necesito que, es importante que, es posible que; negative tú commands (¡no prepares!) and usted commands (¡prepare!)
+New words: decidas, prepares, visites, posible, decida
+### Lesson 30: Si pudiera — if I could
+Decision: si + -ara / -iera, then the -ía form
+Unlocks: past subjunctive: -ara (for -ar), -iera (for -er, -ir), built from the preterite (fuera, pudiera, tuviera); si + past subjunctive, then the -ía form; quería que + past subjunctive
+New words: si, visitara, pudiera, fuera, aceptaría, quería, prepararas
+
+## Files
+
+- [lessons.json](https://arrosho.com/bedrock/lessons.json): every lesson's text, prompts and answers, plus the "unlocks" and "ai" fields used to build tutor prompts
+- [core-4000.txt](https://arrosho.com/bedrock/core-4000.txt): the core list, the 4,000 most common Spanish words in frequency order. Tutors keep their Spanish inside it
+- [starter.json](https://arrosho.com/bedrock/starter.json): the app's starter deck, 133 of the most common words with glosses written for Bedrock
+- [Bedrock](https://arrosho.com/bedrock/): the app itself
