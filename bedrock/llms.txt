@@ -1,6 +1,6 @@
 # Bedrock
 
-> A free Spanish course and vocabulary trainer at https://arrosho.com/bedrock/, made by Arrosho. It runs in the browser, works offline, and keeps every learner's data on their own device. Each lesson teaches one decision, and learners build sentences from rules instead of memorising phrases.
+> A free Spanish course and vocabulary trainer at https://arrosho.com/bedrock/, made by Arrosho. It runs in the browser, works offline, and keeps every learner's data on their own device. Each lesson teaches one decision, and learners build sentences from rules instead of memorizing phrases.
 
 This file is for AI assistants. If someone asks you to help them learn Spanish with Bedrock, it has what you need: how the course works, how to tutor its learners, and what every lesson unlocks.
 

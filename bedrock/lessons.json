@@ -151,7 +151,7 @@
         {
           "t": "context",
           "title": "What comes next",
-          "text": "Everything from here is <b>examples</b>, not the whole picture. Each lesson opens with why the thing matters, then shows you its shape.<br><br>The depth comes from your own listening. These lessons just make sure you recognise it when it goes past."
+          "text": "Everything from here is <b>examples</b>, not the whole picture. Each lesson opens with why the thing matters, then shows you its shape.<br><br>The depth comes from your own listening. These lessons just make sure you recognize it when it goes past."
         }
       ],
       "unlocks": [
@@ -291,7 +291,7 @@
         },
         {
           "t": "teach",
-          "text": "Every word ending in <b>-ción</b> takes <b>la</b>. Nothing to memorise, because the ending already told you."
+          "text": "Every word ending in <b>-ción</b> takes <b>la</b>. Nothing to memorize, because the ending already told you."
         },
         {
           "t": "prompt",
@@ -606,7 +606,7 @@
         {
           "t": "context",
           "title": "Why the base form matters",
-          "text": "English needs two words for <i>to prepare</i>. Spanish folds the <i>to</i> into the ending. That's why the next six lessons work: the base form never changes, so once you can put something in front of it, every verb you recognise comes along."
+          "text": "English needs two words for <i>to prepare</i>. Spanish folds the <i>to</i> into the ending. That's why the next six lessons work: the base form never changes, so once you can put something in front of it, every verb you recognize comes along."
         },
         {
           "t": "teach",
@@ -614,7 +614,7 @@
         },
         {
           "t": "prompt",
-          "en": "to organise",
+          "en": "to organize",
           "es": "organizar",
           "p": "or-gah-nee-SAHR"
         },
@@ -638,13 +638,13 @@
         },
         {
           "t": "teach",
-          "text": "You can only recognise these so far. From the next lesson on, you'll be using every one of them."
+          "text": "You can only recognize these so far. From the next lesson on, you'll be using every one of them."
         }
       ],
       "unlocks": [
         "base-form verbs end in -ar, -er or -ir, and they don't change after an opening"
       ],
-      "ai": "Give me English verbs and ask for the Spanish base form. Stick to verbs with obvious Spanish twins (organise, decide, permit, visit, prepare, accept, celebrate, present, consider, invite, use, control)."
+      "ai": "Give me English verbs and ask for the Spanish base form. Stick to verbs with obvious Spanish twins (organize, decide, permit, visit, prepare, accept, celebrate, present, consider, invite, use, control)."
     },
     {
       "id": 9,
@@ -707,7 +707,7 @@
         },
         {
           "t": "prompt",
-          "en": "I should organise the information",
+          "en": "I should organize the information",
           "es": "debo organizar la información",
           "p": "DEH-boh or-gah-nee-SAHR lah een-for-mah-see-OHN"
         },
@@ -751,7 +751,7 @@
         },
         {
           "t": "prompt",
-          "en": "I can organise it",
+          "en": "I can organize it",
           "es": "puedo organizar",
           "p": "PWEH-doh or-gah-nee-SAHR"
         },
@@ -879,7 +879,7 @@
         },
         {
           "t": "prompt",
-          "en": "I need to organise the education",
+          "en": "I need to organize the education",
           "es": "necesito organizar la educación",
           "p": "neh-seh-SEE-toh or-gah-nee-SAHR lah eh-doo-kah-see-OHN"
         },
@@ -959,7 +959,7 @@
         },
         {
           "t": "teach",
-          "text": "Six openings (tengo que, debo, puedo, quiero, necesito, voy a) across every verb you recognise, with <b>no</b> on any of them. Add <b>ser</b> and <b>estar</b> and you can describe things, place them, and say what you mean to do about them."
+          "text": "Six openings (tengo que, debo, puedo, quiero, necesito, voy a) across every verb you recognize, with <b>no</b> on any of them. Add <b>ser</b> and <b>estar</b> and you can describe things, place them, and say what you mean to do about them."
         },
         {
           "t": "context",
@@ -1006,7 +1006,7 @@
         },
         {
           "t": "prompt",
-          "en": "I like to organise",
+          "en": "I like to organize",
           "es": "me gusta organizar",
           "p": "meh GOOS-tah or-gah-nee-SAHR"
         },
@@ -1088,7 +1088,7 @@
         },
         {
           "t": "prompt",
-          "en": "I'm not organising the information",
+          "en": "I'm not organizing the information",
           "es": "no estoy organizando la información",
           "p": "noh ehs-TOY or-gah-nee-SAHN-doh lah een-for-mah-see-OHN"
         },
@@ -1794,11 +1794,11 @@
         },
         {
           "t": "teach",
-          "text": "<b>Sé</b> plus a base form means <i>I know how to</i>. <b>Sé organizar</b>: I know how to organise. No word for <i>how</i> needed."
+          "text": "<b>Sé</b> plus a base form means <i>I know how to</i>. <b>Sé organizar</b>: I know how to organize. No word for <i>how</i> needed."
         },
         {
           "t": "prompt",
-          "en": "I know how to organise the information",
+          "en": "I know how to organize the information",
           "es": "sé organizar la información",
           "p": "seh or-gah-nee-SAHR lah een-for-mah-see-OHN"
         },
