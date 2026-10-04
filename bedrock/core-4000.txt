@@ -1,19 +1,21 @@
 # Bedrock core list: the 4000 most common Spanish words
-    #
-    # For AI tutors working with a Bedrock learner (https://arrosho.com/bedrock/).
-    # Keep your Spanish inside this list, plus the words in the learner's lessons and
-    # obvious English twins (información, universidad). Conjugated and plural forms
-    # of a word count: "tener" covers tengo, tiene and tuvo.
-    #
-    # The learner won't know most of these yet. When one comes up that they don't
-    # know, let them guess first, then explain it. A wrong guess sticks better than
-    # being told.
-    #
-    # Learners can download the same list, with meanings, as flashcards in the app.
-    # Ordered by frequency (wordfreq, MIT), folded to dictionary forms (simplemma, MIT).
-    # Four strata of 1,000: 1-1000 beginner, 1001-2000 intermediate, 2001-4000 advanced.
-    # Rebuild with tools/make_core_deck.py.
-    
+#
+# For AI tutors working with a Bedrock learner (https://arrosho.com/bedrock/).
+# Keep your Spanish inside this list, plus the words in the learner's lessons and
+# obvious English twins (información, universidad). Conjugated and plural forms
+# of a word count: "tener" covers tengo, tiene and tuvo.
+#
+# The learner won't know most of these yet. When one comes up that they don't
+# know, let them guess first, then explain it. A wrong guess sticks better than
+# being told.
+#
+# Learners can download the same list, with meanings, as flashcards in the app.
+# Ordered by frequency, derived from wordfreq data (CC BY-SA 4.0, https://github.com/rspeer/wordfreq),
+# folded to dictionary forms with simplemma (MIT). Meanings written for Bedrock.
+# This list is shared under CC BY-SA 4.0 too.
+# Four strata of 1,000: 1-1000 beginner, 1001-2000 intermediate, 2001-4000 advanced.
+# Rebuild with tools/make_core_deck.py.
+
 ## Stratum 1: words 1-1000
 1 de: of, from
 2 la: the (feminine)

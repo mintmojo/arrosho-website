@@ -156,6 +156,6 @@ New words: si, visitara, pudiera, fuera, aceptaría, quería, prepararas
 ## Files
 
 - [lessons.json](https://arrosho.com/bedrock/lessons.json): every lesson's text, prompts and answers, plus the "unlocks" and "ai" fields used to build tutor prompts
-- [core-4000.txt](https://arrosho.com/bedrock/core-4000.txt): the core list, the 4,000 most common Spanish words in frequency order. Tutors keep their Spanish inside it
+- [core-4000.txt](https://arrosho.com/bedrock/core-4000.txt): the core list, the 4,000 most common Spanish words in frequency order (derived from wordfreq data, CC BY-SA 4.0). Tutors keep their Spanish inside it
 - [core.json](https://arrosho.com/bedrock/core.json): the same 4,000 words with English meanings, which learners can download as flashcards
 - [Bedrock](https://arrosho.com/bedrock/): the app itself
