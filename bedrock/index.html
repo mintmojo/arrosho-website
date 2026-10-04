@@ -32,8 +32,32 @@ h1{font-size:1.5rem;margin:0;letter-spacing:-.01em}
 .stat b{display:block;font-size:1.25rem;line-height:1.2}
 .stat span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .lists{margin:-1rem 0 1.5rem;font-size:.8rem;color:var(--muted)}
-.reviews{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.1rem}
-.reviews .srs{margin-bottom:0}
+.reviews{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.1rem}
+.reviews .srs{margin-bottom:0;padding:.8rem .85rem;gap:.4rem;align-items:flex-start}
+.reviews .srs .cnt{font-size:1.15rem}
+.incard{background:var(--card);border:1px solid var(--accent);border-radius:.55rem;padding:.85rem 1rem;margin-bottom:.5rem}
+.incard .ic-top{display:flex;justify-content:space-between;align-items:baseline}
+.incard .ic-top b{font-weight:600}
+.incard .ic-top span{color:var(--accent);font-weight:600}
+.incard small{display:block;color:var(--muted);font-size:.78rem;margin:.15rem 0 .65rem}
+.incard .row button{padding:.55rem .6rem;font-size:.9rem}
+.incard .link{font-size:.8rem;margin-top:.3rem}
+.inrow{display:flex;justify-content:space-between;gap:.6rem;padding:.45rem 0;border-bottom:1px solid var(--line);font-size:.88rem}
+.inrow span:last-child{color:var(--muted);white-space:nowrap}
+.src{display:block;padding:.6rem 0;border-bottom:1px solid var(--line);color:var(--fg);text-decoration:none}
+.src b{font-weight:600}.src small{display:block;color:var(--muted);font-size:.8rem}
+.lvl{display:flex;gap:.35rem;flex-wrap:wrap;margin:.4rem 0 .9rem}
+.lvl button{flex:1 1 30%;padding:.55rem .3rem;font-size:.8rem;line-height:1.25}
+.lvl button.on{border-color:var(--accent);color:var(--accent);font-weight:600}
+.field{display:block;font-size:.85rem;color:var(--muted);margin:.8rem 0 .3rem}
+.inp{width:100%;font:inherit;padding:.6rem .7rem;border:1px solid var(--line);border-radius:.5rem;background:var(--card);color:var(--fg)}
+.chips{display:flex;gap:.35rem;margin-top:.4rem}.chips button{flex:1;padding:.4rem;font-size:.8rem}
+.spark{width:100%;height:4.5rem;display:block;margin:.4rem 0 .2rem}
+.speak{border:none;background:none;padding:.15rem .3rem;margin-left:.3rem;color:var(--accent);vertical-align:middle;line-height:0}
+.speak svg{width:1.25rem;height:1.25rem}
+header #sound{width:1.9rem;height:1.9rem;padding:0;border-radius:50%;color:var(--muted);flex:0 0 auto;display:grid;place-items:center}
+header #sound svg{width:1.05rem;height:1.05rem}
+header #sound.on{color:var(--accent);border-color:var(--accent)}
 .srs.sub{border-color:var(--line);padding:.75rem 1rem}
 .lrow{display:flex;gap:.5rem;align-items:stretch;margin-bottom:.5rem}
 .lrow .lesson{margin-bottom:0}
@@ -119,7 +143,8 @@ code{font:.85em ui-monospace,SFMono-Regular,Menlo,monospace;
 .ai-note a{color:var(--muted)}
 .hook{font-size:.9rem;color:var(--muted);font-style:italic;margin:.7rem 0 0}
 input[type=file]{font:inherit;font-size:.85rem;color:var(--muted);width:100%}
-header #help{margin-left:auto;width:1.9rem;height:1.9rem;padding:0;border-radius:50%;
+header #sound.hidden+#help{margin-left:auto}
+header #help{margin-left:.4rem;width:1.9rem;height:1.9rem;padding:0;border-radius:50%;
   color:var(--muted);font-size:.95rem;line-height:1;flex:0 0 auto}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;
   display:flex;align-items:flex-end;justify-content:center}
@@ -162,6 +187,7 @@ footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid 
 <div class="wrap">
   <header>
     <img src="icon.svg" alt=""><h1>Bedrock</h1><span class="sub">Spanish</span>
+    <button id="sound" class="hidden" aria-label="Auto-play Spanish" style="margin-left:auto"></button>
     <button id="help" aria-label="How to install this as an app">?</button>
   </header>
 
@@ -184,9 +210,15 @@ footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid 
       <div class="stat"><b id="s-known">0</b><span>words</span></div>
     </div>
     <p class="lists hidden" id="s-lists"></p>
+    <div class="incard" id="incard">
+      <div class="ic-top"><b>Input</b><span id="in-hours">0 h</span></div>
+      <small id="in-sub">Real Spanish you listen to or read. This is what makes you fluent.</small>
+      <div class="row"><button class="ok" id="in-log">Log input</button><button id="in-timer">Start timer</button></div>
+      <button class="link" id="in-more">What to listen to, and your history</button>
+    </div>
     <div class="reviews">
       <button id="srs-btn" class="srs"></button>
-      <button id="review-btn" class="srs sub"><span><b>Review lesson prompts I missed</b>
+      <button id="review-btn" class="srs sub"><span><b>Review lessons</b>
         <small id="review-sub"></small></span></button>
     </div>
     <div id="list"></div>
@@ -306,7 +338,9 @@ function derive(){
       e.result==='ok'?(seen[k].ok++,ok++):seen[k].miss++; n++;}
     if(e.type==='lesson_done')done.add(e.lesson);
   }
-  const days=[...new Set(events.map(e=>e.t.slice(0,10)))].sort();
+  // a day counts if you did something: a lesson, a review, or input
+  const ACT=new Set(['answer','lesson_done','review','input']);
+  const days=[...new Set(events.filter(e=>ACT.has(e.type)).map(e=>e.t.slice(0,10)))].sort();
   let streak=0;const d=new Date();
   for(;;){const s=d.toISOString().slice(0,10);
     if(days.includes(s)){streak++;d.setDate(d.getDate()-1);}
@@ -376,7 +410,7 @@ function srs(){
 }
 
 // ---------- app ----------
-let LESSONS=[],CORE=[],cur=null,step=0,srsQueue=[],srsCard=null;
+let LESSONS=[],CORE=[],SOURCES={levels:[],sources:[]},cur=null,step=0,srsQueue=[],srsCard=null;
 const $=s=>document.querySelector(s);
 
 (async()=>{
@@ -398,6 +432,7 @@ const $=s=>document.querySelector(s);
   const d=await (await fetch('lessons.json')).json();
   LESSONS=d.lessons;
   if(corePref()==='yes'&&!CORE.length)await fetchCore();
+  try{SOURCES=await (await fetch('sources.json')).json();}catch(e){}
   home();
 })();
 
@@ -426,13 +461,13 @@ function home(){
   const btn=$('#srs-btn');
   const nNew=s.queue.filter(c=>!c.last).length, nDue=s.queue.length-nNew;
   const missed=Object.values(st.seen).filter(x=>x.miss>x.ok).length;
-  $('#review-sub').textContent=missed?missed+' to go over':'nothing missed yet';
+  $('#review-sub').textContent=missed?missed+' missed '+(missed===1?'prompt':'prompts'):'nothing missed yet';
   $('#review-btn').disabled=!missed;
   if(!corePref()){
     // never asked: the button has to stay tappable so the question can be asked
     btn.classList.remove('clear');btn.disabled=false;
     btn.innerHTML=`<span><b>Review vocabulary</b><small>${
-      s.queue.length?s.queue.length+' ready · ':''}tap to set up your word list</small></span>
+      s.queue.length?s.queue.length+' ready · ':''}set up your words</small></span>
       <span class="cnt">${s.queue.length||'+'}</span>`;
   }else if(s.queue.length){
     btn.classList.remove('clear');btn.disabled=false;
@@ -443,11 +478,11 @@ function home(){
     btn.classList.add('clear');btn.disabled=true;
     let msg;
     if(s.capped){
-      msg='daily limit reached · '+s.fresh.length+' waiting for tomorrow';
+      msg='done for today · '+s.fresh.length+' new tomorrow';
     }else if(!s.all.length){
       // lessons 2-3 teach rules, not words, so finishing them unlocks nothing.
       // Saying "finish a lesson" there would read as broken.
-      msg=gradedDone?'the lessons so far teach rules, not words — lesson 4 has the first':
+      msg=gradedDone?'no words yet: lesson 4 has the first':
                      'finish a lesson to unlock words';
     }else{
       const next=s.all.filter(c=>c.last).sort((a,b)=>a.due-b.due)[0];
@@ -457,6 +492,8 @@ function home(){
     btn.innerHTML=`<span><b>Vocabulary</b><small>${msg}</small></span>
       <span class="cnt">✓</span>`;
   }
+  renderInputCard();
+  renderSoundBtn();
   // someone who said "not now" can still change their mind
   $('#deck-btn').classList.toggle('hidden',corePref()!=='no');
   $('#list').innerHTML='';
@@ -507,7 +544,7 @@ function render(){
     $('#stage').innerHTML=`<p class="gq">${b.prompt}</p><div class="grid">${cells}</div>
       <div class="row"><button id="show">Show me all five</button></div>`;
     $('#show').onclick=()=>{
-      document.querySelectorAll('.grid .r').forEach(el=>el.classList.remove('blur'));
+      document.querySelectorAll('.grid .r').forEach(el=>{el.classList.remove('blur');el.insertAdjacentHTML('beforeend',sayBtn(el.textContent));});
       $('#stage').querySelector('.row').innerHTML=
         `<button class="miss" id="m">Some were wrong</button>
          <button class="ok" id="o">Got them</button>`;
@@ -525,10 +562,11 @@ function render(){
           <div><span class="mark v">✓</span><span class="lbl">Spanish</span><span class="v">${b.right}</span></div>
         </div>`:'';
       $('#stage').innerHTML=`<div class="card">
-          <p class="say">${b.es}</p>${phon}<p class="ans">${b.a}</p></div>
+          <p class="say">${b.es}${sayBtn(b.es)}</p>${phon}<p class="ans">${b.a}</p></div>
         <div class="row">
           <button class="miss" id="m">I had it wrong</button>
           <button class="ok" id="o">I had it right</button></div>`;
+      revealed(b.es);
       $('#o').onclick=()=>ans('ok');$('#m').onclick=()=>ans('miss');
       guard();
     };
@@ -539,10 +577,11 @@ function render(){
     $('#show').onclick=()=>{
       const pron=b.p?`<p class="pron">${b.p}</p>`:'';
       $('#stage').innerHTML=`<div class="card">
-          <p class="en">${b.en}</p><p class="es">${b.es}</p>${pron}</div>
+          <p class="en">${b.en}</p><p class="es">${b.es}${sayBtn(b.es)}</p>${pron}</div>
         <div class="row">
           <button class="miss" id="m">Missed it</button>
           <button class="ok" id="o">Got it</button></div>`;
+      revealed(b.es);
       $('#o').onclick=()=>ans('ok');$('#m').onclick=()=>ans('miss');
       guard();
     };
@@ -797,12 +836,13 @@ function nextSrs(){
     const extra=(m?.img?`<img class="cardimg" src="${URL.createObjectURL(m.img)}" alt="">`:'')
       +(m?.note?`<p class="hook">${m.note}</p>`:'');
     $('#stage').innerHTML=`<div class="card">
-        <p class="en">${c.en}</p><p class="es">${c.es}</p>
+        <p class="en">${c.en}</p><p class="es">${c.es}${sayBtn(c.es)}</p>
         <p class="pron">${c.p||''}</p>${extra}</div>
       <div class="row">
         <button class="miss" id="m">Missed it</button>
         <button class="ok" id="o">Got it</button></div>`;
     $('#o').onclick=()=>gradeSrs('ok');$('#m').onclick=()=>gradeSrs('miss');
+    revealed(c.es);
     guard();
   };
   guard();
@@ -873,6 +913,191 @@ function gradeSrs(r){
 
 $('#prev').onclick=()=>{if(step>0){step--;render();}};
 $('#quit').onclick=home;
+// ---------- speech ----------
+// The phone's own Spanish voice, for checking how a word goes. Fine for that,
+// not for training the ear: the first lesson says so, and the ear trainer
+// will need real recordings.
+let VOICE=null;
+const SPEAKER=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18.3 6.3a8 8 0 0 1 0 11.4"/></svg>`;
+function pickVoice(){
+  if(!('speechSynthesis' in window))return;
+  const vs=speechSynthesis.getVoices().filter(v=>/^es([-_]|$)/i.test(v.lang));
+  const norm=v=>v.lang.replace('_','-').toLowerCase();
+  // Latin American first, to match the AI prompts; on-device voices work offline
+  const latam=['es-mx','es-us','es-419','es-co','es-ar','es-cl','es-pe'];
+  const rank=v=>(latam.includes(norm(v))?0:2)+(v.localService?0:1);
+  VOICE=vs.sort((a,b)=>rank(a)-rank(b))[0]||null;
+}
+if('speechSynthesis' in window){
+  pickVoice();
+  speechSynthesis.addEventListener?.('voiceschanged',()=>{const had=!!VOICE;pickVoice();if(!had&&VOICE&&!$('#home').classList.contains('hidden'))home();});
+}
+// "essence → la conversación es importante" and "a · b" alternatives: say the answer once
+const speakable=t=>String(t).split('·')[0].split('→').pop().replace(/<[^>]+>/g,'').trim();
+function speak(t){
+  if(!VOICE)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(speakable(t));
+  u.voice=VOICE;u.lang=VOICE.lang;u.rate=.9;
+  speechSynthesis.speak(u);
+}
+const sayBtn=t=>VOICE?`<button class="speak" data-say="${encodeURIComponent(speakable(t))}" aria-label="Hear it">${SPEAKER}</button>`:'';
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.speak');
+  if(b){e.preventDefault();e.stopPropagation();speak(decodeURIComponent(b.dataset.say));}
+});
+function autoplay(){let v=false;for(const e of events)if(e.type==='setting'&&e.key==='autoplay')v=e.value;return v;}
+// only ever after a reveal, never before: the guess has to come first
+const revealed=t=>{if(autoplay())speak(t);};
+function renderSoundBtn(){
+  const b=$('#sound');
+  b.classList.toggle('hidden',!VOICE);
+  b.classList.toggle('on',autoplay());
+  b.innerHTML=SPEAKER;
+  b.title=autoplay()?'Auto-play is on':'Auto-play is off';
+}
+$('#sound').onclick=()=>{
+  const on=!autoplay();
+  log({type:'setting',key:'autoplay',value:on});
+  renderSoundBtn();
+  toast(on?'Auto-play on: Spanish plays when you reveal an answer.':'Auto-play off. Tap the speaker next to any answer to hear it.');
+};
+
+// ---------- input: logged listening and reading ----------
+// Logged by hand. Bedrock doesn't watch what you play anywhere else, so nothing
+// leaves the device. Sessions are events, so they're in backups and streaks.
+const UNDERSTOOD=['','almost nothing','a few words','the gist','most of it','nearly all of it'];
+const TIMER_KEY='bedrock.timer';
+let timerMem=null;
+const timerStart=()=>{try{return localStorage.getItem(TIMER_KEY)||timerMem;}catch(e){return timerMem;}};
+const setTimer=v=>{timerMem=v;try{v?localStorage.setItem(TIMER_KEY,v):localStorage.removeItem(TIMER_KEY);}catch(e){}};
+const inputs=()=>events.filter(e=>e.type==='input'&&e.minutes>0);
+const fmtMin=m=>m<60?`${Math.round(m)} min`:`${(m/60).toFixed(m<600?1:0).replace(/\.0$/,'')} h`;
+
+function inputStats(){
+  const all=inputs(), week=Date.now()-7*DAY;
+  const total=all.reduce((a,e)=>a+e.minutes,0);
+  const thisWeek=all.filter(e=>new Date(e.t).getTime()>=week).reduce((a,e)=>a+e.minutes,0);
+  const rated=all.filter(e=>e.understood);
+  const last=rated.slice(-5);
+  const avg=last.length?last.reduce((a,e)=>a+e.understood,0)/last.length:null;
+  return {all,total,thisWeek,rated,avg};
+}
+
+function nudge(avg,n){
+  if(avg==null)return 'Pick something you would choose anyway. You should mostly understand it, and want to keep going.';
+  if(n<3)return 'Log a few more sessions and this will tell you whether to go harder or easier.';
+  if(avg>=4)return 'You\'re following most of what you hear. Try something a step harder.';
+  if(avg<=2)return 'That\'s a lot to follow. Try something easier: you should mostly understand it.';
+  return 'That\'s the right level. You mostly follow it, and the rest is what you\'re learning.';
+}
+
+function renderInputCard(){
+  const st=inputStats(), t=timerStart();
+  $('#in-hours').textContent=fmtMin(st.total);
+  $('#in-sub').textContent=t
+    ?`Timer running since ${new Date(t).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}. Stop it when you're done.`
+    :st.all.length
+      ?`${fmtMin(st.thisWeek)} this week`+(st.avg!=null?` · understanding ${st.avg.toFixed(1)} of 5`:'')
+      :'Real Spanish you listen to or read. This is what makes you fluent.';
+  $('#in-timer').textContent=t?'Stop timer':'Start timer';
+  $('#in-timer').classList.toggle('ok',!!t);
+}
+
+$('#in-timer').onclick=()=>{
+  const t=timerStart();
+  if(!t){setTimer(new Date().toISOString());renderInputCard();
+    return toast('Timer started. Go listen, then come back and stop it.');}
+  const mins=Math.max(1,Math.round((Date.now()-new Date(t).getTime())/60000));
+  setTimer(null);
+  logInput(mins);
+};
+$('#in-log').onclick=()=>logInput(null);
+$('#in-more').onclick=()=>showInput('learners');
+
+function openStage(){
+  $('#home').classList.add('hidden');$('#play').classList.remove('hidden');
+  $('#bar').style.width='0%';$('#prev').disabled=true;
+}
+
+function logInput(mins){
+  openStage();
+  const names=SOURCES.sources.map(x=>`<option value="${x.name.replace(/"/g,'&quot;')}">`).join('');
+  const recent=[...new Set(inputs().slice(-12).reverse().map(e=>e.source).filter(Boolean))].slice(0,4);
+  let rating=0;
+  $('#stage').innerHTML=`<p class="teach"><b>Log input.</b> Anything in Spanish you listened to or read.</p>
+    <label class="field" for="in-src">What was it?</label>
+    <input class="inp" id="in-src" list="in-srcs" placeholder="a show, a podcast, a book, a conversation">
+    <datalist id="in-srcs">${names}</datalist>
+    ${recent.length?`<div class="chips" id="in-recent">${recent.map(r=>`<button data-v="${r.replace(/"/g,'&quot;')}">${r}</button>`).join('')}</div>`:''}
+    <label class="field" for="in-min">How many minutes?</label>
+    <input class="inp" id="in-min" type="number" inputmode="numeric" min="1" max="600" value="${mins||''}">
+    <div class="chips" id="in-mins"><button data-m="10">10</button><button data-m="20">20</button><button data-m="30">30</button><button data-m="60">60</button></div>
+    <span class="field">How much did you understand?</span>
+    <div class="lvl" id="in-rate">${[1,2,3,4,5].map(k=>`<button data-r="${k}">${k}<br><small>${UNDERSTOOD[k]}</small></button>`).join('')}</div>
+    <label class="field" for="in-words">Words you caught (optional). One per line: spanish, english</label>
+    <textarea id="in-words" rows="2" placeholder="la playa, the beach"></textarea>
+    <div class="row"><button id="in-cancel">Cancel</button><button class="ok" id="in-save">Save</button></div>
+    <p class="hint" id="in-msg" style="margin-top:.6rem"></p>`;
+  document.querySelectorAll('#in-recent button').forEach(b=>b.onclick=()=>{$('#in-src').value=b.dataset.v;});
+  document.querySelectorAll('#in-mins button').forEach(b=>b.onclick=()=>{$('#in-min').value=b.dataset.m;});
+  document.querySelectorAll('#in-rate button').forEach(b=>b.onclick=()=>{
+    rating=+b.dataset.r;
+    document.querySelectorAll('#in-rate button').forEach(x=>x.classList.toggle('on',x===b));
+  });
+  $('#in-cancel').onclick=home;
+  $('#in-save').onclick=()=>{
+    const minutes=Math.round(+$('#in-min').value);
+    if(!(minutes>0))return $('#in-msg').textContent='How many minutes was it?';
+    if(!rating)return $('#in-msg').textContent='Tap how much you understood. A rough guess is fine.';
+    log({type:'input',minutes:Math.min(minutes,600),source:$('#in-src').value.trim()||null,understood:rating});
+    let added=0;
+    const w=$('#in-words').value.trim();
+    if(w){
+      const {rows}=parseImport(w);
+      const have=new Set(deck.map(d=>d.es));
+      (rows||[]).forEach(r=>{if(!have.has(r.es)){deck.push(r);idbPut('deck',r);added++;}});
+    }
+    toast(`Logged ${fmtMin(minutes)}`+(added?` and added ${added} ${added===1?'word':'words'} to your review`:'')+'.');
+    home();
+  };
+}
+
+function sparkline(vals){
+  if(vals.length<2)return '';
+  const w=300,h=72,pad=8,step=(w-2*pad)/(vals.length-1);
+  const y=v=>h-pad-(v-1)/4*(h-2*pad);
+  const pts=vals.map((v,i)=>`${(pad+i*step).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  const grid=[1,3,5].map(v=>`<line x1="${pad}" x2="${w-pad}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/>`).join('');
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img"
+      aria-label="How much you understood, last ${vals.length} sessions">${grid}
+    <polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>`;
+}
+
+function showInput(level){
+  openStage();
+  const st=inputStats();
+  const rated=st.rated.slice(-20).map(e=>e.understood);
+  const recent=st.all.slice(-8).reverse().map(e=>`<div class="inrow"><span>${e.source||'Untitled'}</span>
+      <span>${fmtMin(e.minutes)} · ${e.understood||'–'}/5 · ${new Date(e.t).toLocaleDateString([], {month:'short',day:'numeric'})}</span></div>`).join('');
+  const lv=SOURCES.levels.find(l=>l.id===level)||SOURCES.levels[0]||{id:'',name:'',blurb:''};
+  const list=SOURCES.sources.filter(x=>x.level===lv.id).map(x=>x.url
+      ?`<a class="src" href="${x.url}" target="_blank" rel="noopener"><b>${x.name}</b> ↗<small>${x.note}</small></a>`
+      :`<div class="src"><b>${x.name}</b><small>${x.note}</small></div>`).join('');
+  $('#stage').innerHTML=`<p class="teach"><b>${fmtMin(st.total)}</b> of Spanish so far${st.all.length?`, ${fmtMin(st.thisWeek)} this week`:''}.
+      ${nudge(st.avg,st.rated.length)}</p>
+    ${rated.length>=2?`<span class="field">How much you understood, last ${rated.length} sessions (1 to 5)</span>${sparkline(rated)}`:''}
+    ${recent?`<span class="field">Recent</span>${recent}`:''}
+    <span class="field">Where to find it</span>
+    <div class="lvl" id="in-lv">${SOURCES.levels.map(l=>`<button data-l="${l.id}" class="${l.id===lv.id?'on':''}">${l.name}</button>`).join('')}</div>
+    <p class="hint">${lv.blurb}</p>
+    ${list}
+    <div class="row" style="margin-top:1rem"><button class="ok" id="in-log2">Log input</button><button id="in-back">Back to lessons</button></div>`;
+  document.querySelectorAll('#in-lv button').forEach(b=>b.onclick=()=>showInput(b.dataset.l));
+  $('#in-log2').onclick=()=>logInput(null);
+  $('#in-back').onclick=home;
+}
+
 // ---------- backup: export and restore ----------
 // The export is the only backup until sync exists, so it carries everything
 // that can't be re-downloaded: the event log, pasted words, and the pictures

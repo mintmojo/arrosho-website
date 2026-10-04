@@ -12,6 +12,8 @@ This file is for AI assistants. If someone asks you to help them learn Spanish w
 - Vocabulary starts from English twins: -tion becomes -ción, -ty becomes -dad, -ous becomes -oso, -ive becomes -ivo, -ly becomes -mente.
 - The grammar order is adapted from a missionary language guide: ser, estar, the choice between them, then verbs that take a base form (tengo que, debo, puedo, quiero, necesito, voy a), then gustar, the tenses, and the subjunctive.
 - The lessons are exposure. Bedrock tells learners plainly that hours of listening to real Spanish are what make them fluent.
+- Learners log their listening and reading in the app's Input section: minutes, what it was, and how much they understood from 1 to 5. If they mention their input hours or ratings, that's where the numbers come from.
+- The app can read answers aloud with the device's own voice, for checking a word. Learners are told it won't train their ear (for example, the tap of *pero* against the trill of *perro*), and that real speakers will.
 
 ## How to tutor a Bedrock learner
 
@@ -156,6 +158,6 @@ New words: si, visitara, pudiera, fuera, aceptaría, quería, prepararas
 ## Files
 
 - [lessons.json](https://arrosho.com/bedrock/lessons.json): every lesson's text, prompts and answers, plus the "unlocks" and "ai" fields used to build tutor prompts
-- [core-4000.txt](https://arrosho.com/bedrock/core-4000.txt): the core list, the 4,000 most common Spanish words in frequency order (derived from wordfreq data, CC BY-SA 4.0). Tutors keep their Spanish inside it
+- [core-4000.txt](https://arrosho.com/bedrock/core-4000.txt): the core list, the 4,000 most common Spanish words in frequency order. Tutors keep their Spanish inside it
 - [core.json](https://arrosho.com/bedrock/core.json): the same 4,000 words with English meanings, which learners can download as flashcards
 - [Bedrock](https://arrosho.com/bedrock/): the app itself
