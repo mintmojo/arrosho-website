@@ -2,7 +2,7 @@
 // returning visitors keep the old files forever — which is exactly what
 // happened between v1 and v8 when this was being patched after copying
 // instead of at the source.
-const CACHE = 'bedrock-v17';
+const CACHE = 'bedrock-v18';
 const ASSETS = ['./', './index.html', './lessons.json', './llms.txt', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {

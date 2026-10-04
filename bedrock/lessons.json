@@ -1,5 +1,5 @@
 {
-  "version": 9,
+  "version": 10,
   "course": "Spanish",
   "lessons": [
     {
@@ -83,7 +83,7 @@
     },
     {
       "id": 0,
-      "label": "0",
+      "label": "1",
       "title": "Two languages, two ways of being",
       "decision": "Why Spanish makes you say things English lets you dodge",
       "blocks": [
@@ -153,7 +153,7 @@
     },
     {
       "id": 1,
-      "label": "1",
+      "label": "2",
       "title": "Words you already own",
       "decision": "English -tion becomes Spanish -ción",
       "blocks": [
@@ -204,7 +204,7 @@
     },
     {
       "id": 2,
-      "label": "2",
+      "label": "3",
       "title": "Where the emphasis goes",
       "decision": "The accent tells you which syllable to hit",
       "blocks": [
@@ -271,7 +271,7 @@
     },
     {
       "id": 3,
-      "label": "3",
+      "label": "4",
       "title": "All of them are \"la\"",
       "decision": "-ción words are feminine",
       "blocks": [
@@ -315,7 +315,7 @@
     },
     {
       "id": 4,
-      "label": "4",
+      "label": "5",
       "title": "Four more rules",
       "decision": "-dad, -oso, -ivo, -mente",
       "blocks": [
@@ -374,7 +374,7 @@
         },
         {
           "t": "teach",
-          "text": "Things, and words to describe them. Next comes what joins the two, and it's the choice from lesson 0."
+          "text": "Things, and words to describe them. Next comes what joins the two, and it's the choice from lesson 1."
         }
       ],
       "vocab": [
@@ -395,7 +395,7 @@
     },
     {
       "id": 5,
-      "label": "5",
+      "label": "6",
       "title": "Ser — what something is",
       "decision": "es for identity and essence",
       "blocks": [
@@ -434,7 +434,7 @@
         },
         {
           "t": "teach",
-          "text": "Notice <b>famosa</b>, not <b>famoso</b>. It's <b>la</b> universidad, so the describing word follows it to <b>-a</b>. That's the agreement from lesson 3 doing its job."
+          "text": "Notice <b>famosa</b>, not <b>famoso</b>. It's <b>la</b> universidad, so the describing word follows it to <b>-a</b>. That's the agreement from lesson 4 doing its job."
         },
         {
           "t": "prompt",
@@ -461,7 +461,7 @@
     },
     {
       "id": 6,
-      "label": "6",
+      "label": "7",
       "title": "Estar — how something is",
       "decision": "está for state and location",
       "blocks": [
@@ -516,7 +516,7 @@
     },
     {
       "id": 7,
-      "label": "7",
+      "label": "8",
       "title": "Ser or estar",
       "decision": "Which \"is\" to reach for",
       "blocks": [
@@ -590,7 +590,7 @@
     },
     {
       "id": 8,
-      "label": "8",
+      "label": "9",
       "title": "Verbs you already own",
       "decision": "Base-form verbs end -ar, -er, -ir",
       "blocks": [
@@ -639,7 +639,7 @@
     },
     {
       "id": 9,
-      "label": "9",
+      "label": "10",
       "title": "Tener que — having to",
       "decision": "tengo que + base form",
       "blocks": [
@@ -683,7 +683,7 @@
     },
     {
       "id": 10,
-      "label": "10",
+      "label": "11",
       "title": "Deber — ought to",
       "decision": "debo + base form",
       "blocks": [
@@ -727,7 +727,7 @@
     },
     {
       "id": 11,
-      "label": "11",
+      "label": "12",
       "title": "Poder — being able, and saying no",
       "decision": "puedo + base form, no in front, then ser and estar after any opening",
       "blocks": [
@@ -805,7 +805,7 @@
     },
     {
       "id": 12,
-      "label": "12",
+      "label": "13",
       "title": "Querer — wanting",
       "decision": "quiero + base form",
       "blocks": [
@@ -855,14 +855,14 @@
     },
     {
       "id": 13,
-      "label": "13",
+      "label": "14",
       "title": "Necesitar — needing",
       "decision": "necesito + base form",
       "blocks": [
         {
           "t": "context",
           "title": "Why necesitar matters",
-          "text": "This one tests whether the converter from lesson 4 is running yet. You've never been taught this word, and you should still see it coming."
+          "text": "This one tests whether the converter from lesson 5 is running yet. You've never been taught this word, and you should still see it coming."
         },
         {
           "t": "teach",
@@ -895,7 +895,7 @@
     },
     {
       "id": 14,
-      "label": "14",
+      "label": "15",
       "title": "Ir a — going to",
       "decision": "voy a + base form, then all six openings mixed",
       "blocks": [
@@ -972,7 +972,7 @@
     },
     {
       "id": 15,
-      "label": "15",
+      "label": "16",
       "title": "Gustar — what pleases you",
       "decision": "me gusta + a thing or a base form",
       "blocks": [
@@ -1019,7 +1019,7 @@
         },
         {
           "t": "teach",
-          "text": "The easy mistake is <i>yo gusto</i>. That says <i>I am pleasing</i>, which isn't what you meant. Keep the person as <b>me</b>, the receiver.<br><br><b>Me</b> is <i>to me</i>. It's the same little word as in <b>se me cayó</b> from lesson 0. Spanish likes putting the person on the receiving end."
+          "text": "The easy mistake is <i>yo gusto</i>. That says <i>I am pleasing</i>, which isn't what you meant. Keep the person as <b>me</b>, the receiver.<br><br><b>Me</b> is <i>to me</i>. It's the same little word as in <b>se me cayó</b> from lesson 1. Spanish likes putting the person on the receiving end."
         },
         {
           "t": "teach",
@@ -1042,7 +1042,7 @@
     },
     {
       "id": 16,
-      "label": "16",
+      "label": "17",
       "title": "Estoy + -ando — happening right now",
       "decision": "estoy + -ando / -iendo for what's in progress",
       "blocks": [
@@ -1085,7 +1085,7 @@
         },
         {
           "t": "teach",
-          "text": "Why <b>estar</b> and never <b>ser</b>? Because something in progress is a state you're in right now. It's lesson 7's choice again, and here it always lands on estar."
+          "text": "Why <b>estar</b> and never <b>ser</b>? Because something in progress is a state you're in right now. It's lesson 8's choice again, and here it always lands on estar."
         },
         {
           "t": "teach",
@@ -1108,7 +1108,7 @@
     },
     {
       "id": 17,
-      "label": "17",
+      "label": "18",
       "title": "Preparo — saying you do it",
       "decision": "drop the ending, add -o",
       "blocks": [
@@ -1141,7 +1141,7 @@
         },
         {
           "t": "teach",
-          "text": "Where does the weight go? <b>Preparo</b>: pre-PA-ro. It ends in a vowel, so the second-to-last syllable, as lesson 2 said. Hold on to that. A past tense later depends on moving it."
+          "text": "Where does the weight go? <b>Preparo</b>: pre-PA-ro. It ends in a vowel, so the second-to-last syllable, as lesson 3 said. Hold on to that. A past tense later depends on moving it."
         },
         {
           "t": "prompt",
@@ -1181,7 +1181,7 @@
     },
     {
       "id": 18,
-      "label": "18",
+      "label": "19",
       "title": "Lo and la — it",
       "decision": "lo or la for 'it', in front of the verb",
       "blocks": [
@@ -1192,7 +1192,7 @@
         },
         {
           "t": "teach",
-          "text": "<b>La</b> is <i>the</i>, and it's also <i>it</i> for a feminine thing. <b>Lo</b> is <i>it</i> for a masculine thing. Same filing system as lesson 3."
+          "text": "<b>La</b> is <i>the</i>, and it's also <i>it</i> for a feminine thing. <b>Lo</b> is <i>it</i> for a masculine thing. Same filing system as lesson 4."
         },
         {
           "t": "teach",
@@ -1212,7 +1212,7 @@
         },
         {
           "t": "teach",
-          "text": "With <b>no</b>, the order is <b>no</b>, then <i>it</i>, then the verb. <b>El problema</b> from lesson 0 is masculine, so it becomes <b>lo</b>."
+          "text": "With <b>no</b>, the order is <b>no</b>, then <i>it</i>, then the verb. <b>El problema</b> from lesson 1 is masculine, so it becomes <b>lo</b>."
         },
         {
           "t": "prompt",
@@ -1253,7 +1253,7 @@
     },
     {
       "id": 19,
-      "label": "19",
+      "label": "20",
       "title": "Tú — talking to you",
       "decision": "-as for -ar verbs, -es for -er and -ir",
       "blocks": [
@@ -1280,7 +1280,7 @@
         },
         {
           "t": "teach",
-          "text": "The openings do it too, with the same quirks as before: <b>tienes que</b>, <b>debes</b>, <b>puedes</b>, <b>quieres</b>, <b>necesitas</b>, <b>vas a</b>. And <b>estás</b>, and <b>eres</b> from lesson 5."
+          "text": "The openings do it too, with the same quirks as before: <b>tienes que</b>, <b>debes</b>, <b>puedes</b>, <b>quieres</b>, <b>necesitas</b>, <b>vas a</b>. And <b>estás</b>, and <b>eres</b> from lesson 6."
         },
         {
           "t": "teach",
@@ -1348,7 +1348,7 @@
     },
     {
       "id": 20,
-      "label": "20",
+      "label": "21",
       "title": "Él, ella, usted — one form, three people",
       "decision": "the tú form without its -s",
       "blocks": [
@@ -1426,7 +1426,7 @@
     },
     {
       "id": 21,
-      "label": "21",
+      "label": "22",
       "title": "He decidido — the perfect",
       "decision": "he + -ado / -ido",
       "blocks": [
@@ -1459,7 +1459,7 @@
         },
         {
           "t": "teach",
-          "text": "For other people it's <b>has</b> (you) and <b>ha</b> (he, she, usted). Same pattern as lesson 20: drop the tú form's -s."
+          "text": "For other people it's <b>has</b> (you) and <b>ha</b> (he, she, usted). Same pattern as lesson 21: drop the tú form's -s."
         },
         {
           "t": "prompt",
@@ -1505,7 +1505,7 @@
     },
     {
       "id": 22,
-      "label": "22",
+      "label": "23",
       "title": "Commands — telling a friend",
       "decision": "the tú command is the he/she form",
       "blocks": [
@@ -1532,7 +1532,7 @@
         },
         {
           "t": "teach",
-          "text": "With <i>it</i>, the lo or la goes on the end, and a written accent appears to keep the weight where it was. <b>Prepara</b> + <b>la</b> → <b>¡prepárala!</b> The stress didn't move. Lesson 2's rules just need the mark to say so now."
+          "text": "With <i>it</i>, the lo or la goes on the end, and a written accent appears to keep the weight where it was. <b>Prepara</b> + <b>la</b> → <b>¡prepárala!</b> The stress didn't move. Lesson 3's rules just need the mark to say so now."
         },
         {
           "t": "prompt",
@@ -1559,14 +1559,14 @@
     },
     {
       "id": 23,
-      "label": "23",
+      "label": "24",
       "title": "Preparé — it happened",
       "decision": "-é / -í for I, -ó / -ió for he and she",
       "blocks": [
         {
           "t": "context",
           "title": "Why the preterite matters",
-          "text": "This is the past for things that happened and finished: I decided, she visited. It's the tense stories run on, and it hinges on the stress rules from lesson 2."
+          "text": "This is the past for things that happened and finished: I decided, she visited. It's the tense stories run on, and it hinges on the stress rules from lesson 3."
         },
         {
           "t": "teach",
@@ -1634,7 +1634,7 @@
     },
     {
       "id": 24,
-      "label": "24",
+      "label": "25",
       "title": "Preparaba — how things were",
       "decision": "-aba / -ía for the scene, not the event",
       "blocks": [
@@ -1697,7 +1697,7 @@
     },
     {
       "id": 25,
-      "label": "25",
+      "label": "26",
       "title": "Preterite or imperfect",
       "decision": "the event, or the scene around it",
       "blocks": [
@@ -1770,7 +1770,7 @@
     },
     {
       "id": 26,
-      "label": "26",
+      "label": "27",
       "title": "Saber or conocer",
       "decision": "knowing facts, or knowing someone",
       "blocks": [
@@ -1842,7 +1842,7 @@
     },
     {
       "id": 27,
-      "label": "27",
+      "label": "28",
       "title": "Se — when nobody in particular does it",
       "decision": "se + the he/she form",
       "blocks": [
@@ -1881,7 +1881,7 @@
         },
         {
           "t": "teach",
-          "text": "Remember <b>se me cayó</b> from lesson 0? It's a close cousin of this <b>se</b>. The thing fell, <b>me</b> says who it happened to, and nobody is to blame. That's exactly why Spanish speakers reach for it."
+          "text": "Remember <b>se me cayó</b> from lesson 1? It's a close cousin of this <b>se</b>. The thing fell, <b>me</b> says who it happened to, and nobody is to blame. That's exactly why Spanish speakers reach for it."
         }
       ],
       "vocab": [
@@ -1899,7 +1899,7 @@
     },
     {
       "id": 28,
-      "label": "28",
+      "label": "29",
       "title": "Prepararía — would",
       "decision": "the whole base form + -ía",
       "blocks": [
@@ -1962,7 +1962,7 @@
     },
     {
       "id": 29,
-      "label": "29",
+      "label": "30",
       "title": "Quiero que decidas — wanting someone else to",
       "decision": "que + the flipped vowel",
       "blocks": [
@@ -2009,7 +2009,7 @@
         },
         {
           "t": "teach",
-          "text": "This is the flip lesson 22 promised. <i>Don't</i> commands use it: <b>¡no prepares!</b> So do polite commands to usted: <b>¡prepare!</b>"
+          "text": "This is the flip lesson 23 promised. <i>Don't</i> commands use it: <b>¡no prepares!</b> So do polite commands to usted: <b>¡prepare!</b>"
         },
         {
           "t": "prompt",
@@ -2034,14 +2034,14 @@
     },
     {
       "id": 30,
-      "label": "30",
+      "label": "31",
       "title": "Si pudiera — if I could",
       "decision": "si + -ara / -iera, then the -ía form",
       "blocks": [
         {
           "t": "context",
           "title": "Why this last piece matters",
-          "text": "The last piece is for things that aren't true: if I had more time, if I were you. English barely marks it. Spanish pairs a special past with the <i>would</i> form from lesson 28."
+          "text": "The last piece is for things that aren't true: if I had more time, if I were you. English barely marks it. Spanish pairs a special past with the <i>would</i> form from lesson 29."
         },
         {
           "t": "teach",
@@ -2071,7 +2071,7 @@
         },
         {
           "t": "teach",
-          "text": "It's also the past of lesson 29. <b>Quiero que decidas</b> becomes <b>quería que decidieras</b>: I wanted you to decide."
+          "text": "It's also the past of lesson 30. <b>Quiero que decidas</b> becomes <b>quería que decidieras</b>: I wanted you to decide."
         },
         {
           "t": "prompt",

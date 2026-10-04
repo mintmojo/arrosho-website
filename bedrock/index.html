@@ -38,10 +38,10 @@ h1{font-size:1.5rem;margin:0;letter-spacing:-.01em}
 .lrow{display:flex;gap:.5rem;align-items:stretch;margin-bottom:.5rem}
 .lrow .lesson{margin-bottom:0}
 .robot{flex:0 0 3rem;padding:0;display:grid;place-items:center;color:var(--accent)}
-.robot svg{width:1.6rem;height:1.6rem}
+.robot svg{width:1.85rem;height:1.85rem}
 .row .robot{flex:0 0 3.5rem}
 .btn-sm{border:1px solid var(--line);border-radius:.45rem;background:var(--card);
-  color:var(--muted);padding:.35rem .7rem;font-size:.8rem;margin:.6rem .4rem 0 0}
+  color:var(--muted);padding:.35rem .7rem;font-size:.8rem;margin:.6rem .2rem 0}
 .toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);max-width:calc(100% - 2rem);
   background:var(--fg);color:var(--bg);padding:.7rem 1rem;border-radius:.6rem;font-size:.88rem;
   box-shadow:0 4px 18px rgba(0,0,0,.18);z-index:20;text-align:center}
@@ -152,7 +152,9 @@ header #help{margin-left:auto;width:1.9rem;height:1.9rem;padding:0;border-radius
 .pick.off{border-color:var(--line);opacity:.45}
 .pick.off .pk{color:var(--muted);text-decoration:line-through}
 #p-done{position:sticky;top:0;z-index:2}
-footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padding-top:.9rem}
+footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padding-top:.9rem;text-align:center}
+.foot-rule{border:0;border-top:1px solid var(--line);margin:1rem 0 .4rem}
+.ai-note p{text-align:left}
 .hidden{display:none}
 </style>
 </head>
@@ -188,7 +190,6 @@ footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid 
         <small id="review-sub"></small></span></button>
     </div>
     <div id="list"></div>
-    <button class="link" id="import-btn">Add your own words</button>
     <button class="link hidden" id="deck-btn">Download the 4,000 core words</button>
 
     <div id="importer" class="hidden">
@@ -205,8 +206,10 @@ puedo,I can,PWEH-doh"></textarea>
     </div>
     <footer>
       Everything is locally hosted on your device.<br>
+      <button class="btn-sm" id="import-btn">Add your own words</button>
       <button class="btn-sm" id="export">Export my data</button>
       <button class="btn-sm" id="reset">Reset data</button>
+      <hr class="foot-rule">
       <details class="ai-note">
         <summary>For AI assistants</summary>
         <p>Bedrock is a free Spanish course and vocabulary trainer made by Arrosho.
@@ -436,9 +439,9 @@ function home(){
     if(s.capped){
       msg='daily limit reached · '+s.fresh.length+' waiting for tomorrow';
     }else if(!s.all.length){
-      // lessons 1-2 teach rules, not words, so finishing them unlocks nothing.
+      // lessons 2-3 teach rules, not words, so finishing them unlocks nothing.
       // Saying "finish a lesson" there would read as broken.
-      msg=gradedDone?'the lessons so far teach rules, not words — lesson 3 has the first':
+      msg=gradedDone?'the lessons so far teach rules, not words — lesson 4 has the first':
                      'finish a lesson to unlock words';
     }else{
       const next=s.all.filter(c=>c.last).sort((a,b)=>a.due-b.due)[0];
@@ -599,17 +602,18 @@ function lessonPrompt(l){
     '',TUTOR_RULES].filter(x=>x!==null).join('\n');
 }
 
-const ROBOT=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+const ROBOT=`<svg viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="1.6"
   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path d="M10 2.5v2.5"/><circle cx="10" cy="2.2" r=".9" fill="currentColor"/>
   <rect x="3" y="5" width="14" height="11" rx="3"/>
   <circle cx="7.5" cy="10" r="1.1" fill="currentColor" stroke="none"/>
   <circle cx="12.5" cy="10" r="1.1" fill="currentColor" stroke="none"/>
   <path d="M7.5 13.2h5"/><path d="M1.5 9.5v3M18.5 9.5v3"/>
-  <circle cx="18.5" cy="18.5" r="5" fill="var(--bg)" stroke="none"/>
+  <circle cx="18" cy="18" r="6.4" fill="var(--bg)" stroke="none"/>
+  <g transform="translate(18 18) scale(1.45) translate(-18.5 -18.5)">
   <path d="M17.6 19.4l1.8-1.8"/>
   <path d="M16.9 18.2l-.6.6a1.5 1.5 0 0 0 2.1 2.1l.6-.6"/>
-  <path d="M20.1 18.8l.6-.6a1.5 1.5 0 0 0-2.1-2.1l-.6.6"/></svg>`;
+  <path d="M20.1 18.8l.6-.6a1.5 1.5 0 0 0-2.1-2.1l-.6.6"/></g></svg>`;
 
 function robotButton(l){
   const b=document.createElement('button');
@@ -644,7 +648,7 @@ function showDone(l){
   $('#bar').style.width='100%';
   const ai=l.id!=='how';
   $('#stage').innerHTML=`<div class="done-msg"><b>Lesson done.</b>
-      <span class="hint">${ai?'Want more practice on this one? The robot copies a prompt for any AI chat.':'Lesson 0 is next.'}</span></div>
+      <span class="hint">${ai?'Want more practice on this one? The robot copies a prompt for any AI chat.':'Lesson 1 is next.'}</span></div>
     <div class="row" id="d-row"><button id="d-home">Back to lessons</button></div>`;
   if(ai){const r=robotButton(l);r.onclick=()=>copyPrompt(l,()=>showDone(l));$('#d-row').appendChild(r);}
   $('#d-home').onclick=home;
@@ -710,7 +714,10 @@ function parseImport(raw){
   return {rows};
 }
 
-$('#import-btn').onclick=()=>{$('#importer').classList.toggle('hidden');};
+$('#import-btn').onclick=()=>{
+  const box=$('#importer');box.classList.toggle('hidden');
+  if(!box.classList.contains('hidden'))box.scrollIntoView({behavior:'smooth',block:'center'});
+};
 $('#deck-btn').onclick=()=>{
   $('#home').classList.add('hidden');$('#play').classList.remove('hidden');
   $('#prev').disabled=true;askCore();
