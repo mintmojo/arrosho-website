@@ -1,0 +1,17 @@
+{"note": "Where to find Italian to listen to and read. Edit this file to change the list; no code changes needed. The rule for picking: you should mostly understand it, and you should actually want to.",
+ "levels": [
+  {"id": "learners", "name": "Made for learners", "blurb": "The gentlest start. Slow, clear, often with subtitles."},
+  {"id": "children", "name": "Made for children", "blurb": "Simple grammar, repeated constantly, short enough to finish."},
+  {"id": "everyone", "name": "Made for everyone else", "blurb": "For when you can follow the gist."}],
+ "sources": [
+  {"name": "Easy Italian", "level": "learners", "kind": "video", "url": "https://www.youtube.com/results?search_query=Easy+Italian+street+interviews", "note": "Street interviews with subtitles in Italian and English"},
+  {"name": "Italiano Automatico", "level": "learners", "kind": "video", "url": "https://www.youtube.com/results?search_query=Italiano+Automatico", "note": "All in Italian, slow and clear"},
+  {"name": "Podcast Italiano", "level": "learners", "kind": "podcast", "url": "https://www.podcastitaliano.com", "note": "Graded episodes from beginner up, with transcripts"},
+  {"name": "Coffee Break Italian", "level": "learners", "kind": "podcast", "url": "https://coffeebreaklanguages.com", "note": "Short and structured, half English at first"},
+  {"name": "Learn Italian with Lucrezia", "level": "learners", "kind": "video", "url": "https://www.youtube.com/results?search_query=Learn+Italian+with+Lucrezia", "note": "Everyday Italian, explained simply"},
+  {"name": "Peppa Pig in italiano", "level": "children", "kind": "video", "url": "https://www.youtube.com/results?search_query=Peppa+Pig+italiano", "note": "Short, repetitive, very clear speech"},
+  {"name": "RaiPlay Yoyo", "level": "children", "kind": "video", "url": "https://www.raiplay.it/yoyo", "note": "Italian public TV for kids"},
+  {"name": "Disney movies you know, in Italian", "level": "children", "kind": "video", "url": "https://www.youtube.com/results?search_query=film+Disney+italiano+clip", "note": "You already know the plot, so you can follow along"},
+  {"name": "RaiPlay", "level": "everyone", "kind": "video", "url": "https://www.raiplay.it", "note": "Italian public TV: shows, films, news"},
+  {"name": "Il Post", "level": "everyone", "kind": "reading", "url": "https://www.ilpost.it", "note": "Clear, well-written news"},
+  {"name": "Italian music", "level": "everyone", "kind": "music", "url": "https://www.youtube.com/results?search_query=canzoni+italiane+con+testo", "note": "Songs with lyrics on screen; look the lyrics up and sing along"}]}

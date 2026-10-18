@@ -1,0 +1,3343 @@
+{
+ "version": 1,
+ "course": {
+  "id": "it-es",
+  "target": "it",
+  "from": "es",
+  "explain": "en+es",
+  "note": "Italian taught from Spanish, explained in Spanglish. Grammar order follows the MTC Italian Language Guide (2015), used as a blueprint only; all text is original. Draft: needs a fluent check."
+ },
+ "lessons": [
+  {
+   "id": "how",
+   "label": "★",
+   "title": "How this course works",
+   "decision": "Spanish is your shortcut, not your crutch",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why from Spanish",
+     "text": "You already own like 80% of Italian, you just don't know it yet. Same Latin family, same gender system, same <i>me gusta</i> logic, a lot of the same verbs. So this course doesn't start from zero. It starts from your Spanish and only teaches <b>what's different</b>."
+    },
+    {
+     "t": "teach",
+     "text": "The explanations are in Spanglish on purpose. Si una idea sale mejor en español, it's in español. The point is speed, not purity.<br><br>The cues you translate are mixed too: sometimes English, sometimes Spanish, sometimes both. Tú dilo en <b>italiano</b>."
+    },
+    {
+     "t": "teach",
+     "text": "Every lesson teaches <b>one decision</b>. You say every answer <b>out loud</b> before you reveal it, then grade yourself honestly. Getting it wrong is how it works: a wrong guess sticks better than being told."
+    },
+    {
+     "t": "teach",
+     "text": "The biggest danger for a Spanish speaker isn't Italian being hard. It's Italian being <i>too</i> easy, so Spanish leaks in: <i>es</i> instead of <b>è</b>, <i>muy</i> instead of <b>molto</b>, <i>pero</i> instead of <b>ma</b>. Each lesson names the leak before you hit it."
+    },
+    {
+     "t": "teach",
+     "text": "Some sentences have a real recording by a native speaker from <b>Tatoeba</b>, credited under the speaker button. Everything else uses your device's Italian voice, which is fine for checking a word, not for training your ear. For the ear, use the Immersion card.<br><br>The robot button copies a practice prompt for any AI chat. AIs make mistakes, so if one disagrees with a lesson, trust the lesson."
+    }
+   ],
+   "vocab": [],
+   "unlocks": [],
+   "ai": ""
+  },
+  {
+   "id": 0,
+   "label": "1",
+   "title": "Spanish eyes, Italian mouth",
+   "decision": "c and g go soft before e and i",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why sound comes first",
+     "text": "Italian spelling is as honest as Spanish, but a few letters are wired differently. If you read Italian with Spanish rules, people understand you, but you sound like a tourist from Madrid. Fix six things now and you never have to unlearn them."
+    },
+    {
+     "t": "teach",
+     "text": "<b>C</b> before <b>e</b> or <b>i</b> is English <i>ch</i>, not Spanish <i>s/z</i>. <b>cena</b> is CHEH-nah. <b>ciao</b> is CHOW: the <b>i</b> is only there to make the c soft, you don't say it.<br><br><b>G</b> before e/i is English <i>j</i>: <b>gelato</b> is jeh-LAH-toh. Never the Spanish <i>jota</i>."
+    },
+    {
+     "t": "say",
+     "es": "cena",
+     "wrong": "SEH-nah",
+     "right": "CHEH-nah",
+     "a": "c + e = ch. La cena, same word as Spanish, Italian mouth."
+    },
+    {
+     "t": "say",
+     "es": "gente",
+     "wrong": "HEN-teh",
+     "right": "JEN-teh",
+     "a": "g + e = English j. Same word as Spanish gente, totally different sound."
+    },
+    {
+     "t": "teach",
+     "text": "So how do you get a hard <i>k</i> sound before e/i? Italian adds an <b>h</b>: <b>che</b> is KEH, <b>chi</b> is KEE. Backwards from Spanish, where <i>ch</i> is the soft one. Same with <b>ghe/ghi</b>: hard g.<br><br>Ojo: <b>chi</b> means <i>who</i>. <b>che</b> means <i>que</i>."
+    },
+    {
+     "t": "say",
+     "es": "chiesa",
+     "wrong": "CHEE-eh-sah",
+     "right": "KYEH-zah",
+     "a": "ch = k in Italian. Chiesa means iglesia."
+    },
+    {
+     "t": "teach",
+     "text": "<b>gn</b> is your <b>ñ</b>: <b>bagno</b> = BAH-ñoh. <b>gli</b> is like a <i>ll</i> said with the tongue flat, close to the <i>lli</i> in <i>million</i>: <b>famiglia</b> = fah-MEE-lyah. <b>sc</b> before e/i is English <i>sh</i>: <b>scienza</b> = SHEN-tsah. <b>z</b> is <i>ts</i> or <i>dz</i>, never Spanish <i>s</i> or <i>th</i>."
+    },
+    {
+     "t": "say",
+     "es": "famiglia",
+     "wrong": "fah-mee-GLEE-ah",
+     "right": "fah-MEE-lyah",
+     "a": "gli is one sound, a soft ly. The g is silent."
+    },
+    {
+     "t": "teach",
+     "text": "Last one, and it's the one Spanish speakers skip: <b>double consonants are held longer</b>. <b>pala</b> (shovel) vs <b>palla</b> (ball). <b>nono</b> (ninth) vs <b>nonno</b> (grandpa). You literally pause on the double letter. Si no lo haces, you're saying a different word."
+    },
+    {
+     "t": "say",
+     "es": "nonno",
+     "wrong": "NOH-noh",
+     "right": "NOHN-noh",
+     "a": "Hold the nn, like the n in 'unknown'. Nono is ninth, nonno is grandpa."
+    },
+    {
+     "t": "teach",
+     "text": "Good news: stress works almost like Spanish. Most words hit the second-to-last syllable, and a written accent at the end (<b>città</b>, <b>perché</b>) means hit the last one. Italian just doesn't write accents in the middle of words, so <b>telefono</b> is te-LEH-fo-no and you learn it by ear."
+    }
+   ],
+   "vocab": [],
+   "unlocks": [
+    "Pronunciation: c/g soft before e,i (ch, j) · ch/gh hard · gn = ñ · gli · sc = sh · z = ts · double consonants held"
+   ],
+   "ai": "Give me Italian words to read aloud that test c/g before e and i, ch/gh, gn, gli, sc, and double consonants. Ask me to describe how I'd say each, then correct me."
+  },
+  {
+   "id": 1,
+   "label": "2",
+   "title": "Fare conoscenza",
+   "decision": "mi chiamo, not me llamo",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this first",
+     "text": "Before any grammar you need the ten seconds that open every conversation: hi, what's your name, where are you from, nice to meet you. Italians do this fast and warm. Get it smooth and people relax and slow down for you."
+    },
+    {
+     "t": "teach",
+     "text": "<b>Ciao</b> is hi and bye, for friends. With strangers or older people: <b>buongiorno</b> (until mid-afternoon) and <b>buonasera</b> (after). <b>Salve</b> is the safe neutral hello when you're not sure.<br><br>Name: <b>mi chiamo Ethan</b>. Literally <i>me llamo</i>, but the pronoun is <b>mi</b>, not <i>me</i>. Leak alert."
+    },
+    {
+     "t": "prompt",
+     "en": "hola, me llamo Ethan",
+     "es": "ciao, mi chiamo Ethan",
+     "p": "CHOW, mee KYAH-moh Ethan"
+    },
+    {
+     "t": "teach",
+     "text": "Asking: <b>come ti chiami?</b> (tú). <b>Come</b> is <i>cómo</i>, and the <b>ti</b> is your <i>te</i>. Formal: <b>come si chiama?</b><br><br>Nice to meet you: <b>piacere</b>. Literally <i>placer</i>. Remember this word, it comes back big in lesson 11."
+    },
+    {
+     "t": "prompt",
+     "en": "what's your name? (tú)",
+     "es": "come ti chiami?",
+     "p": "KOH-meh tee KYAH-mee"
+    },
+    {
+     "t": "prompt",
+     "en": "mucho gusto",
+     "es": "piacere",
+     "p": "pyah-CHEH-reh"
+    },
+    {
+     "t": "teach",
+     "text": "Where from: <b>di dove sei?</b> = <i>¿de dónde eres?</i> Italian says <b>di</b> where Spanish says <i>de</i>, and <b>dove</b> is <i>dónde</i>.<br><br>Answer: <b>sono di Salt Lake City</b> or <b>sono americano</b>. <b>Sono</b> = <i>soy</i>. More on that next lesson."
+    },
+    {
+     "t": "prompt",
+     "en": "where are you from?",
+     "es": "di dove sei?",
+     "p": "dee DOH-veh SEH-ee"
+    },
+    {
+     "t": "prompt",
+     "en": "soy americano",
+     "es": "sono americano",
+     "p": "SOH-noh ah-meh-ree-KAH-noh"
+    },
+    {
+     "t": "teach",
+     "text": "Two more you'll use all day: <b>grazie</b> (GRAH-tsyeh, gracias) and <b>prego</b> (de nada, and also <i>go ahead</i>, <i>please, after you</i>). <b>Per favore</b> is por favor.<br><br>Leak alert: it's <b>per</b>, never <i>por</i>."
+    },
+    {
+     "t": "prompt",
+     "en": "thanks! / de nada",
+     "es": "grazie! / prego",
+     "p": "GRAH-tsyeh / PREH-goh"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "ciao",
+     "en": "hi / bye (informal)",
+     "p": "CHOW"
+    },
+    {
+     "es": "buongiorno",
+     "en": "good morning, hello",
+     "p": "bwohn-JOHR-noh"
+    },
+    {
+     "es": "buonasera",
+     "en": "good evening",
+     "p": "bwoh-nah-SEH-rah"
+    },
+    {
+     "es": "mi chiamo",
+     "en": "me llamo",
+     "p": "mee KYAH-moh"
+    },
+    {
+     "es": "come",
+     "en": "cómo, how",
+     "p": "KOH-meh"
+    },
+    {
+     "es": "piacere",
+     "en": "mucho gusto",
+     "p": "pyah-CHEH-reh"
+    },
+    {
+     "es": "dove",
+     "en": "dónde",
+     "p": "DOH-veh"
+    },
+    {
+     "es": "di",
+     "en": "de, of, from",
+     "p": "dee"
+    },
+    {
+     "es": "grazie",
+     "en": "gracias",
+     "p": "GRAH-tsyeh"
+    },
+    {
+     "es": "prego",
+     "en": "de nada / go ahead",
+     "p": "PREH-goh"
+    },
+    {
+     "es": "per favore",
+     "en": "por favor",
+     "p": "pehr fah-VOH-reh"
+    }
+   ],
+   "unlocks": [
+    "Greetings: ciao, buongiorno, buonasera, salve",
+    "mi chiamo / come ti chiami? / come si chiama?",
+    "piacere, grazie, prego, per favore",
+    "di dove sei? sono di…"
+   ],
+   "ai": "Role-play meeting me for the first time. Switch between a friend my age (tu) and an older stranger (formal), and correct my greetings."
+  },
+  {
+   "id": 2,
+   "label": "3",
+   "title": "Words you already own",
+   "decision": "-ción becomes -zione, -dad becomes -tà",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this matters",
+     "text": "Spanish already handed you thousands of Italian words. A few swaps unlock them all, so you can say real sentences next lesson instead of parroting phrases."
+    },
+    {
+     "t": "teach",
+     "text": "<b>-ción → -zione</b>, and it stays feminine: <i>la nación</i> → <b>la nazione</b>, <i>la información</i> → <b>l'informazione</b>. Plural is <b>-zioni</b>."
+    },
+    {
+     "t": "grid",
+     "prompt": "Say them in Italian:",
+     "items": [
+      {
+       "en": "la conversación",
+       "es": "la conversazione"
+      },
+      {
+       "en": "la situación",
+       "es": "la situazione"
+      },
+      {
+       "en": "la educación",
+       "es": "l'educazione"
+      },
+      {
+       "en": "la estación",
+       "es": "la stazione"
+      },
+      {
+       "en": "la televisión",
+       "es": "la televisione"
+      }
+     ]
+    },
+    {
+     "t": "teach",
+     "text": "<b>-dad → -tà</b>, stressed on the end: <i>la ciudad</i> → <b>la città</b>, <i>la universidad</i> → <b>l'università</b>, <i>la libertad</i> → <b>la libertà</b>. These never change in the plural: <b>le città</b>."
+    },
+    {
+     "t": "grid",
+     "prompt": "Now these:",
+     "items": [
+      {
+       "en": "la universidad",
+       "es": "l'università"
+      },
+      {
+       "en": "la posibilidad",
+       "es": "la possibilità"
+      },
+      {
+       "en": "la realidad",
+       "es": "la realtà"
+      },
+      {
+       "en": "la verdad",
+       "es": "la verità"
+      },
+      {
+       "en": "la comunidad",
+       "es": "la comunità"
+      }
+     ]
+    },
+    {
+     "t": "teach",
+     "text": "<b>-ble → -bile</b>: <i>posible</i> → <b>possibile</b>, <i>increíble</i> → <b>incredibile</b>. And notice Italian loves doubling: <i>posible</i> has one s, <b>possibile</b> has two. <b>-mente</b> stays exactly the same: <b>esattamente</b>, <b>finalmente</b>."
+    },
+    {
+     "t": "teach",
+     "text": "Articles: <b>il</b> = el, <b>la</b> = la. Before a vowel both shrink to <b>l'</b>. Before <i>s + consonant</i> or <i>z</i>, el becomes <b>lo</b>: <b>lo studente</b>. Plurals: <b>i</b> / <b>gli</b> (masc), <b>le</b> (fem). Don't stress, you'll absorb these."
+    },
+    {
+     "t": "teach",
+     "text": "And one big leak: Spanish plurals add <i>-s</i>. <b>Italian plurals change the last vowel</b>: -o → -i, -a → -e. <i>los libros</i> → <b>i libri</b>, <i>las casas</i> → <b>le case</b>. No -s, ever."
+    },
+    {
+     "t": "grid",
+     "prompt": "Plurals:",
+     "items": [
+      {
+       "en": "los libros",
+       "es": "i libri"
+      },
+      {
+       "en": "las casas",
+       "es": "le case"
+      },
+      {
+       "en": "las naciones",
+       "es": "le nazioni"
+      },
+      {
+       "en": "las ciudades",
+       "es": "le città"
+      },
+      {
+       "en": "los amigos",
+       "es": "gli amici"
+      }
+     ]
+    }
+   ],
+   "vocab": [
+    {
+     "es": "la città",
+     "en": "la ciudad"
+    },
+    {
+     "es": "l'università",
+     "en": "la universidad"
+    },
+    {
+     "es": "la stazione",
+     "en": "la estación"
+    },
+    {
+     "es": "possibile",
+     "en": "posible"
+    }
+   ],
+   "unlocks": [
+    "-ción → -zione (fem) · -dad → -tà (fem, invariable plural) · -ble → -bile · -mente same",
+    "Articles il/lo/la/l', plurals i/gli/le",
+    "Plurals change the vowel: -o→-i, -a→-e, -e→-i, no -s"
+   ],
+   "ai": "Give me Spanish nouns ending in -ción, -dad and -ble and have me convert them to Italian with the right article, singular and plural."
+  },
+  {
+   "id": 3,
+   "label": "4",
+   "title": "Essere",
+   "decision": "one verb for ser and (mostly) estar",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why essere matters",
+     "text": "Here's the gift: Italian mostly doesn't have your ser/estar split. <b>Essere</b> covers what Spanish splits in two, including location. Italians do have <b>stare</b>, but it only does a few jobs (lesson 26). So the leak to watch is reaching for <i>stare</i> every time you'd say <i>estar</i>."
+    },
+    {
+     "t": "teach",
+     "text": "<b>sono</b>: soy / estoy<br><b>sei</b>: eres / estás<br><b>è</b>: es / está<br><b>siamo</b>: somos / estamos<br><b>siete</b>: sois / estáis<br><b>sono</b>: son / están<br><br>Yes, <b>sono</b> is both I am and they are. Context sorts it out."
+    },
+    {
+     "t": "teach",
+     "text": "The accent on <b>è</b> matters. <b>e</b> without it means <i>y</i> (and). <b>È</b> means <i>es/está</i>. Spanish leak alert: never say <i>es</i>."
+    },
+    {
+     "t": "prompt",
+     "en": "la ciudad es bonita",
+     "es": "la città è bella"
+    },
+    {
+     "t": "prompt",
+     "en": "estoy cansado",
+     "es": "sono stanco"
+    },
+    {
+     "t": "prompt",
+     "en": "where is the station? (dónde está)",
+     "es": "dov'è la stazione?"
+    },
+    {
+     "t": "teach",
+     "text": "See that? <b>dov'è</b> = dove + è squished. Location with essere, no estar needed. <i>¿Dónde estás?</i> → <b>dove sei?</b>"
+    },
+    {
+     "t": "prompt",
+     "en": "somos americanos",
+     "es": "siamo americani"
+    },
+    {
+     "t": "prompt",
+     "en": "they're here (están aquí)",
+     "es": "sono qui"
+    },
+    {
+     "t": "teach",
+     "text": "Negation is <i>no</i> → <b>non</b>, in front of the verb: <b>non sono stanco</b>. And <b>molto</b> = muy/mucho. Leak: never <i>muy</i>."
+    },
+    {
+     "t": "prompt",
+     "en": "I'm not very tired",
+     "es": "non sono molto stanco"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "sono",
+     "en": "soy / estoy / son"
+    },
+    {
+     "es": "sei",
+     "en": "eres / estás"
+    },
+    {
+     "es": "è",
+     "en": "es / está"
+    },
+    {
+     "es": "siamo",
+     "en": "somos / estamos"
+    },
+    {
+     "es": "siete",
+     "en": "sois / estáis (y'all are)"
+    },
+    {
+     "es": "stanco",
+     "en": "cansado"
+    },
+    {
+     "es": "bello",
+     "en": "bonito, lindo"
+    },
+    {
+     "es": "qui",
+     "en": "aquí"
+    },
+    {
+     "es": "non",
+     "en": "no (before a verb)"
+    },
+    {
+     "es": "molto",
+     "en": "muy, mucho"
+    }
+   ],
+   "unlocks": [
+    "essere present: sono, sei, è, siamo, siete, sono — covers ser AND estar incl. location",
+    "non before the verb",
+    "molto = muy/mucho",
+    "dov'è = dónde está"
+   ],
+   "ai": "Give me sentences mixing ser and estar meanings in English or Spanish, and have me use essere for all of them. Flag if I use 'stare' or Spanish 'es'."
+  },
+  {
+   "id": 4,
+   "label": "5",
+   "title": "Avere",
+   "decision": "avere = tener, and the h is silent",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why avere matters",
+     "text": "<b>Avere</b> is your <i>tener</i>, and later it's also your <i>haber</i>: it builds the past tense in lesson 21. Learn it rock solid now and the whole past tense is half done."
+    },
+    {
+     "t": "teach",
+     "text": "<b>ho</b>: tengo<br><b>hai</b>: tienes<br><b>ha</b>: tiene<br><b>abbiamo</b>: tenemos<br><b>avete</b>: tenéis<br><b>hanno</b>: tienen<br><br>The <b>h</b> is completely silent, it's only there to tell <b>ho</b> (I have) from <b>o</b> (or), and <b>ha</b> from <b>a</b> (to). So <b>ho</b> sounds like 'oh', <b>hanno</b> like ANN-noh."
+    },
+    {
+     "t": "prompt",
+     "en": "tengo una pregunta",
+     "es": "ho una domanda"
+    },
+    {
+     "t": "teach",
+     "text": "Leak alert: <i>pregunta</i> is <b>domanda</b>. Spanish speakers want to say <i>pregunta</i> and it's not a word. And <b>domandare</b> means to ask, not to sue."
+    },
+    {
+     "t": "teach",
+     "text": "Same expressions as Spanish, mostly: <b>ho fame</b> (tengo hambre), <b>ho sete</b> (sed), <b>ho freddo</b> (frío), <b>ho sonno</b> (sueño), <b>ho 20 anni</b> (tengo 20 años). Ojo: <b>anni</b> with double n. <b>Ani</b> is... a body part. Hold that n."
+    },
+    {
+     "t": "prompt",
+     "en": "tengo hambre",
+     "es": "ho fame"
+    },
+    {
+     "t": "prompt",
+     "en": "how old are you? (cuántos años tienes)",
+     "es": "quanti anni hai?"
+    },
+    {
+     "t": "prompt",
+     "en": "tenemos tiempo",
+     "es": "abbiamo tempo"
+    },
+    {
+     "t": "teach",
+     "text": "One difference: <i>tener que</i> is <b>not</b> avere che. Obligation is its own verb, <b>dovere</b>, in lesson 8. Don't build <i>ho che</i>, it's not Italian."
+    },
+    {
+     "t": "prompt",
+     "en": "they don't have a car",
+     "es": "non hanno una macchina"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "ho",
+     "en": "tengo",
+     "p": "oh"
+    },
+    {
+     "es": "hai",
+     "en": "tienes",
+     "p": "eye"
+    },
+    {
+     "es": "ha",
+     "en": "tiene",
+     "p": "ah"
+    },
+    {
+     "es": "abbiamo",
+     "en": "tenemos"
+    },
+    {
+     "es": "avete",
+     "en": "tenéis"
+    },
+    {
+     "es": "hanno",
+     "en": "tienen",
+     "p": "AHN-noh"
+    },
+    {
+     "es": "la domanda",
+     "en": "la pregunta"
+    },
+    {
+     "es": "la fame",
+     "en": "el hambre"
+    },
+    {
+     "es": "quanti anni",
+     "en": "cuántos años"
+    },
+    {
+     "es": "la macchina",
+     "en": "el carro, coche"
+    }
+   ],
+   "unlocks": [
+    "avere present: ho, hai, ha, abbiamo, avete, hanno (h silent)",
+    "avere expressions: fame, sete, freddo, sonno, X anni",
+    "tener que ≠ avere che (that's dovere)"
+   ],
+   "ai": "Ask me questions about what I have, how old people are, and if I'm hungry/cold/sleepy. Make me answer with avere. Catch me if I say 'pregunta' or 'ho che'."
+  },
+  {
+   "id": 5,
+   "label": "6",
+   "title": "Questo e quello",
+   "decision": "questo = este, quello = ese AND aquel",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Pointing at stuff is half of real conversation. Spanish has three distances (este, ese, aquel). Italian has two. Less to learn, one thing to unlearn."
+    },
+    {
+     "t": "teach",
+     "text": "<b>questo / questa / questi / queste</b>: este, esta, estos, estas. It works like any -o adjective.<br><br><b>quello</b>: ese AND aquel. Spanish <i>ese</i> doesn't have its own word, it folds into quello."
+    },
+    {
+     "t": "prompt",
+     "en": "este libro",
+     "es": "questo libro"
+    },
+    {
+     "t": "prompt",
+     "en": "esta casa",
+     "es": "questa casa"
+    },
+    {
+     "t": "prompt",
+     "en": "estos amigos",
+     "es": "questi amici"
+    },
+    {
+     "t": "teach",
+     "text": "The tricky part: <b>quello</b> in front of a noun changes shape like the article <b>il/lo/l'/i/gli</b>. Think 'que' + the article:<br><b>quel</b> libro (il libro)<br><b>quello</b> studente (lo studente)<br><b>quell'</b>amico (l'amico)<br><b>quei</b> libri (i libri)<br><b>quegli</b> amici (gli amici)<br><b>quella / quelle</b> for feminine."
+    },
+    {
+     "t": "prompt",
+     "en": "ese carro",
+     "es": "quella macchina"
+    },
+    {
+     "t": "prompt",
+     "en": "aquel libro",
+     "es": "quel libro"
+    },
+    {
+     "t": "prompt",
+     "en": "esos amigos",
+     "es": "quegli amici"
+    },
+    {
+     "t": "prompt",
+     "en": "this city is beautiful",
+     "es": "questa città è bella"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "questo",
+     "en": "este"
+    },
+    {
+     "es": "quello",
+     "en": "ese, aquel"
+    },
+    {
+     "es": "il libro",
+     "en": "el libro"
+    },
+    {
+     "es": "l'amico",
+     "en": "el amigo"
+    }
+   ],
+   "unlocks": [
+    "questo/a/i/e = este (near)",
+    "quello = ese/aquel; before nouns: quel, quello, quell', quei, quegli, quella, quelle (follows il/lo/l'/i/gli)"
+   ],
+   "ai": "Point at imaginary things near and far and have me say 'this X' and 'that X' in Italian, singular and plural, with the right quello form."
+  },
+  {
+   "id": 6,
+   "label": "7",
+   "title": "Questo, quello, standing alone",
+   "decision": "questo è… = esto es…",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "When the noun is obvious you drop it: <i>quiero ese</i>, <i>esto es mío</i>. Italian does the same, and it's actually simpler than the last lesson."
+    },
+    {
+     "t": "teach",
+     "text": "Alone, without a noun, they're always the full form: <b>questo, questa, questi, queste, quello, quella, quelli, quelle</b>. No quel / quegli games. That's only before a noun."
+    },
+    {
+     "t": "teach",
+     "text": "Spanish has a neuter <i>esto / eso</i> for 'this thing, that idea'. Italian just uses <b>questo</b> and <b>quello</b> (masculine) for that."
+    },
+    {
+     "t": "prompt",
+     "en": "¿qué es esto?",
+     "es": "che cos'è questo?"
+    },
+    {
+     "t": "teach",
+     "text": "<b>Che cos'è?</b> is the standard 'what is it?'. <b>Che</b> = qué, <b>cosa</b> = cosa. You can also just say <b>cos'è?</b>"
+    },
+    {
+     "t": "prompt",
+     "en": "eso es importante",
+     "es": "quello è importante"
+    },
+    {
+     "t": "prompt",
+     "en": "I want this one (la casa)",
+     "es": "voglio questa"
+    },
+    {
+     "t": "teach",
+     "text": "Small preview: <b>voglio</b> = quiero. Full story next lesson."
+    },
+    {
+     "t": "prompt",
+     "en": "those (amigos) are from Rome",
+     "es": "quelli sono di Roma"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "che cos'è?",
+     "en": "¿qué es?"
+    },
+    {
+     "es": "la cosa",
+     "en": "la cosa"
+    }
+   ],
+   "unlocks": [
+    "Demonstrative pronouns: questo/a/i/e, quello/a/i/e (full forms when alone)",
+    "questo/quello also = esto/eso (neuter)",
+    "che cos'è? = ¿qué es?"
+   ],
+   "ai": "Hold up imaginary objects and ask me 'che cos'è?'. Make me answer and point using questo/quello alone, no noun."
+  },
+  {
+   "id": 7,
+   "label": "8",
+   "title": "Volere e dovere",
+   "decision": "voglio / devo + infinitive",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "This is where you start talking for real. One conjugated verb + any infinitive = a sentence. Exactly like <i>quiero comer</i>, <i>debo ir</i>. Every infinitive you know just became usable."
+    },
+    {
+     "t": "teach",
+     "text": "Infinitives: <i>-ar</i> → <b>-are</b>, <i>-er</i> → <b>-ere</b>, <i>-ir</i> → <b>-ire</b>. <i>hablar</i> → <b>parlare</b>, <i>comer</i> → <b>mangiare</b> (ok, that one's different), <i>vivir</i> → <b>vivere</b>, <i>dormir</i> → <b>dormire</b>. Most Spanish verbs just grow an <b>-e</b>."
+    },
+    {
+     "t": "teach",
+     "text": "<b>volere</b> (querer): voglio, vuoi, vuole, vogliamo, volete, vogliono.<br><b>dovere</b> (deber / tener que): devo, devi, deve, dobbiamo, dovete, devono."
+    },
+    {
+     "t": "prompt",
+     "en": "quiero hablar italiano",
+     "es": "voglio parlare italiano"
+    },
+    {
+     "t": "prompt",
+     "en": "tengo que trabajar",
+     "es": "devo lavorare"
+    },
+    {
+     "t": "teach",
+     "text": "<b>Dovere</b> covers both <i>deber</i> and <i>tener que</i>. One word, less thinking. <b>lavorare</b> = trabajar (think 'labor')."
+    },
+    {
+     "t": "prompt",
+     "en": "do you want to eat? (tú)",
+     "es": "vuoi mangiare?"
+    },
+    {
+     "t": "prompt",
+     "en": "she has to study",
+     "es": "deve studiare"
+    },
+    {
+     "t": "prompt",
+     "en": "no queremos dormir",
+     "es": "non vogliamo dormire"
+    },
+    {
+     "t": "teach",
+     "text": "Polite tip: <b>voglio</b> sounds pushy when ordering at a bar. Italians say <b>vorrei</b> (quisiera). You'll build it in lesson 29, but you can steal it now: <b>vorrei un caffè</b>."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "voglio",
+     "en": "quiero"
+    },
+    {
+     "es": "vuoi",
+     "en": "quieres"
+    },
+    {
+     "es": "vuole",
+     "en": "quiere"
+    },
+    {
+     "es": "devo",
+     "en": "debo / tengo que"
+    },
+    {
+     "es": "deve",
+     "en": "debe / tiene que"
+    },
+    {
+     "es": "parlare",
+     "en": "hablar"
+    },
+    {
+     "es": "mangiare",
+     "en": "comer"
+    },
+    {
+     "es": "lavorare",
+     "en": "trabajar"
+    },
+    {
+     "es": "studiare",
+     "en": "estudiar"
+    },
+    {
+     "es": "dormire",
+     "en": "dormir"
+    }
+   ],
+   "unlocks": [
+    "Infinitives -are/-ere/-ire",
+    "volere + inf (voglio, vuoi, vuole, vogliamo, volete, vogliono)",
+    "dovere + inf = deber/tener que (devo, devi, deve, dobbiamo, dovete, devono)",
+    "vorrei = quisiera (fixed phrase)"
+   ],
+   "ai": "Give me sentences with want to / have to + verb, in English or Spanish, and make me use volere or dovere + infinitive. Mix persons."
+  },
+  {
+   "id": 8,
+   "label": "9",
+   "title": "Sapere",
+   "decision": "so + infinitive = sé + infinitive",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "<b>Sapere</b> is <i>saber</i>, and it works the same: knowing facts and knowing how to do stuff. <i>Sé nadar</i> → <b>so nuotare</b>."
+    },
+    {
+     "t": "teach",
+     "text": "<b>so, sai, sa, sappiamo, sapete, sanno</b>.<br><br>Leak alert: I know is <b>so</b>, not <i>sé</i>. Short and weird, says it like 'soh'."
+    },
+    {
+     "t": "prompt",
+     "en": "no sé",
+     "es": "non lo so"
+    },
+    {
+     "t": "teach",
+     "text": "Italians almost always add <b>lo</b>: <b>non lo so</b> (I don't know it). Bare <i>non so</i> exists but <b>non lo so</b> is the reflex. Learn it as one chunk."
+    },
+    {
+     "t": "prompt",
+     "en": "sabes cocinar?",
+     "es": "sai cucinare?"
+    },
+    {
+     "t": "prompt",
+     "en": "he knows how to swim",
+     "es": "sa nuotare"
+    },
+    {
+     "t": "prompt",
+     "en": "we know where it is",
+     "es": "sappiamo dov'è"
+    },
+    {
+     "t": "teach",
+     "text": "And <i>conocer</i> (people, places) is <b>conoscere</b>: conosco, conosci, conosce. Same split as Spanish. <b>Conosco Roma</b>, <b>so che è bella</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "conozco a Marco",
+     "es": "conosco Marco"
+    },
+    {
+     "t": "teach",
+     "text": "Notice: no personal <i>a</i>. Italian doesn't put <i>a</i> before people as objects. <i>Conozco a María</i> → <b>conosco Maria</b>."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "so",
+     "en": "sé"
+    },
+    {
+     "es": "sai",
+     "en": "sabes"
+    },
+    {
+     "es": "sa",
+     "en": "sabe"
+    },
+    {
+     "es": "non lo so",
+     "en": "no sé"
+    },
+    {
+     "es": "conoscere",
+     "en": "conocer"
+    },
+    {
+     "es": "conosco",
+     "en": "conozco"
+    },
+    {
+     "es": "cucinare",
+     "en": "cocinar"
+    },
+    {
+     "es": "nuotare",
+     "en": "nadar"
+    }
+   ],
+   "unlocks": [
+    "sapere present: so, sai, sa, sappiamo, sapete, sanno; + infinitive = know how to",
+    "non lo so",
+    "conoscere for people/places; no personal 'a'"
+   ],
+   "ai": "Ask me what I and other people know how to do, and who/what we know. Make me choose sapere or conoscere and catch any personal 'a'."
+  },
+  {
+   "id": 9,
+   "label": "10",
+   "title": "Potere",
+   "decision": "posso + infinitive",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "<b>Potere</b> is <i>poder</i>. With volere, dovere, sapere and now potere, you have four openings and every infinitive behind them."
+    },
+    {
+     "t": "teach",
+     "text": "<b>posso, puoi, può, possiamo, potete, possono</b>.<br><br><b>Può</b> has an accent: puede. <b>Posso?</b> alone means <i>¿puedo?</i> / may I?, super useful when you walk into a shop or reach for a chair."
+    },
+    {
+     "t": "prompt",
+     "en": "¿puedo entrar?",
+     "es": "posso entrare?"
+    },
+    {
+     "t": "prompt",
+     "en": "can you help me? (tú)",
+     "es": "puoi aiutarmi?"
+    },
+    {
+     "t": "teach",
+     "text": "See <b>aiutarmi</b>? Pronoun glued on the end of the infinitive, like <i>ayudarme</i>. Italian drops the final -e first: aiutar<b>e</b> + mi → aiutar<b>mi</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "no podemos venir hoy",
+     "es": "non possiamo venire oggi"
+    },
+    {
+     "t": "prompt",
+     "en": "she can't speak now",
+     "es": "non può parlare adesso"
+    },
+    {
+     "t": "teach",
+     "text": "Mix time. Pick the opening:"
+    },
+    {
+     "t": "grid",
+     "prompt": "Which verb?",
+     "items": [
+      {
+       "en": "I want to sleep",
+       "es": "voglio dormire"
+      },
+      {
+       "en": "I have to go",
+       "es": "devo andare"
+      },
+      {
+       "en": "I can't eat",
+       "es": "non posso mangiare"
+      },
+      {
+       "en": "do you know how to cook?",
+       "es": "sai cucinare?"
+      },
+      {
+       "en": "we want to learn",
+       "es": "vogliamo imparare"
+      }
+     ]
+    }
+   ],
+   "vocab": [
+    {
+     "es": "posso",
+     "en": "puedo"
+    },
+    {
+     "es": "puoi",
+     "en": "puedes"
+    },
+    {
+     "es": "può",
+     "en": "puede"
+    },
+    {
+     "es": "aiutare",
+     "en": "ayudar"
+    },
+    {
+     "es": "entrare",
+     "en": "entrar"
+    },
+    {
+     "es": "oggi",
+     "en": "hoy"
+    },
+    {
+     "es": "adesso",
+     "en": "ahora"
+    },
+    {
+     "es": "imparare",
+     "en": "aprender"
+    }
+   ],
+   "unlocks": [
+    "potere present: posso, puoi, può, possiamo, potete, possono",
+    "pronouns attach to infinitive minus -e: aiutarmi",
+    "imparare = aprender"
+   ],
+   "ai": "Mix volere, dovere, sapere and potere. Give me a situation and make me choose the right opening + infinitive."
+  },
+  {
+   "id": 10,
+   "label": "11",
+   "title": "Piacere",
+   "decision": "mi piace works exactly like me gusta",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Free lesson. <i>Gustar</i> logic transfers 100%: the thing does the pleasing, you're the indirect object. English speakers suffer here. You don't."
+    },
+    {
+     "t": "teach",
+     "text": "<b>mi piace</b> = me gusta<br><b>ti piace</b> = te gusta<br><b>gli piace</b> = le gusta (a él)<br><b>le piace</b> = le gusta (a ella / usted)<br><b>ci piace</b> = nos gusta<br><b>vi piace</b> = os gusta<br><b>gli piace</b> = les gusta<br><br>Plural thing: <b>piacciono</b>. <i>Me gustan los gatos</i> → <b>mi piacciono i gatti</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "me gusta Italia",
+     "es": "mi piace l'Italia"
+    },
+    {
+     "t": "teach",
+     "text": "Italian puts the article on countries: <b>l'Italia</b>, <b>la Spagna</b>, <b>gli Stati Uniti</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "¿te gusta cocinar?",
+     "es": "ti piace cucinare?"
+    },
+    {
+     "t": "prompt",
+     "en": "nos gustan los libros",
+     "es": "ci piacciono i libri"
+    },
+    {
+     "t": "prompt",
+     "en": "she doesn't like coffee",
+     "es": "non le piace il caffè"
+    },
+    {
+     "t": "teach",
+     "text": "Leak: <b>gli</b> (to him) vs <b>le</b> (to her). Spanish uses <i>le</i> for both. Italian splits by gender. <b>A me piace</b> = <i>a mí me gusta</i>, but Italian says it with just <b>a me piace</b>, no double pronoun."
+    },
+    {
+     "t": "prompt",
+     "en": "a mí me gusta, a él no",
+     "es": "a me piace, a lui no"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "mi piace",
+     "en": "me gusta"
+    },
+    {
+     "es": "mi piacciono",
+     "en": "me gustan"
+    },
+    {
+     "es": "gli piace",
+     "en": "le gusta (a él), les gusta"
+    },
+    {
+     "es": "le piace",
+     "en": "le gusta (a ella)"
+    },
+    {
+     "es": "il caffè",
+     "en": "el café"
+    },
+    {
+     "es": "il gatto",
+     "en": "el gato"
+    }
+   ],
+   "unlocks": [
+    "piacere: mi/ti/gli/le/ci/vi/gli + piace (sing.) / piacciono (pl.)",
+    "a me piace (no doubling)",
+    "countries take articles: l'Italia"
+   ],
+   "ai": "Ask me what I and others like and don't like. Include plural things so I need piacciono, and check gli vs le."
+  },
+  {
+   "id": 11,
+   "label": "12",
+   "title": "Fare",
+   "decision": "faccio = hago, fa freddo = hace frío",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "<b>Fare</b> is <i>hacer</i>, and it's in a huge chunk of everyday phrases: weather, questions, going for a walk, taking a shower."
+    },
+    {
+     "t": "teach",
+     "text": "<b>faccio, fai, fa, facciamo, fate, fanno</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "¿qué haces?",
+     "es": "che fai?"
+    },
+    {
+     "t": "prompt",
+     "en": "hace frío",
+     "es": "fa freddo"
+    },
+    {
+     "t": "prompt",
+     "en": "hace calor hoy",
+     "es": "oggi fa caldo"
+    },
+    {
+     "t": "teach",
+     "text": "Leak alert: <b>caldo</b> means <i>hot</i>, not soup broth. And <b>freddo</b> is cold. On faucets, <b>C</b> is <b>caldo</b> = hot. Seriously, don't burn yourself."
+    },
+    {
+     "t": "teach",
+     "text": "Fare-phrases worth stealing whole: <b>fare una domanda</b> (hacer una pregunta), <b>fare colazione</b> (desayunar), <b>fare la doccia</b> (bañarse), <b>fare una passeggiata</b> (dar un paseo)."
+    },
+    {
+     "t": "prompt",
+     "en": "I want to ask a question",
+     "es": "voglio fare una domanda"
+    },
+    {
+     "t": "prompt",
+     "en": "desayunamos a las ocho",
+     "es": "facciamo colazione alle otto"
+    },
+    {
+     "t": "prompt",
+     "en": "what are you all doing tonight?",
+     "es": "che fate stasera?"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "faccio",
+     "en": "hago"
+    },
+    {
+     "es": "fai",
+     "en": "haces"
+    },
+    {
+     "es": "fa",
+     "en": "hace"
+    },
+    {
+     "es": "fa freddo",
+     "en": "hace frío"
+    },
+    {
+     "es": "fa caldo",
+     "en": "hace calor"
+    },
+    {
+     "es": "fare colazione",
+     "en": "desayunar"
+    },
+    {
+     "es": "fare la doccia",
+     "en": "ducharse"
+    },
+    {
+     "es": "stasera",
+     "en": "esta noche"
+    }
+   ],
+   "unlocks": [
+    "fare present: faccio, fai, fa, facciamo, fate, fanno",
+    "weather: fa freddo / caldo",
+    "fare + noun phrases: colazione, doccia, una domanda, una passeggiata"
+   ],
+   "ai": "Chat with me about my day and the weather using fare. Use fare-phrases and see if I can produce them."
+  },
+  {
+   "id": 12,
+   "label": "13",
+   "title": "Andare",
+   "decision": "vado = voy, but not for the future",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "<b>Andare</b> is <i>ir</i>. And here's the most important leak in the whole course: Spanish uses <i>voy a + infinitive</i> for the future. Italian <b>doesn't</b>. <b>Vado a mangiare</b> only means you are physically going somewhere to eat."
+    },
+    {
+     "t": "teach",
+     "text": "<b>vado, vai, va, andiamo, andate, vanno</b>.<br><br><b>Andiamo!</b> = ¡vamos!"
+    },
+    {
+     "t": "prompt",
+     "en": "voy a la playa",
+     "es": "vado al mare"
+    },
+    {
+     "t": "teach",
+     "text": "Contractions: <b>a + il = al</b>, <b>a + la = alla</b>, <b>a + i = ai</b>. Like <i>al</i> in Spanish, but more of them. Also <b>al mare</b> is the beach-going phrase; <b>la spiaggia</b> is the sand itself."
+    },
+    {
+     "t": "prompt",
+     "en": "¿a dónde vas?",
+     "es": "dove vai?"
+    },
+    {
+     "t": "teach",
+     "text": "Notice: no <i>a</i> before dove. <b>Dove vai?</b> straight."
+    },
+    {
+     "t": "prompt",
+     "en": "we're going to Rome",
+     "es": "andiamo a Roma"
+    },
+    {
+     "t": "prompt",
+     "en": "they go to school",
+     "es": "vanno a scuola"
+    },
+    {
+     "t": "teach",
+     "text": "So how do you say <i>voy a comer</i> (future)? For now: the plain present does it. <b>Stasera mangio la pizza</b> = I'm eating pizza tonight. Italians use the present for planned stuff all the time. Real future comes in lesson 27."
+    },
+    {
+     "t": "prompt",
+     "en": "vamos!",
+     "es": "andiamo!"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "vado",
+     "en": "voy"
+    },
+    {
+     "es": "vai",
+     "en": "vas"
+    },
+    {
+     "es": "va",
+     "en": "va"
+    },
+    {
+     "es": "andiamo",
+     "en": "vamos"
+    },
+    {
+     "es": "vanno",
+     "en": "van"
+    },
+    {
+     "es": "al mare",
+     "en": "a la playa"
+    },
+    {
+     "es": "la scuola",
+     "en": "la escuela"
+    },
+    {
+     "es": "dove vai?",
+     "en": "¿a dónde vas?"
+    }
+   ],
+   "unlocks": [
+    "andare present: vado, vai, va, andiamo, andate, vanno",
+    "a + article: al, allo, alla, all', ai, agli, alle",
+    "NO 'andare a + inf' future; use present"
+   ],
+   "ai": "Ask where I and others are going. Throw in 'voy a + verb' future sentences in Spanish and make sure I don't translate them with andare."
+  },
+  {
+   "id": 13,
+   "label": "14",
+   "title": "Venire",
+   "decision": "vengo = vengo (finally, a free one)",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "<b>Venire</b> = <i>venir</i>, and the forms are basically your Spanish with an Italian accent. Quick win."
+    },
+    {
+     "t": "teach",
+     "text": "<b>vengo, vieni, viene, veniamo, venite, vengono</b>.<br><br>Compare: vengo, vienes, viene… The Spanish <i>-es</i> just becomes <b>-i</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "¿vienes conmigo?",
+     "es": "vieni con me?"
+    },
+    {
+     "t": "teach",
+     "text": "<b>Con me</b>, <b>con te</b>: Italian doesn't glue them like <i>conmigo, contigo</i>."
+    },
+    {
+     "t": "prompt",
+     "en": "vengo de Utah",
+     "es": "vengo dallo Utah"
+    },
+    {
+     "t": "teach",
+     "text": "<b>da</b> = from (origin, coming from). <b>Vengo da</b> + place. <b>Di</b> is for 'I'm from' with essere: <b>sono di…</b>. Both fine; venire takes <b>da</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "they're coming tomorrow",
+     "es": "vengono domani"
+    },
+    {
+     "t": "prompt",
+     "en": "are you all coming to the party?",
+     "es": "venite alla festa?"
+    },
+    {
+     "t": "teach",
+     "text": "Bonus: <b>vieni qui!</b> = ven acá. Short, you'll hear it from every nonna."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "vengo",
+     "en": "vengo"
+    },
+    {
+     "es": "vieni",
+     "en": "vienes"
+    },
+    {
+     "es": "viene",
+     "en": "viene"
+    },
+    {
+     "es": "con me",
+     "en": "conmigo"
+    },
+    {
+     "es": "da",
+     "en": "desde, de (origin)"
+    },
+    {
+     "es": "domani",
+     "en": "mañana"
+    },
+    {
+     "es": "la festa",
+     "en": "la fiesta"
+    }
+   ],
+   "unlocks": [
+    "venire present: vengo, vieni, viene, veniamo, venite, vengono",
+    "con me / con te",
+    "venire da + place"
+   ],
+   "ai": "Ask me who's coming where and from where. Mix in andare so I have to choose."
+  },
+  {
+   "id": 14,
+   "label": "15",
+   "title": "Che ore sono?",
+   "decision": "sono le tre, è l'una",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Time and dates are pure vocabulary, and close to Spanish. The pattern is the same <i>son las tres</i>, just Italian words."
+    },
+    {
+     "t": "teach",
+     "text": "Numbers 1–10: <b>uno, due, tre, quattro, cinque, sei, sette, otto, nove, dieci</b>. Leak: <b>sei</b> is six, and also 'you are'. <b>Cinque</b> is CHEEN-kweh."
+    },
+    {
+     "t": "teach",
+     "text": "Time: <b>che ore sono?</b> (literally 'what hours are'). <b>Sono le tre</b> = son las tres. One o'clock: <b>è l'una</b>. Noon <b>mezzogiorno</b>, midnight <b>mezzanotte</b>. <b>E mezza</b> = y media, <b>e un quarto</b> = y cuarto."
+    },
+    {
+     "t": "prompt",
+     "en": "son las dos y media",
+     "es": "sono le due e mezza"
+    },
+    {
+     "t": "prompt",
+     "en": "es la una",
+     "es": "è l'una"
+    },
+    {
+     "t": "prompt",
+     "en": "a las ocho",
+     "es": "alle otto"
+    },
+    {
+     "t": "teach",
+     "text": "Days, all lowercase like Spanish: <b>lunedì, martedì, mercoledì, giovedì, venerdì, sabato, domenica</b>. The <b>-dì</b> is día. Today <b>oggi</b>, tomorrow <b>domani</b>, yesterday <b>ieri</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "the party is on Saturday",
+     "es": "la festa è sabato"
+    },
+    {
+     "t": "teach",
+     "text": "No <i>el</i> before a day for a single occasion: <b>sabato</b> = el sábado. <b>Il sabato</b> = los sábados (every Saturday)."
+    },
+    {
+     "t": "prompt",
+     "en": "I work on Mondays",
+     "es": "lavoro il lunedì"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "che ore sono?",
+     "en": "¿qué hora es?"
+    },
+    {
+     "es": "è l'una",
+     "en": "es la una"
+    },
+    {
+     "es": "sono le tre",
+     "en": "son las tres"
+    },
+    {
+     "es": "e mezza",
+     "en": "y media"
+    },
+    {
+     "es": "lunedì",
+     "en": "lunes"
+    },
+    {
+     "es": "sabato",
+     "en": "sábado"
+    },
+    {
+     "es": "domenica",
+     "en": "domingo"
+    },
+    {
+     "es": "ieri",
+     "en": "ayer"
+    }
+   ],
+   "unlocks": [
+    "Numbers 1–10",
+    "che ore sono? sono le…/è l'una, e mezza, e un quarto, alle…",
+    "days of the week; il lunedì = every Monday"
+   ],
+   "ai": "Ask me what time things happen in my week and make me answer with times and days."
+  },
+  {
+   "id": 15,
+   "label": "16",
+   "title": "Parlo, parli, parla",
+   "decision": "the present tense, -o -i -a",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Up to now you've hidden behind openings. Now every verb gets its own forms. Good news: the <b>-o</b> for 'I' is identical to Spanish, and the rest are close cousins."
+    },
+    {
+     "t": "teach",
+     "text": "<b>parlare</b>: parl<b>o</b>, parl<b>i</b>, parl<b>a</b>, parl<b>iamo</b>, parl<b>ate</b>, parl<b>ano</b>.<br><br>Compare hablo, hablas, habla. The big swap: Spanish <i>tú</i> ends in <i>-s</i>, Italian <b>tu</b> always ends in <b>-i</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "hablo español",
+     "es": "parlo spagnolo"
+    },
+    {
+     "t": "prompt",
+     "en": "¿trabajas mañana?",
+     "es": "lavori domani?"
+    },
+    {
+     "t": "teach",
+     "text": "<b>-ere</b>: scriv<b>o</b>, scriv<b>i</b>, scriv<b>e</b>, scriv<b>iamo</b>, scriv<b>ete</b>, scriv<b>ono</b>.<br><b>-ire</b>: dorm<b>o</b>, dorm<b>i</b>, dorm<b>e</b>, dorm<b>iamo</b>, dorm<b>ite</b>, dorm<b>ono</b>.<br><br><b>Noi</b> is always <b>-iamo</b>, any verb. One ending to rule them all."
+    },
+    {
+     "t": "prompt",
+     "en": "we live in Utah",
+     "es": "viviamo nello Utah"
+    },
+    {
+     "t": "prompt",
+     "en": "they sleep a lot",
+     "es": "dormono molto"
+    },
+    {
+     "t": "teach",
+     "text": "Twist: many -ire verbs add <b>-isc-</b>: <b>capire</b> (entender) → cap<b>isc</b>o, cap<b>isc</b>i, cap<b>isc</b>e, capiamo, capite, cap<b>isc</b>ono. Also <b>finire</b>, <b>preferire</b>. Just like Spanish <i>conozco</i> grows a c."
+    },
+    {
+     "t": "prompt",
+     "en": "no entiendo",
+     "es": "non capisco"
+    },
+    {
+     "t": "prompt",
+     "en": "she prefers tea",
+     "es": "preferisce il tè"
+    },
+    {
+     "t": "teach",
+     "text": "<b>Non capisco</b> is going to save your life for the first month. Pair it with <b>più piano, per favore</b> (more slowly, please)."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "parlo",
+     "en": "hablo"
+    },
+    {
+     "es": "capire",
+     "en": "entender"
+    },
+    {
+     "es": "capisco",
+     "en": "entiendo"
+    },
+    {
+     "es": "scrivere",
+     "en": "escribir"
+    },
+    {
+     "es": "vivere",
+     "en": "vivir"
+    },
+    {
+     "es": "preferire",
+     "en": "preferir"
+    },
+    {
+     "es": "finire",
+     "en": "terminar"
+    },
+    {
+     "es": "più piano",
+     "en": "más despacio"
+    }
+   ],
+   "unlocks": [
+    "Present tense -are/-ere/-ire: -o, -i, -a/-e, -iamo, -ate/-ete/-ite, -ano/-ono",
+    "tu always ends in -i",
+    "-isc- verbs: capisco, finisco, preferisco"
+   ],
+   "ai": "Talk with me about my daily routine with regular verbs, all persons. Watch for Spanish -s on tu forms."
+  },
+  {
+   "id": 16,
+   "label": "17",
+   "title": "Mi alzo",
+   "decision": "reflexives like Spanish, but ci and vi",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Reflexive verbs work the way you already think: <i>me levanto</i> → <b>mi alzo</b>. Only the little pronouns change shape."
+    },
+    {
+     "t": "teach",
+     "text": "<b>mi</b> (me), <b>ti</b> (te), <b>si</b> (se), <b>ci</b> (nos), <b>vi</b> (os), <b>si</b> (se).<br><br>Leak alert: <i>nos</i> is <b>ci</b>, and Spanish <i>se</i> is <b>si</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "me levanto a las siete",
+     "es": "mi alzo alle sette"
+    },
+    {
+     "t": "prompt",
+     "en": "¿cómo te llamas?",
+     "es": "come ti chiami?"
+    },
+    {
+     "t": "teach",
+     "text": "Hey look: lesson 2 was a reflexive all along. <b>Chiamarsi</b> = llamarse."
+    },
+    {
+     "t": "prompt",
+     "en": "nos vemos mañana",
+     "es": "ci vediamo domani"
+    },
+    {
+     "t": "teach",
+     "text": "<b>Ci vediamo!</b> is the standard 'see you'. Say it as you leave."
+    },
+    {
+     "t": "prompt",
+     "en": "she gets dressed",
+     "es": "si veste"
+    },
+    {
+     "t": "prompt",
+     "en": "are you having fun? (divertirse)",
+     "es": "ti diverti?"
+    },
+    {
+     "t": "teach",
+     "text": "Infinitive: drop -e and glue <b>si</b>: <b>alzarsi, chiamarsi, divertirsi</b>. With an opening: <b>devo alzarmi presto</b> (tengo que levantarme temprano)."
+    },
+    {
+     "t": "prompt",
+     "en": "tengo que levantarme temprano",
+     "es": "devo alzarmi presto"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "alzarsi",
+     "en": "levantarse"
+    },
+    {
+     "es": "chiamarsi",
+     "en": "llamarse"
+    },
+    {
+     "es": "ci vediamo",
+     "en": "nos vemos"
+    },
+    {
+     "es": "vestirsi",
+     "en": "vestirse"
+    },
+    {
+     "es": "divertirsi",
+     "en": "divertirse"
+    },
+    {
+     "es": "presto",
+     "en": "temprano, pronto"
+    }
+   ],
+   "unlocks": [
+    "Reflexive pronouns mi, ti, si, ci, vi, si",
+    "-arsi infinitives; attach to infinitive: alzarmi"
+   ],
+   "ai": "Ask about my morning routine and weekend using reflexive verbs. Catch 'nos' and 'se' leaks."
+  },
+  {
+   "id": 17,
+   "label": "18",
+   "title": "Lo, la, li, le",
+   "decision": "lo and la like Spanish, but li for los",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Replacing the thing with 'it' so you don't repeat yourself. Same position as Spanish: before the conjugated verb, glued to an infinitive."
+    },
+    {
+     "t": "teach",
+     "text": "<b>mi, ti, lo, la, ci, vi, li, le</b>.<br><br>The one to drill: <i>los</i> → <b>li</b>. <b>Le</b> here is <i>las</i> (direct object!), not Spanish <i>le</i>."
+    },
+    {
+     "t": "prompt",
+     "en": "I buy it (el libro)",
+     "es": "lo compro"
+    },
+    {
+     "t": "prompt",
+     "en": "¿la conoces? (a María)",
+     "es": "la conosci?"
+    },
+    {
+     "t": "prompt",
+     "en": "los veo",
+     "es": "li vedo"
+    },
+    {
+     "t": "prompt",
+     "en": "las tengo",
+     "es": "le ho"
+    },
+    {
+     "t": "teach",
+     "text": "Before <b>ho/hai/ha/hanno</b>, lo and la usually shrink: <b>l'ho</b>, <b>l'hai</b>. <b>L'ho visto</b> (lo he visto) shows up a lot in lesson 21."
+    },
+    {
+     "t": "prompt",
+     "en": "I want to see it (el libro)",
+     "es": "voglio vederlo"
+    },
+    {
+     "t": "prompt",
+     "en": "te llamo mañana",
+     "es": "ti chiamo domani"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "lo",
+     "en": "lo"
+    },
+    {
+     "es": "la",
+     "en": "la"
+    },
+    {
+     "es": "li",
+     "en": "los"
+    },
+    {
+     "es": "le",
+     "en": "las (direct object)"
+    },
+    {
+     "es": "comprare",
+     "en": "comprar"
+    },
+    {
+     "es": "vedere",
+     "en": "ver"
+    }
+   ],
+   "unlocks": [
+    "Direct object pronouns mi, ti, lo, la, ci, vi, li, le — before verb or glued to infinitive",
+    "li = los, le = las"
+   ],
+   "ai": "Make me replace objects with pronouns: give me a sentence with a noun, and I answer with lo/la/li/le."
+  },
+  {
+   "id": 18,
+   "label": "19",
+   "title": "Me lo, glielo",
+   "decision": "se lo becomes glielo",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Two pronouns at once, like <i>te lo doy</i>. Spanish turns <i>le lo</i> into <i>se lo</i>. Italian turns it into <b>glielo</b>, one word. Weird-looking, same idea."
+    },
+    {
+     "t": "teach",
+     "text": "Indirect pronoun first, <b>i → e</b>: <b>me lo, te lo, ce lo, ve lo</b>. Te lo doy → <b>te lo do</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "te lo doy",
+     "es": "te lo do"
+    },
+    {
+     "t": "prompt",
+     "en": "me lo dices?",
+     "es": "me lo dici?"
+    },
+    {
+     "t": "teach",
+     "text": "To him / her / them: <b>glie-</b> + lo/la/li/le/ne, all one word: <b>glielo, gliela, glieli, gliele</b>. <i>Se lo doy</i> → <b>glielo do</b>. Same for him, her, usted."
+    },
+    {
+     "t": "prompt",
+     "en": "se lo digo (a él)",
+     "es": "glielo dico"
+    },
+    {
+     "t": "prompt",
+     "en": "se la doy (la carta, a ella)",
+     "es": "gliela do"
+    },
+    {
+     "t": "teach",
+     "text": "Glued to an infinitive like Spanish: <b>devo dirglielo</b> (tengo que decírselo)."
+    },
+    {
+     "t": "prompt",
+     "en": "I have to tell him (it)",
+     "es": "devo dirglielo"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "dare",
+     "en": "dar"
+    },
+    {
+     "es": "do",
+     "en": "doy"
+    },
+    {
+     "es": "dire",
+     "en": "decir"
+    },
+    {
+     "es": "dico",
+     "en": "digo"
+    },
+    {
+     "es": "glielo",
+     "en": "se lo"
+    }
+   ],
+   "unlocks": [
+    "Combined pronouns: me lo, te lo, ce lo, ve lo; glielo/gliela/glieli/gliele = se lo",
+    "dare (do, dai, dà), dire (dico, dici, dice)"
+   ],
+   "ai": "Give me sentences with a thing and a person ('I give the book to Marco') and make me replace both with combined pronouns."
+  },
+  {
+   "id": 19,
+   "label": "20",
+   "title": "Ne e ci",
+   "decision": "ne = of it/some, ci = there",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Two tiny words Spanish doesn't have, and Italians say them nonstop. Without them, your Italian sounds like translated Spanish. With them, you sound like you live there."
+    },
+    {
+     "t": "teach",
+     "text": "<b>ne</b> = 'of it / of them / some'. Spanish just drops it. <i>¿Cuántos hermanos tienes? Tengo dos.</i> Italian needs the ne: <b>ne ho due</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "¿quieres café? sí, quiero un poco",
+     "es": "vuoi del caffè? sì, ne voglio un po'"
+    },
+    {
+     "t": "prompt",
+     "en": "tengo tres (hermanos)",
+     "es": "ne ho tre"
+    },
+    {
+     "t": "prompt",
+     "en": "no quiero (de eso)",
+     "es": "non ne voglio"
+    },
+    {
+     "t": "teach",
+     "text": "<b>ci</b> = 'there' (allí, ahí) for a place already mentioned. <i>¿Vas a Roma? Sí, voy.</i> → <b>sì, ci vado</b>. Without ci it sounds chopped."
+    },
+    {
+     "t": "prompt",
+     "en": "¿vas al cine? sí, voy (allá)",
+     "es": "vai al cinema? sì, ci vado"
+    },
+    {
+     "t": "prompt",
+     "en": "we're never going there",
+     "es": "non ci andiamo mai"
+    },
+    {
+     "t": "teach",
+     "text": "And <b>c'è / ci sono</b> = hay. <b>C'è un problema</b> = hay un problema. <b>Ci sono tre gatti</b> = hay tres gatos. Singular and plural, unlike Spanish."
+    },
+    {
+     "t": "prompt",
+     "en": "hay mucha gente",
+     "es": "c'è molta gente"
+    },
+    {
+     "t": "prompt",
+     "en": "hay dos estaciones",
+     "es": "ci sono due stazioni"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "ne",
+     "en": "of it / some (no Spanish equivalent)"
+    },
+    {
+     "es": "ci",
+     "en": "there (allí)"
+    },
+    {
+     "es": "c'è",
+     "en": "hay (sing.)"
+    },
+    {
+     "es": "ci sono",
+     "en": "hay (pl.)"
+    },
+    {
+     "es": "un po'",
+     "en": "un poco"
+    },
+    {
+     "es": "mai",
+     "en": "nunca"
+    }
+   ],
+   "unlocks": [
+    "ne for quantities/of it: ne ho due",
+    "ci = there: ci vado",
+    "c'è / ci sono = hay"
+   ],
+   "ai": "Ask me quantity and place questions where Italian needs ne or ci, and ask what there is in places so I use c'è / ci sono."
+  },
+  {
+   "id": 20,
+   "label": "21",
+   "title": "Ho parlato",
+   "decision": "Italian says 'I have spoken' where Spanish says hablé",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "The everyday past in Italian is <b>avere + participle</b>, like <i>he hablado</i>. But Italians use it for everything, including yesterday: <b>ieri ho mangiato la pizza</b>, where you'd say <i>ayer comí</i>. Your Spanish brain will want a one-word past. Don't."
+    },
+    {
+     "t": "teach",
+     "text": "Participles: <b>-are → -ato</b>, <b>-ere → -uto</b>, <b>-ire → -ito</b>. parl<b>ato</b>, vend<b>uto</b>, dorm<b>ito</b>. Almost Spanish <i>-ado/-ido</i>."
+    },
+    {
+     "t": "teach",
+     "text": "Then <b>avere</b> from lesson 5: <b>ho parlato, hai parlato, ha parlato, abbiamo parlato, avete parlato, hanno parlato</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "ayer comí pizza",
+     "es": "ieri ho mangiato la pizza"
+    },
+    {
+     "t": "prompt",
+     "en": "hablé con Marco",
+     "es": "ho parlato con Marco"
+    },
+    {
+     "t": "prompt",
+     "en": "did you sleep well? (tú)",
+     "es": "hai dormito bene?"
+    },
+    {
+     "t": "prompt",
+     "en": "we worked a lot",
+     "es": "abbiamo lavorato molto"
+    },
+    {
+     "t": "teach",
+     "text": "Pronouns go in front of the whole thing, like Spanish: <b>l'ho comprato</b> (lo he comprado / lo compré)."
+    },
+    {
+     "t": "prompt",
+     "en": "lo compré ayer",
+     "es": "l'ho comprato ieri"
+    },
+    {
+     "t": "teach",
+     "text": "Just one catch, and it's the next lesson: some verbs use <b>essere</b> instead of avere."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "ho parlato",
+     "en": "hablé / he hablado"
+    },
+    {
+     "es": "ho mangiato",
+     "en": "comí"
+    },
+    {
+     "es": "ho dormito",
+     "en": "dormí"
+    },
+    {
+     "es": "bene",
+     "en": "bien"
+    }
+   ],
+   "unlocks": [
+    "Passato prossimo with avere: ho + -ato/-uto/-ito, used for completed past (Spanish preterite AND perfect)"
+   ],
+   "ai": "Ask me what I did yesterday and last week. Make me answer with passato prossimo + avere. Flag any attempt at a one-word past."
+  },
+  {
+   "id": 21,
+   "label": "22",
+   "title": "Sono andato",
+   "decision": "movement and change take essere",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Spanish lost this, but old Spanish had it: some verbs build the past with <b>to be</b>. <b>Sono andato</b> = fui (literally 'I am gone'). Get it wrong and Italians still understand you, but it screams foreigner."
+    },
+    {
+     "t": "teach",
+     "text": "The test: does the verb move you from A to B, or change your state, and it <b>can't take an object</b>? Then <b>essere</b>. andare, venire, arrivare, partire, uscire, entrare, tornare, restare, nascere, morire, diventare. And all reflexives."
+    },
+    {
+     "t": "teach",
+     "text": "With essere, the participle <b>agrees</b> like an adjective: <b>sono andato</b> (man), <b>sono andata</b> (woman), <b>siamo andati</b>, <b>sono andate</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "fui a Roma (man)",
+     "es": "sono andato a Roma"
+    },
+    {
+     "t": "prompt",
+     "en": "she arrived late",
+     "es": "è arrivata tardi"
+    },
+    {
+     "t": "prompt",
+     "en": "salimos anoche",
+     "es": "siamo usciti ieri sera"
+    },
+    {
+     "t": "teach",
+     "text": "Reflexives too: <b>mi sono alzato</b> (me levanté). And essere's own past is with essere: <b>sono stato</b> (estuve, fui). Yes, it borrows stare's participle."
+    },
+    {
+     "t": "prompt",
+     "en": "me levanté a las siete",
+     "es": "mi sono alzato alle sette"
+    },
+    {
+     "t": "prompt",
+     "en": "have you ever been to Italy? (tú)",
+     "es": "sei mai stato in Italia?"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "sono andato",
+     "en": "fui"
+    },
+    {
+     "es": "arrivare",
+     "en": "llegar"
+    },
+    {
+     "es": "partire",
+     "en": "irse, salir de viaje"
+    },
+    {
+     "es": "uscire",
+     "en": "salir"
+    },
+    {
+     "es": "tornare",
+     "en": "volver"
+    },
+    {
+     "es": "sono stato",
+     "en": "estuve / fui"
+    },
+    {
+     "es": "ieri sera",
+     "en": "anoche"
+    },
+    {
+     "es": "tardi",
+     "en": "tarde"
+    }
+   ],
+   "unlocks": [
+    "Passato prossimo with essere: motion/change verbs + reflexives; participle agrees (andato/a/i/e)",
+    "sono stato = I was/have been"
+   ],
+   "ai": "Ask me about trips and where people went and came back, including women and groups, so I need agreement. Mix avere and essere verbs."
+  },
+  {
+   "id": 22,
+   "label": "23",
+   "title": "Fatto, detto, visto",
+   "decision": "the irregular participles",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "The most common verbs have irregular participles. Good news, they look like Spanish: <i>hecho → fatto</i>, <i>dicho → detto</i>."
+    },
+    {
+     "t": "grid",
+     "prompt": "Guess them from Spanish:",
+     "items": [
+      {
+       "en": "hecho (fare)",
+       "es": "fatto"
+      },
+      {
+       "en": "dicho (dire)",
+       "es": "detto"
+      },
+      {
+       "en": "escrito (scrivere)",
+       "es": "scritto"
+      },
+      {
+       "en": "puesto (mettere)",
+       "es": "messo"
+      },
+      {
+       "en": "leído (leggere)",
+       "es": "letto"
+      }
+     ]
+    },
+    {
+     "t": "grid",
+     "prompt": "And these:",
+     "items": [
+      {
+       "en": "visto (vedere)",
+       "es": "visto"
+      },
+      {
+       "en": "tomado (prendere)",
+       "es": "preso"
+      },
+      {
+       "en": "abierto (aprire)",
+       "es": "aperto"
+      },
+      {
+       "en": "venido (venire)",
+       "es": "venuto"
+      },
+      {
+       "en": "bebido (bere)",
+       "es": "bevuto"
+      }
+     ]
+    },
+    {
+     "t": "prompt",
+     "en": "¿qué hiciste?",
+     "es": "che cosa hai fatto?"
+    },
+    {
+     "t": "prompt",
+     "en": "no dije nada",
+     "es": "non ho detto niente"
+    },
+    {
+     "t": "prompt",
+     "en": "vi la película",
+     "es": "ho visto il film"
+    },
+    {
+     "t": "prompt",
+     "en": "she took the train",
+     "es": "ha preso il treno"
+    },
+    {
+     "t": "teach",
+     "text": "<b>Prendere</b> is the Italian workhorse: take, grab, order (<b>prendo un caffè</b>), catch a bus. Use it where Spanish uses <i>tomar</i>."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "fatto",
+     "en": "hecho"
+    },
+    {
+     "es": "detto",
+     "en": "dicho"
+    },
+    {
+     "es": "visto",
+     "en": "visto"
+    },
+    {
+     "es": "preso",
+     "en": "tomado"
+    },
+    {
+     "es": "scritto",
+     "en": "escrito"
+    },
+    {
+     "es": "letto",
+     "en": "leído"
+    },
+    {
+     "es": "messo",
+     "en": "puesto"
+    },
+    {
+     "es": "niente",
+     "en": "nada"
+    }
+   ],
+   "unlocks": [
+    "Irregular participles: fatto, detto, visto, preso, scritto, letto, messo, aperto, venuto, bevuto",
+    "prendere = tomar"
+   ],
+   "ai": "Ask what I did, saw, said, read, took this week so I need irregular participles."
+  },
+  {
+   "id": 23,
+   "label": "24",
+   "title": "Parlavo",
+   "decision": "the imperfect is your -aba / -ía",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "The imperfect is nearly identical in use to Spanish: background, habits, 'used to', what was going on. <i>Cuando era niño, jugaba</i> → <b>quando ero bambino, giocavo</b>. And the split with passato prossimo is your preterite/imperfect split."
+    },
+    {
+     "t": "teach",
+     "text": "Drop -re, add <b>-vo, -vi, -va, -vamo, -vate, -vano</b>. parla<b>vo</b>, vende<b>vo</b>, dormi<b>vo</b>. Spanish <i>-aba</i> → Italian <b>-ava</b>, Spanish <i>-ía</i> → Italian <b>-eva / -iva</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "hablaba mucho",
+     "es": "parlavo molto"
+    },
+    {
+     "t": "prompt",
+     "en": "vivíamos en Utah",
+     "es": "vivevamo nello Utah"
+    },
+    {
+     "t": "prompt",
+     "en": "cuando era niño, jugaba al fútbol",
+     "es": "quando ero bambino, giocavo a calcio"
+    },
+    {
+     "t": "teach",
+     "text": "Event vs scene, same as Spanish: <b>dormivo quando hai chiamato</b> = dormía cuando llamaste. Imperfect is the scene, passato prossimo the event."
+    },
+    {
+     "t": "prompt",
+     "en": "I was eating when he arrived",
+     "es": "mangiavo quando è arrivato"
+    },
+    {
+     "t": "prompt",
+     "en": "hacía frío",
+     "es": "faceva freddo"
+    },
+    {
+     "t": "teach",
+     "text": "<b>Fare</b> → <b>facevo</b> (from old <i>facere</i>), <b>dire</b> → <b>dicevo</b>, <b>bere</b> → <b>bevevo</b>. Long stems come back in the imperfect."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "parlavo",
+     "en": "hablaba"
+    },
+    {
+     "es": "vivevo",
+     "en": "vivía"
+    },
+    {
+     "es": "facevo",
+     "en": "hacía"
+    },
+    {
+     "es": "quando",
+     "en": "cuando"
+    },
+    {
+     "es": "il bambino",
+     "en": "el niño"
+    },
+    {
+     "es": "giocare",
+     "en": "jugar"
+    },
+    {
+     "es": "il calcio",
+     "en": "el fútbol"
+    }
+   ],
+   "unlocks": [
+    "Imperfetto: -avo/-evo/-ivo, -avi, -ava, -avamo, -avate, -avano",
+    "imperfetto = scene/habit, passato prossimo = event (like Spanish)"
+   ],
+   "ai": "Ask me about my childhood and interrupted actions so I have to choose imperfetto vs passato prossimo."
+  },
+  {
+   "id": 24,
+   "label": "25",
+   "title": "Ero",
+   "decision": "era = era, ero = era (yo)",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "<b>Essere</b> in the imperfect is irregular and super common: how things were, how old you were, where you were."
+    },
+    {
+     "t": "teach",
+     "text": "<b>ero, eri, era, eravamo, eravate, erano</b>.<br><br>Leak: <i>yo era</i> is <b>ero</b>, not <i>era</i>. In Italian <b>era</b> is only he/she/it."
+    },
+    {
+     "t": "prompt",
+     "en": "yo era feliz",
+     "es": "ero felice"
+    },
+    {
+     "t": "prompt",
+     "en": "¿dónde estabas?",
+     "es": "dov'eri?"
+    },
+    {
+     "t": "teach",
+     "text": "Remember essere = ser + estar. So <i>estaba</i> is <b>ero</b> too. One word again."
+    },
+    {
+     "t": "prompt",
+     "en": "la casa era grande",
+     "es": "la casa era grande"
+    },
+    {
+     "t": "prompt",
+     "en": "we were tired",
+     "es": "eravamo stanchi"
+    },
+    {
+     "t": "prompt",
+     "en": "había mucha gente",
+     "es": "c'era molta gente"
+    },
+    {
+     "t": "teach",
+     "text": "<b>C'era / c'erano</b> = había. And the classic: <b>c'era una volta…</b> = había una vez."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "ero",
+     "en": "era / estaba (yo)"
+    },
+    {
+     "es": "eri",
+     "en": "eras / estabas"
+    },
+    {
+     "es": "era",
+     "en": "era / estaba"
+    },
+    {
+     "es": "c'era",
+     "en": "había (sing.)"
+    },
+    {
+     "es": "felice",
+     "en": "feliz"
+    },
+    {
+     "es": "c'era una volta",
+     "en": "había una vez"
+    }
+   ],
+   "unlocks": [
+    "essere imperfetto: ero, eri, era, eravamo, eravate, erano",
+    "c'era / c'erano = había"
+   ],
+   "ai": "Ask me to describe places and people from my past: what they were like, where I was."
+  },
+  {
+   "id": 25,
+   "label": "26",
+   "title": "Sto parlando",
+   "decision": "stare only for -ing and how you're doing",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Finally, <b>stare</b>. It's your <i>estar</i> but with a small job description: <b>stare + gerund</b> for right-now actions, and <b>come stai? / sto bene</b> for how you're doing. Everything else estar does, essere does."
+    },
+    {
+     "t": "teach",
+     "text": "<b>sto, stai, sta, stiamo, state, stanno</b>.<br>Gerund: <b>-are → -ando</b>, <b>-ere/-ire → -endo</b>. parl<b>ando</b>, scriv<b>endo</b>, dorm<b>endo</b>. Spanish <i>-iendo</i> just loses the i."
+    },
+    {
+     "t": "prompt",
+     "en": "¿cómo estás?",
+     "es": "come stai?"
+    },
+    {
+     "t": "prompt",
+     "en": "estoy bien, gracias",
+     "es": "sto bene, grazie"
+    },
+    {
+     "t": "prompt",
+     "en": "estoy comiendo",
+     "es": "sto mangiando"
+    },
+    {
+     "t": "prompt",
+     "en": "what are you doing? (right now)",
+     "es": "che stai facendo?"
+    },
+    {
+     "t": "teach",
+     "text": "<b>Facendo</b>, from <b>facere</b> again. Also <b>dicendo</b>, <b>bevendo</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "estábamos durmiendo",
+     "es": "stavamo dormendo"
+    },
+    {
+     "t": "teach",
+     "text": "But: <i>estoy cansado</i> = <b>sono stanco</b>. <i>Está en casa</i> = <b>è a casa</b>. If there's no -ndo and it's not 'how are you', it's essere."
+    },
+    {
+     "t": "prompt",
+     "en": "ella está en casa",
+     "es": "è a casa"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "sto",
+     "en": "estoy (with -ndo / bene)"
+    },
+    {
+     "es": "come stai?",
+     "en": "¿cómo estás?"
+    },
+    {
+     "es": "sto bene",
+     "en": "estoy bien"
+    },
+    {
+     "es": "sto mangiando",
+     "en": "estoy comiendo"
+    },
+    {
+     "es": "a casa",
+     "en": "en casa"
+    }
+   ],
+   "unlocks": [
+    "stare: sto, stai, sta, stiamo, state, stanno",
+    "stare + gerund (-ando/-endo) for actions in progress",
+    "stare for wellbeing; everything else estar does = essere"
+   ],
+   "ai": "Give me 'estar' sentences in Spanish and make me decide: stare (progressive or wellbeing) or essere (everything else)."
+  },
+  {
+   "id": 26,
+   "label": "27",
+   "title": "Parlerò",
+   "decision": "the future: -ar verbs switch to -er",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Same idea as Spanish <i>hablaré</i>: infinitive + endings. One twist: -are verbs change their a to <b>e</b>."
+    },
+    {
+     "t": "teach",
+     "text": "Drop the final -e, and -are becomes <b>-er</b>: parlare → <b>parler-</b>. Then <b>-ò, -ai, -à, -emo, -ete, -anno</b>.<br><b>parlerò, parlerai, parlerà, parleremo, parlerete, parleranno</b>."
+    },
+    {
+     "t": "teach",
+     "text": "-ere and -ire just drop the e: scriver<b>ò</b>, dormir<b>ò</b>. Spell-saver: -care/-gare add an h to stay hard: <b>cercherò</b>, <b>pagherò</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "hablaré con él",
+     "es": "parlerò con lui"
+    },
+    {
+     "t": "prompt",
+     "en": "mañana trabajaremos",
+     "es": "domani lavoreremo"
+    },
+    {
+     "t": "prompt",
+     "en": "they will sleep here",
+     "es": "dormiranno qui"
+    },
+    {
+     "t": "prompt",
+     "en": "¿me escribirás?",
+     "es": "mi scriverai?"
+    },
+    {
+     "t": "teach",
+     "text": "Italians also use the future to guess: <b>sarà vero</b> = será verdad (probably true). Your Spanish does that too."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "parlerò",
+     "en": "hablaré"
+    },
+    {
+     "es": "lavorerò",
+     "en": "trabajaré"
+    },
+    {
+     "es": "dormirò",
+     "en": "dormiré"
+    },
+    {
+     "es": "scriverò",
+     "en": "escribiré"
+    }
+   ],
+   "unlocks": [
+    "Futuro: stem (-are→-er) + ò, ai, à, emo, ete, anno",
+    "future of probability"
+   ],
+   "ai": "Ask me about my plans for next week and next year using the future. Check that -are verbs switch to -er."
+  },
+  {
+   "id": 27,
+   "label": "28",
+   "title": "Andrò, sarò, vorrò",
+   "decision": "squash and super squash stems",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "The verbs you use most get shortened stems, like Spanish <i>tendré, podré, querré</i>. Same endings, shorter stem."
+    },
+    {
+     "t": "teach",
+     "text": "<b>Squash</b>: the vowel before -r drops out. andare → <b>andrò</b>, avere → <b>avrò</b>, potere → <b>potrò</b>, dovere → <b>dovrò</b>, sapere → <b>saprò</b>, vedere → <b>vedrò</b>."
+    },
+    {
+     "t": "teach",
+     "text": "<b>Super squash</b>: the stem collapses into a double rr. volere → <b>vorrò</b>, venire → <b>verrò</b>, bere → <b>berrò</b>, tenere → <b>terrò</b>, rimanere → <b>rimarrò</b>.<br><br>And the short ones: essere → <b>sarò</b>, fare → <b>farò</b>, dare → <b>darò</b>, stare → <b>starò</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "iré a Italia",
+     "es": "andrò in Italia"
+    },
+    {
+     "t": "prompt",
+     "en": "tendré tiempo",
+     "es": "avrò tempo"
+    },
+    {
+     "t": "prompt",
+     "en": "vendrás?",
+     "es": "verrai?"
+    },
+    {
+     "t": "prompt",
+     "en": "it will be hard",
+     "es": "sarà difficile"
+    },
+    {
+     "t": "prompt",
+     "en": "podremos hablar",
+     "es": "potremo parlare"
+    },
+    {
+     "t": "prompt",
+     "en": "they'll want to eat",
+     "es": "vorranno mangiare"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "andrò",
+     "en": "iré"
+    },
+    {
+     "es": "avrò",
+     "en": "tendré"
+    },
+    {
+     "es": "sarò",
+     "en": "seré / estaré"
+    },
+    {
+     "es": "farò",
+     "en": "haré"
+    },
+    {
+     "es": "vorrò",
+     "en": "querré"
+    },
+    {
+     "es": "verrò",
+     "en": "vendré"
+    },
+    {
+     "es": "potrò",
+     "en": "podré"
+    },
+    {
+     "es": "difficile",
+     "en": "difícil"
+    }
+   ],
+   "unlocks": [
+    "Irregular future stems: andr-, avr-, potr-, dovr-, sapr-, vedr-; vorr-, verr-, berr-, terr-; sar-, far-, dar-, star-"
+   ],
+   "ai": "Ask about future plans using the irregular verbs: going, having, being, doing, wanting, coming, being able to."
+  },
+  {
+   "id": 28,
+   "label": "29",
+   "title": "Parlerei",
+   "decision": "the conditional: -ía becomes -ei",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "The conditional is how you're polite (<b>vorrei</b>, <b>potrebbe</b>) and how you dream (<b>vivrei in Italia</b>). Same stem as the future, new endings. Spanish <i>-ía</i> → Italian <b>-ei</b>."
+    },
+    {
+     "t": "teach",
+     "text": "Future stem + <b>-ei, -esti, -ebbe, -emmo, -este, -ebbero</b>.<br><b>parlerei, parleresti, parlerebbe, parleremmo, parlereste, parlerebbero</b>.<br><br>Leak: never <i>parlería</i>. And <b>-emmo</b> has a double m (future <b>-emo</b> has one)."
+    },
+    {
+     "t": "prompt",
+     "en": "hablaría con ella",
+     "es": "parlerei con lei"
+    },
+    {
+     "t": "prompt",
+     "en": "¿comerías aquí?",
+     "es": "mangeresti qui?"
+    },
+    {
+     "t": "prompt",
+     "en": "it would be nice",
+     "es": "sarebbe bello"
+    },
+    {
+     "t": "prompt",
+     "en": "we would travel more",
+     "es": "viaggeremmo di più"
+    },
+    {
+     "t": "teach",
+     "text": "The politeness kit: <b>vorrei</b> (quisiera), <b>potrei?</b> (¿podría?), <b>potrebbe…?</b> (¿podría usted…?), <b>dovresti</b> (deberías), <b>mi piacerebbe</b> (me gustaría)."
+    },
+    {
+     "t": "prompt",
+     "en": "me gustaría ir",
+     "es": "mi piacerebbe andare"
+    },
+    {
+     "t": "prompt",
+     "en": "deberías dormir",
+     "es": "dovresti dormire"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "vorrei",
+     "en": "quisiera"
+    },
+    {
+     "es": "potrei",
+     "en": "podría"
+    },
+    {
+     "es": "dovresti",
+     "en": "deberías"
+    },
+    {
+     "es": "mi piacerebbe",
+     "en": "me gustaría"
+    },
+    {
+     "es": "sarebbe",
+     "en": "sería"
+    },
+    {
+     "es": "viaggiare",
+     "en": "viajar"
+    }
+   ],
+   "unlocks": [
+    "Condizionale: future stem + ei, esti, ebbe, emmo, este, ebbero",
+    "polite: vorrei, potrei, potrebbe, dovresti, mi piacerebbe"
+   ],
+   "ai": "Role-play ordering, asking favors and giving advice. Then ask what I would do with a free year."
+  },
+  {
+   "id": 29,
+   "label": "30",
+   "title": "Andrei, sarei, verrei",
+   "decision": "the conditional borrows the future's squashed stems",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Zero new stems. Whatever the future did in lesson 28, the conditional does too. You already did the hard part."
+    },
+    {
+     "t": "grid",
+     "prompt": "Future → conditional:",
+     "items": [
+      {
+       "en": "andrò",
+       "es": "andrei"
+      },
+      {
+       "en": "avrò",
+       "es": "avrei"
+      },
+      {
+       "en": "sarò",
+       "es": "sarei"
+      },
+      {
+       "en": "vorrò",
+       "es": "vorrei"
+      },
+      {
+       "en": "verrò",
+       "es": "verrei"
+      }
+     ]
+    },
+    {
+     "t": "prompt",
+     "en": "iría contigo",
+     "es": "verrei con te"
+    },
+    {
+     "t": "teach",
+     "text": "Ojo: Italian says <b>venire con te</b> where Spanish often says <i>ir contigo</i>. Moving toward the person you're talking to = venire."
+    },
+    {
+     "t": "prompt",
+     "en": "tendríamos que salir",
+     "es": "dovremmo uscire"
+    },
+    {
+     "t": "prompt",
+     "en": "would you do it? (tú)",
+     "es": "lo faresti?"
+    },
+    {
+     "t": "prompt",
+     "en": "I'd be happy",
+     "es": "sarei felice"
+    },
+    {
+     "t": "prompt",
+     "en": "they'd know it",
+     "es": "lo saprebbero"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "andrei",
+     "en": "iría"
+    },
+    {
+     "es": "avrei",
+     "en": "tendría"
+    },
+    {
+     "es": "sarei",
+     "en": "sería / estaría"
+    },
+    {
+     "es": "farei",
+     "en": "haría"
+    },
+    {
+     "es": "verrei",
+     "en": "vendría / iría (contigo)"
+    }
+   ],
+   "unlocks": [
+    "Irregular conditional = irregular future stems + -ei endings",
+    "venire con te = ir contigo"
+   ],
+   "ai": "Ask me hypothetical and polite questions that need irregular conditionals."
+  },
+  {
+   "id": 30,
+   "label": "31",
+   "title": "Parla! Non parlare!",
+   "decision": "tu commands, and non + infinitive",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Commands, for directions, recipes, and telling your friends what to do. Most of it transfers. One rule flips."
+    },
+    {
+     "t": "teach",
+     "text": "<b>tu</b> command for -are verbs = the <i>he/she</i> form, same as Spanish: <b>parla!</b> (¡habla!), <b>mangia!</b>. For -ere/-ire it's the tu form: <b>scrivi!</b>, <b>dormi!</b>, <b>senti!</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "¡habla!",
+     "es": "parla!"
+    },
+    {
+     "t": "prompt",
+     "en": "¡escribe!",
+     "es": "scrivi!"
+    },
+    {
+     "t": "teach",
+     "text": "The flip: negative tu = <b>non + infinitive</b>. Spanish switches to the subjunctive (<i>no hables</i>). Italian just says <b>non parlare!</b>. Easier, but you'll want to say <i>non parli</i>. Don't."
+    },
+    {
+     "t": "prompt",
+     "en": "¡no hables!",
+     "es": "non parlare!"
+    },
+    {
+     "t": "prompt",
+     "en": "don't worry (preoccuparsi)",
+     "es": "non preoccuparti!"
+    },
+    {
+     "t": "teach",
+     "text": "Pronouns glue on, like Spanish: <b>dimmi!</b> (dime), <b>fammi vedere</b> (déjame ver). Short commands double the consonant: di' + mi = <b>dimmi</b>, fa' + lo = <b>fallo</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "¡dime!",
+     "es": "dimmi!"
+    },
+    {
+     "t": "prompt",
+     "en": "let's go! / let's eat!",
+     "es": "andiamo! / mangiamo!"
+    },
+    {
+     "t": "teach",
+     "text": "Irregular tu commands worth knowing: <b>va'</b> (ve), <b>vieni</b> (ven), <b>fa'</b> (haz), <b>di'</b> (di), <b>sta'</b>, <b>abbi pazienza</b> (ten paciencia), <b>sii</b> (sé)."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "parla!",
+     "en": "¡habla!"
+    },
+    {
+     "es": "non parlare!",
+     "en": "¡no hables!"
+    },
+    {
+     "es": "dimmi!",
+     "en": "¡dime!"
+    },
+    {
+     "es": "non preoccuparti",
+     "en": "no te preocupes"
+    },
+    {
+     "es": "senti",
+     "en": "oye"
+    }
+   ],
+   "unlocks": [
+    "Imperative tu: -are → -a, -ere/-ire → -i; noi = present",
+    "negative tu = non + infinitive",
+    "pronouns attach; dimmi, fammi, fallo"
+   ],
+   "ai": "Have me give directions and advice to a friend with tu commands, including negative ones. Catch 'non parli' for negative tu."
+  },
+  {
+   "id": 31,
+   "label": "32",
+   "title": "Che tu parli",
+   "decision": "the subjunctive flips vowels like Spanish, but more often",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "Great news: the Italian subjunctive flips vowels like Spanish (<i>hable</i> → <b>parli</b>). Bad news: Italians use it more. After <b>penso che</b> and <b>credo che</b> (I think that), Italian wants the subjunctive, where Spanish uses the indicative (<i>creo que es</i>)."
+    },
+    {
+     "t": "teach",
+     "text": "-are → <b>-i</b>: che io parl<b>i</b>, tu parl<b>i</b>, lui parl<b>i</b>, noi parl<b>iamo</b>, voi parl<b>iate</b>, loro parl<b>ino</b>.<br>-ere/-ire → <b>-a</b>: scriv<b>a</b>, dorm<b>a</b>, scriv<b>iamo</b>, scriv<b>iate</b>, scriv<b>ano</b>.<br><br>The three singulars are the same, so Italians often add the pronoun: <b>che tu parli</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "quiero que hables",
+     "es": "voglio che tu parli"
+    },
+    {
+     "t": "prompt",
+     "en": "espero que duerman bien",
+     "es": "spero che dormano bene"
+    },
+    {
+     "t": "teach",
+     "text": "Here's the leak in reverse: <i>creo que tiene razón</i> → <b>credo che abbia ragione</b>. Spanish indicative, Italian subjunctive. Same for <b>penso che, mi sembra che, non so se</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "creo que trabaja mucho",
+     "es": "penso che lavori molto"
+    },
+    {
+     "t": "prompt",
+     "en": "it's important that you study",
+     "es": "è importante che tu studi"
+    },
+    {
+     "t": "prompt",
+     "en": "aunque llueva",
+     "es": "anche se piove / benché piova"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "che tu parli",
+     "en": "que hables"
+    },
+    {
+     "es": "spero che",
+     "en": "espero que"
+    },
+    {
+     "es": "penso che",
+     "en": "creo que (+ subj.)"
+    },
+    {
+     "es": "benché",
+     "en": "aunque (+ subj.)"
+    },
+    {
+     "es": "avere ragione",
+     "en": "tener razón"
+    }
+   ],
+   "unlocks": [
+    "Congiuntivo presente: -are → -i, -ere/-ire → -a; noi -iamo, voi -iate, loro -ino/-ano",
+    "triggers: voglio che, spero che, è importante che, AND penso/credo che (unlike Spanish)"
+   ],
+   "ai": "Give me sentences starting with 'I think that', 'I want that', 'I hope that', and make me use the subjunctive. Flag if I use the indicative after penso che."
+  },
+  {
+   "id": 32,
+   "label": "33",
+   "title": "Sia, abbia, vada",
+   "decision": "essere, avere and the common irregulars",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "The verbs you need most have their own subjunctive. Most come from the <i>io</i> present form, like Spanish: <i>hago → haga</i>, <b>faccio → faccia</b>."
+    },
+    {
+     "t": "teach",
+     "text": "<b>essere</b>: sia, sia, sia, siamo, siate, siano (sea).<br><b>avere</b>: abbia, abbia, abbia, abbiamo, abbiate, abbiano (tenga / haya)."
+    },
+    {
+     "t": "prompt",
+     "en": "espero que sea verdad",
+     "es": "spero che sia vero"
+    },
+    {
+     "t": "prompt",
+     "en": "creo que tiene razón",
+     "es": "penso che abbia ragione"
+    },
+    {
+     "t": "teach",
+     "text": "From the io form: faccio → <b>faccia</b>, vado → <b>vada</b>, vengo → <b>venga</b>, posso → <b>possa</b>, voglio → <b>voglia</b>, devo → <b>debba</b>, dico → <b>dica</b>. And sapere → <b>sappia</b>, stare → <b>stia</b>, dare → <b>dia</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "quiero que vengas",
+     "es": "voglio che tu venga"
+    },
+    {
+     "t": "prompt",
+     "en": "es mejor que vaya",
+     "es": "è meglio che vada"
+    },
+    {
+     "t": "prompt",
+     "en": "I don't think he can come",
+     "es": "non penso che possa venire"
+    },
+    {
+     "t": "teach",
+     "text": "Bonus: the formal command is just the subjunctive: <b>mi dica</b> (dígame), <b>venga!</b> (¡venga!), exactly like Spanish <i>usted</i> commands."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "sia",
+     "en": "sea / esté"
+    },
+    {
+     "es": "abbia",
+     "en": "tenga / haya"
+    },
+    {
+     "es": "faccia",
+     "en": "haga"
+    },
+    {
+     "es": "vada",
+     "en": "vaya"
+    },
+    {
+     "es": "venga",
+     "en": "venga"
+    },
+    {
+     "es": "possa",
+     "en": "pueda"
+    },
+    {
+     "es": "meglio",
+     "en": "mejor"
+    },
+    {
+     "es": "mi dica",
+     "en": "dígame"
+    }
+   ],
+   "unlocks": [
+    "Irregular congiuntivo: sia, abbia, faccia, vada, venga, possa, voglia, debba, dica, sappia, stia, dia",
+    "formal commands = congiuntivo (mi dica)"
+   ],
+   "ai": "Make me react to news with 'I hope that', 'I doubt that', 'it's better that' using irregular subjunctives."
+  },
+  {
+   "id": 33,
+   "label": "34",
+   "title": "Che parlassi",
+   "decision": "-ara / -iera becomes -assi / -essi / -issi",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "The past subjunctive, for wishes about the past and reported wants: <i>quería que hablaras</i> → <b>volevo che parlassi</b>. Spanish speakers have this instinct already."
+    },
+    {
+     "t": "teach",
+     "text": "Drop -re, add <b>-ssi, -ssi, -sse, -ssimo, -ste, -ssero</b>: parla<b>ssi</b>, vende<b>ssi</b>, dormi<b>ssi</b>.<br><br>Spanish <i>-ara / -iera</i> ↔ Italian <b>-assi / -essi / -issi</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "quería que vinieras",
+     "es": "volevo che tu venissi"
+    },
+    {
+     "t": "prompt",
+     "en": "pensaba que estaba aquí",
+     "es": "pensavo che fosse qui"
+    },
+    {
+     "t": "teach",
+     "text": "Irregulars: essere → <b>fossi, fossi, fosse, fossimo, foste, fossero</b> (fuera). fare → <b>facessi</b>, dire → <b>dicessi</b>, dare → <b>dessi</b>, stare → <b>stessi</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "I wish it were true (magari)",
+     "es": "magari fosse vero!"
+    },
+    {
+     "t": "teach",
+     "text": "<b>Magari!</b> = ¡ojalá! (for wishes). Italians say it constantly, also as 'maybe'."
+    },
+    {
+     "t": "prompt",
+     "en": "they wanted us to eat",
+     "es": "volevano che mangiassimo"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "parlassi",
+     "en": "hablara"
+    },
+    {
+     "es": "fossi",
+     "en": "fuera (yo)"
+    },
+    {
+     "es": "fosse",
+     "en": "fuera"
+    },
+    {
+     "es": "facessi",
+     "en": "hiciera"
+    },
+    {
+     "es": "magari",
+     "en": "ojalá / quizás"
+    }
+   ],
+   "unlocks": [
+    "Congiuntivo imperfetto: -assi/-essi/-issi, -sse, -ssimo, -ste, -ssero",
+    "essere: fossi…; fare: facessi; dire: dicessi",
+    "magari = ojalá"
+   ],
+   "ai": "Ask what people wanted, hoped and thought in the past so I need the imperfect subjunctive. Throw in 'magari' wishes."
+  },
+  {
+   "id": 34,
+   "label": "35",
+   "title": "Se potessi, andrei",
+   "decision": "si pudiera, iría",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "The hypothetical: if X were true, I would Y. Spanish and Italian match one-to-one, so this is a reward lesson that strings together the last few."
+    },
+    {
+     "t": "teach",
+     "text": "<b>se</b> + imperfect subjunctive, then conditional. <i>Si tuviera tiempo, viajaría</i> → <b>se avessi tempo, viaggerei</b>. Leak: <i>si</i> is <b>se</b>."
+    },
+    {
+     "t": "prompt",
+     "en": "si pudiera, iría",
+     "es": "se potessi, andrei"
+    },
+    {
+     "t": "prompt",
+     "en": "si fuera rico, viviría en Italia",
+     "es": "se fossi ricco, vivrei in Italia"
+    },
+    {
+     "t": "prompt",
+     "en": "if you came, I'd be happy (tú)",
+     "es": "se venissi, sarei felice"
+    },
+    {
+     "t": "prompt",
+     "en": "¿qué harías si ganaras?",
+     "es": "che cosa faresti se vincessi?"
+    },
+    {
+     "t": "teach",
+     "text": "And the real-world one, with present + future, is like Spanish too: <b>se piove, resto a casa</b> (si llueve, me quedo en casa)."
+    },
+    {
+     "t": "prompt",
+     "en": "if it rains, I'll stay home",
+     "es": "se piove, resto a casa"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "se",
+     "en": "si (if)"
+    },
+    {
+     "es": "se potessi",
+     "en": "si pudiera"
+    },
+    {
+     "es": "ricco",
+     "en": "rico"
+    },
+    {
+     "es": "vincere",
+     "en": "ganar"
+    },
+    {
+     "es": "restare",
+     "en": "quedarse"
+    }
+   ],
+   "unlocks": [
+    "Periodo ipotetico: se + congiuntivo imperfetto, condizionale",
+    "real conditions: se + present, present/future"
+   ],
+   "ai": "Ask me lots of 'what would you do if…' questions and make me answer in full hypotheticals."
+  },
+  {
+   "id": 35,
+   "label": "36",
+   "title": "Parlai",
+   "decision": "the passato remoto: recognize it, don't stress it",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "This is the one-word past your Spanish wanted back in lesson 21. It exists: <b>parlai</b> = hablé. But in most of Italy people barely say it. It's for books, history, and the south. Learn to <b>recognize</b> it."
+    },
+    {
+     "t": "teach",
+     "text": "<b>parlai, parlasti, parlò, parlammo, parlaste, parlarono</b>. Compare hablé, hablaste, habló, hablamos, hablasteis, hablaron. Family resemblance, right?"
+    },
+    {
+     "t": "teach",
+     "text": "You'll mostly meet the 'he/she' and 'they' forms in stories: <b>fu</b> (fue), <b>ebbe</b> (tuvo), <b>disse</b> (dijo), <b>fece</b> (hizo), <b>venne</b> (vino), <b>nacque</b> (nació)."
+    },
+    {
+     "t": "prompt",
+     "en": "Dante nació en Florencia",
+     "es": "Dante nacque a Firenze"
+    },
+    {
+     "t": "prompt",
+     "en": "fue un gran rey",
+     "es": "fu un gran re"
+    },
+    {
+     "t": "prompt",
+     "en": "he said no",
+     "es": "disse di no"
+    },
+    {
+     "t": "teach",
+     "text": "In speech, though: <b>ieri sono andato</b>, not <i>ieri andai</i>, unless you're in Sicily or Naples. Then everyone says it and you'll fit right in."
+    }
+   ],
+   "vocab": [
+    {
+     "es": "fu",
+     "en": "fue"
+    },
+    {
+     "es": "ebbe",
+     "en": "tuvo"
+    },
+    {
+     "es": "disse",
+     "en": "dijo"
+    },
+    {
+     "es": "fece",
+     "en": "hizo"
+    },
+    {
+     "es": "nacque",
+     "en": "nació"
+    }
+   ],
+   "unlocks": [
+    "Passato remoto: -ai, -asti, -ò, -ammo, -aste, -arono (recognition)",
+    "common irregulars: fu, ebbe, disse, fece, venne, nacque"
+   ],
+   "ai": "Tell me a short story in the passato remoto, then ask me to retell it in the passato prossimo."
+  },
+  {
+   "id": 36,
+   "label": "37",
+   "title": "Si parla italiano",
+   "decision": "si = se, for 'people in general'",
+   "blocks": [
+    {
+     "t": "context",
+     "title": "Why this",
+     "text": "<i>Se habla español</i>, <i>¿cómo se dice?</i> Italian does the exact same with <b>si</b>. Final lesson, and it's a gimme, plus a phrase you'll use every day."
+    },
+    {
+     "t": "teach",
+     "text": "<b>si</b> + he/she form: <b>si parla italiano</b>. Plural thing → plural verb: <b>si vendono case</b> (se venden casas)."
+    },
+    {
+     "t": "prompt",
+     "en": "¿cómo se dice 'spoon'?",
+     "es": "come si dice 'spoon'?"
+    },
+    {
+     "t": "prompt",
+     "en": "aquí se come bien",
+     "es": "qui si mangia bene"
+    },
+    {
+     "t": "prompt",
+     "en": "se venden libros",
+     "es": "si vendono libri"
+    },
+    {
+     "t": "prompt",
+     "en": "how do you get to the station?",
+     "es": "come si arriva alla stazione?"
+    },
+    {
+     "t": "teach",
+     "text": "<b>Come si dice…?</b> and <b>Come si scrive?</b> (how do you spell it) are your survival tools for real conversation. Use them every time you're stuck, in Italian, and you never have to drop to English."
+    },
+    {
+     "t": "teach",
+     "text": "Que ya. That's the whole MTC grammar sequence. From here the work is listening and talking: log real Italian on the Immersion card, and use the robot button to practice. Forza!"
+    }
+   ],
+   "vocab": [
+    {
+     "es": "come si dice?",
+     "en": "¿cómo se dice?"
+    },
+    {
+     "es": "come si scrive?",
+     "en": "¿cómo se escribe?"
+    },
+    {
+     "es": "si mangia bene",
+     "en": "se come bien"
+    },
+    {
+     "es": "forza!",
+     "en": "¡ánimo!, ¡dale!"
+    }
+   ],
+   "unlocks": [
+    "si impersonale/passivante: si + 3rd sing./pl.",
+    "come si dice? / come si scrive?"
+   ],
+   "ai": "Ask me 'how do you say / how does one do' questions about life in Italy, so I use the si construction. Then free conversation using everything."
+  }
+ ]
+}

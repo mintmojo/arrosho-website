@@ -181,12 +181,19 @@ footer{margin-top:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid 
 .foot-rule{border:0;border-top:1px solid var(--line);margin:1rem 0 .4rem}
 .ai-note p{text-align:left}
 .hidden{display:none}
+select.course{font:inherit;font-size:.8rem;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:8px;padding:.2rem .35rem;max-width:11.5rem}
+.credit{display:block;font-size:.7rem;color:var(--muted);margin-top:.35rem}
+.credit a{color:inherit}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <img src="icon.svg" alt=""><h1>Bedrock</h1><span class="sub">Spanish</span>
+    <img src="icon.svg" alt=""><h1>Bedrock</h1><select id="course" class="sub course" aria-label="What you're learning">
+      <option value="es-en">Spanish · from English</option>
+      <option value="it-es">Italian · from Spanish</option>
+      <option value="it-en">Italian · from English</option>
+    </select>
     <button id="sound" class="hidden" aria-label="Auto-play Spanish" style="margin-left:auto"></button>
     <button id="help" aria-label="How to install this as an app">?</button>
   </header>
@@ -276,7 +283,27 @@ puedo,I can,PWEH-doh"></textarea>
 // thin wrapper rather than pulling in Dexie: with no build step Dexie means
 // vendoring ~100KB to wrap four object stores. Swap it in when there's a
 // bundler — the call sites below are the only thing that would change.
-const DB_NAME='bedrock', DB_VERSION=1, LS_EVENTS='bedrock.events.v1', LS_DECK='bedrock.deck.v1';
+// ---------- courses ----------
+// One app, several courses. Each course has its own lessons file and its own
+// database, so progress in one never touches another. The Spanish course keeps
+// the original names, so nobody's saved progress moves.
+const COURSES={
+  'es-en':{name:'Spanish',from:'English',lang:'es',lessons:'lessons.json',sources:'sources.json',core:'core.json',
+           db:'bedrock',ls:'bedrock',voice:['es-mx','es-us','es-419','es-co','es-ar','es-cl','es-pe']},
+  'it-es':{name:'Italian',from:'Spanish',lang:'it',lessons:'lessons-it.json',sources:'sources-it.json',audio:'audio-it.json',core:null,
+           db:'bedrock-it-es',ls:'bedrock.it-es',voice:['it-it']},
+  // not written yet: picking it will fail to load, and that's expected for now
+  'it-en':{name:'Italian',from:'English',lang:'it',lessons:'lessons-it-en.json',sources:'sources-it.json',audio:'audio-it.json',core:null,
+           db:'bedrock-it-en',ls:'bedrock.it-en',voice:['it-it']}
+};
+let COURSE_ID='es-en';
+try{COURSE_ID=localStorage.getItem('bedrock.course')||'es-en';}catch(e){}
+if(!COURSES[COURSE_ID])COURSE_ID='es-en';
+const C=COURSES[COURSE_ID];
+const DB_NAME=C.db, DB_VERSION=1, LS_EVENTS=C.ls+'.events.v1', LS_DECK=C.ls+'.deck.v1';
+// recorded audio for sentences, keyed by normalized text (built by tools/fetch_tatoeba_audio.py)
+let AUDIO={};
+const norm=t=>String(t).replace(/<[^>]+>/g,'').toLowerCase().normalize('NFC').replace(/[.,!?¿¡;:"“”«»…]/g,'').replace(/\s+/g,' ').trim();
 let _db=null;
 
 function openDB(){
@@ -420,10 +447,11 @@ const $=s=>document.querySelector(s);
     try{events=JSON.parse(localStorage.getItem(LS_EVENTS)||'[]');
         deck=JSON.parse(localStorage.getItem(LS_DECK)||'[]');}catch(e){}
   }
-  const d=await (await fetch('lessons.json')).json();
+  const d=await (await fetch(C.lessons)).json();
+  if(C.audio){try{AUDIO=(await (await fetch(C.audio)).json()).clips||{};}catch(e){AUDIO={};}}
   LESSONS=d.lessons;
-  if(corePref()==='yes'&&!CORE.length)await fetchCore();
-  try{SOURCES=await (await fetch('sources.json')).json();}catch(e){}
+  if(C.core&&corePref()==='yes'&&!CORE.length)await fetchCore();
+  try{SOURCES=await (await fetch(C.sources)).json();}catch(e){}
   home();
 })();
 
@@ -485,7 +513,7 @@ function home(){
   renderInputCard();
   renderSoundBtn();
   // someone who said "not now" can still change their mind
-  $('#deck-btn').classList.toggle('hidden',corePref()!=='no');
+  $('#deck-btn').classList.toggle('hidden',!C.core||corePref()!=='no');
   $('#list').innerHTML='';
   LESSONS.forEach(l=>{
     const row=document.createElement('div');
@@ -549,7 +577,7 @@ function render(){
     $('#show').onclick=()=>{
       const phon=(b.wrong&&b.right)?`<div class="phon">
           <div><span class="mark x">✗</span><span class="lbl">English habit</span><span class="x">${b.wrong}</span></div>
-          <div><span class="mark v">✓</span><span class="lbl">Spanish</span><span class="v">${b.right}</span></div>
+          <div><span class="mark v">✓</span><span class="lbl">${C.name}</span><span class="v">${b.right}</span></div>
         </div>`:'';
       $('#stage').innerHTML=`<div class="card">
           <p class="say">${b.es}${sayBtn(b.es)}</p>${phon}<p class="ans">${b.a}</p></div>
@@ -562,7 +590,7 @@ function render(){
     };
   }else{
     $('#stage').innerHTML=`<div class="card">
-        <p class="en">${b.en}</p><p class="hint">say it in Spanish out loud, then check</p></div>
+        <p class="en">${b.en}</p><p class="hint">say it in ${C.name} out loud, then check</p></div>
       <div class="row"><button id="show">Show me</button></div>`;
     $('#show').onclick=()=>{
       const pron=b.p?`<p class="pron">${b.p}</p>`:'';
@@ -611,7 +639,19 @@ const TUTOR_RULES=`HOW TO TUTOR ME
 9. After 10 sentences, tell me which kind of mistake I made most and give me 3 more sentences aimed at it.
 Use Spanish as it's spoken in Latin America, and call me tú. I'll say each answer out loud before typing it. Start with the first sentence.`;
 
+const IT_RULES=`HOW TO TUTOR ME
+1. I speak Spanish fluently and I'm learning Italian from zero. Explain in English mixed freely with Spanish, Spanglish style ("si no tienes ganas, just say non mi va"). Compare to Spanish whenever it helps: what's the same, what's a false friend, what changes.
+2. Give me one sentence at a time to say in Italian. Give it in English, Spanish, or a mix. Most should practice the focus above; every few, mix in an earlier lesson.
+3. Grammar: use only what's listed above. Nothing from later lessons.
+4. Vocabulary: common words, plus anything I can guess from Spanish. When I hit a word I don't know, let me guess from Spanish first, then tell me if it was right.
+5. Wait for my answer. If it's wrong, name the rule I missed in one or two sentences and let me try again. If my mistake is Spanish leaking in (like "es" for "è", or "muy" for "molto"), say so plainly.
+6. Accept any correct Italian. Keep explanations short, no grammar tables.
+7. After 10 sentences, tell me which mistake I made most and give me 3 more aimed at it.
+Standard Italian, call me tu. I say each answer out loud before typing it. Start with the first sentence.`;
 function intro(){
+  if(C.lang==='it')return `I'm learning Italian with Bedrock (${SITE}), a free course that teaches by reasoning. I already speak Spanish fluently, so the course teaches Italian from Spanish. Each lesson teaches one decision, and I build sentences from rules instead of memorizing phrases. Please be my tutor and keep the practice going from where I am.
+
+If you can open links, ${SITE}${C.lessons} has the full text of every lesson; find mine by its number. Everything you need is also below.`;
   return `I'm learning Spanish with Bedrock (${SITE}), a free course that teaches by reasoning. Each lesson teaches one decision, and I build sentences from rules instead of memorizing phrases. Please be my tutor and keep the practice going from where I am.
 
 BEFORE YOU START
@@ -634,7 +674,7 @@ function lessonPrompt(l){
     ex.length?'\nEXAMPLES FROM THE LESSON\n'+ex.join('\n'):null,
     '','WHAT I\'VE BEEN TAUGHT SO FAR (use only this)',
     'Grammar:', ...u.grammar.map(g=>'- '+g),
-    '',TUTOR_RULES].filter(x=>x!==null).join('\n');
+    '',C.lang==='it'?IT_RULES:TUTOR_RULES].filter(x=>x!==null).join('\n');
 }
 
 const ROBOT=`<svg viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="1.6"
@@ -788,6 +828,7 @@ function startReview(){
 }
 
 function askCore(){
+  if(!C.core){log({type:'core_pref',choice:'no'});return startReview();}
   $('#bar').style.width='0%';
   $('#stage').innerHTML=`<p class="teach">Want Bedrock's <b>core list</b> too? It's the
       <b>4,000 most common words in Spanish</b>, with meanings, as flashcards.</p>
@@ -819,7 +860,7 @@ function nextSrs(){
   $('#bar').style.width='0%';
   $('#stage').innerHTML=`<div class="card">
       ${isNew?'<p class="hint">new word</p>':''}
-      <p class="en">${c.en}</p><p class="hint">say it in Spanish out loud, then check</p></div>
+      <p class="en">${c.en}</p><p class="hint">say it in ${C.name} out loud, then check</p></div>
     <div class="row"><button id="show">Show me</button></div>`;
   $('#show').onclick=async()=>{
     const m=await idbGet('media',c.es);
@@ -903,6 +944,11 @@ function gradeSrs(r){
 
 $('#prev').onclick=()=>{if(step>0){step--;render();}};
 $('#quit').onclick=home;
+$('#course').value=COURSE_ID;
+$('#course').onchange=e=>{try{localStorage.setItem('bedrock.course',e.target.value);}catch(err){}location.reload();};
+document.documentElement.lang='en';
+$('#sound').setAttribute('aria-label','Auto-play '+C.name);
+$('#in-sub').textContent='Real '+C.name+' you listen to or read. This is what makes you fluent.';
 // ---------- speech ----------
 // The phone's own Spanish voice, for checking how a word goes. Fine for that,
 // not for training the ear: the first lesson says so, and the ear trainer
@@ -911,10 +957,10 @@ let VOICE=null;
 const SPEAKER=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18.3 6.3a8 8 0 0 1 0 11.4"/></svg>`;
 function pickVoice(){
   if(!('speechSynthesis' in window))return;
-  const vs=speechSynthesis.getVoices().filter(v=>/^es([-_]|$)/i.test(v.lang));
+  const vs=speechSynthesis.getVoices().filter(v=>new RegExp('^'+C.lang+'([-_]|$)','i').test(v.lang));
   const norm=v=>v.lang.replace('_','-').toLowerCase();
   // Latin American first, to match the AI prompts; on-device voices work offline
-  const latam=['es-mx','es-us','es-419','es-co','es-ar','es-cl','es-pe'];
+  const latam=C.voice;
   const rank=v=>(latam.includes(norm(v))?0:2)+(v.localService?0:1);
   VOICE=vs.sort((a,b)=>rank(a)-rank(b))[0]||null;
 }
@@ -924,14 +970,22 @@ if('speechSynthesis' in window){
 }
 // "essence → la conversación es importante" and "a · b" alternatives: say the answer once
 const speakable=t=>String(t).split('·')[0].split('→').pop().replace(/<[^>]+>/g,'').trim();
+let CLIP=null;
 function speak(t){
+  const rec=AUDIO[norm(speakable(t))];
+  if(rec){
+    if('speechSynthesis' in window)speechSynthesis.cancel();
+    CLIP?.pause();CLIP=new Audio(rec.url);CLIP.play().catch(()=>{});
+    return;
+  }
   if(!VOICE)return;
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(speakable(t));
   u.voice=VOICE;u.lang=VOICE.lang;u.rate=.9;
   speechSynthesis.speak(u);
 }
-const sayBtn=t=>VOICE?`<button class="speak" data-say="${encodeURIComponent(speakable(t))}" aria-label="Hear it">${SPEAKER}</button>`:'';
+const credit=t=>{const r=AUDIO[norm(speakable(t))];return r?`<small class="credit">Recording by ${r.by} on <a href="${r.page}" target="_blank" rel="noopener">Tatoeba</a> · ${r.license}</small>`:'';};
+const sayBtn=t=>(VOICE||AUDIO[norm(speakable(t))])?`<button class="speak" data-say="${encodeURIComponent(speakable(t))}" aria-label="Hear it">${SPEAKER}</button>${credit(t)}`:'';
 document.addEventListener('click',e=>{
   const b=e.target.closest('.speak');
   if(b){e.preventDefault();e.stopPropagation();speak(decodeURIComponent(b.dataset.say));}
@@ -941,7 +995,7 @@ function autoplay(){let v=false;for(const e of events)if(e.type==='setting'&&e.k
 const revealed=t=>{if(autoplay())speak(t);};
 function renderSoundBtn(){
   const b=$('#sound');
-  b.classList.toggle('hidden',!VOICE);
+  b.classList.toggle('hidden',!VOICE&&!Object.keys(AUDIO).length);
   b.classList.toggle('on',autoplay());
   b.innerHTML=SPEAKER;
   b.title=autoplay()?'Auto-play is on':'Auto-play is off';
@@ -950,7 +1004,7 @@ $('#sound').onclick=()=>{
   const on=!autoplay();
   log({type:'setting',key:'autoplay',value:on});
   renderSoundBtn();
-  toast(on?'Auto-play on: Spanish plays when you reveal an answer.':'Auto-play off. Tap the speaker next to any answer to hear it.');
+  toast(on?'Auto-play on: '+C.name+' plays when you reveal an answer.':'Auto-play off. Tap the speaker next to any answer to hear it.');
 };
 
 // ---------- input: logged listening and reading ----------
@@ -1002,7 +1056,7 @@ function renderInputCard(){
   $('#in-sub').textContent=t
     ?`Timer running since ${new Date(t).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}. Stop it when you're done.`
     :!st.all.length
-      ?'Real Spanish you listen to or read. This is what makes you fluent. Log some every day to build a streak.'
+      ?'Real '+C.name+' you listen to or read. This is what makes you fluent. Log some every day to build a streak.'
       :!st.streak
         ?'No streak yet. Log a session today to start one.'
         :st.todayMin
@@ -1033,7 +1087,7 @@ function logInput(mins){
   const names=SOURCES.sources.map(x=>`<option value="${x.name.replace(/"/g,'&quot;')}">`).join('');
   const recent=[...new Set(inputs().slice(-12).reverse().map(e=>e.source).filter(Boolean))].slice(0,4);
   let rating=0;
-  $('#stage').innerHTML=`<p class="teach"><b>Log a session.</b> Anything in Spanish you listened to or read.</p>
+  $('#stage').innerHTML=`<p class="teach"><b>Log a session.</b> Anything in ${C.name} you listened to or read.</p>
     <label class="field" for="in-src">What was it?</label>
     <input class="inp" id="in-src" list="in-srcs" placeholder="a show, a podcast, a book, a conversation">
     <datalist id="in-srcs">${names}</datalist>
@@ -1092,7 +1146,7 @@ function showInput(level){
   const list=SOURCES.sources.filter(x=>x.level===lv.id).map(x=>x.url
       ?`<a class="src" href="${x.url}" target="_blank" rel="noopener"><b>${x.name}</b> ↗<small>${x.note}</small></a>`
       :`<div class="src"><b>${x.name}</b><small>${x.note}</small></div>`).join('');
-  $('#stage').innerHTML=`<p class="teach"><b>${fmtMin(st.total)}</b> of Spanish so far${st.all.length?`, ${fmtMin(st.thisWeek)} this week`:''}${st.streak?`, and a ${st.streak}-day streak`:''}.
+  $('#stage').innerHTML=`<p class="teach"><b>${fmtMin(st.total)}</b> of ${C.name} so far${st.all.length?`, ${fmtMin(st.thisWeek)} this week`:''}${st.streak?`, and a ${st.streak}-day streak`:''}.
       ${nudge(st.avg,st.rated.length)}</p>
     ${rated.length>=2?`<span class="field">How much you understood, last ${rated.length} sessions (1 to 5)</span>${sparkline(rated)}`:''}
     ${recent?`<span class="field">Recent</span>${recent}`:''}
@@ -1120,7 +1174,7 @@ $('#export').onclick=async()=>{
     events:events.map(({id,...e})=>e),deck,media:pics};
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([JSON.stringify(payload)],{type:'application/json'}));
-  a.download='bedrock-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+  a.download='bedrock-'+COURSE_ID+'-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();
   toast('Backup saved. Keep the file somewhere safe, like your cloud drive.');
 };
 
