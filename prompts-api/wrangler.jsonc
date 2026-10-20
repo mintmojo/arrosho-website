@@ -1,0 +1,9 @@
+{
+  "name": "prompts-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-01",
+  // One Durable Object per lobby code. SQLite-backed = works on the free plan.
+  "durable_objects": { "bindings": [{ "name": "LOBBY", "class_name": "Lobby" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Lobby"] }],
+  "observability": { "enabled": true }
+}

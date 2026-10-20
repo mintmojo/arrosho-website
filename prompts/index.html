@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prompts · Arrosho</title>
+<meta name="theme-color" content="#16130f">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#16130f;--card:#211d17;--line:#3a332a;--ink:#f3ece0;--dim:#a99d8b;--acc:#f0a63a;--ok:#7fc48a;--bad:#e07a6a}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 Inter,system-ui,sans-serif}
+main{max-width:560px;margin:0 auto;padding:max(24px,env(safe-area-inset-top)) 16px 48px}
+h1{font:700 2rem/1.1 Fraunces,serif;margin:8px 0 4px}h2{font:600 1.05rem Inter;margin:28px 0 10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-size:.78rem}
+p.sub{color:var(--dim);margin:0 0 24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin:12px 0}
+label{display:block;font-size:.85rem;color:var(--dim);margin:12px 0 6px}
+input,textarea{width:100%;font:inherit;color:var(--ink);background:#14110d;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+input:focus,textarea:focus{outline:2px solid var(--acc);border-color:transparent}
+input.big{font:700 2rem Fraunces,serif;text-align:center;letter-spacing:.15em;text-transform:uppercase}
+button{font:600 1rem Inter;border:0;border-radius:10px;padding:12px 16px;cursor:pointer;background:var(--acc);color:#1b1408}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button.sm{padding:6px 10px;font-size:.85rem}button:disabled{opacity:.5}
+.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.full{width:100%;margin-top:16px}
+.err{color:var(--bad);min-height:1.4em;margin-top:10px;font-size:.92rem}.ok{color:var(--ok)}
+.prompt{font:500 1.7rem/1.25 Fraunces,serif;margin:8px 0 4px;white-space:pre-wrap}
+.num{color:var(--acc);font:700 .9rem Inter;letter-spacing:.1em;text-transform:uppercase}
+.links{display:flex;gap:18px;justify-content:center;margin-top:28px;font-size:.9rem}
+a{color:var(--acc)}
+.item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}.item .t{flex:1;white-space:pre-wrap;word-break:break-word}
+.item .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.tag{font-size:.72rem;color:var(--dim)}
+.code{font:700 3rem Fraunces,serif;letter-spacing:.12em;color:var(--acc);text-align:center}
+.empty{color:var(--dim);font-size:.9rem}
+table{width:100%;border-collapse:collapse;font-size:.92rem}td{padding:6px 4px;border-top:1px solid var(--line);vertical-align:top}td:first-child{color:var(--acc);font-weight:600;width:3em}
+[hidden]{display:none!important}
+</style>
+</head>
+<body><main id="app"></main>
+<script>
+// ---- config ---------------------------------------------------------------
+const API = new URLSearchParams(location.search).get("api") || "https://prompts-api.ethanrholbrook14.workers.dev";
+const qs = new URLSearchParams(location.search);
+const store = { get(k){try{return localStorage.getItem(k)}catch{return null}}, set(k,v){try{localStorage.setItem(k,v)}catch{}},
+  sget(k){try{return sessionStorage.getItem(k)}catch{return null}}, sset(k,v){try{sessionStorage.setItem(k,v)}catch{}} };
+const $ = (s, r=document) => r.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const app = $("#app");
+async function call(path, body){
+  let r; try { r = await fetch(API + path, {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify(body)}); }
+  catch { throw new Error("Can't reach the server. Check your connection."); }
+  const d = await r.json().catch(()=>({}));
+  if (!r.ok) throw new Error(d.error || "Something went wrong");
+  return d;
+}
+const lobbyCode = () => (qs.get("c") || store.get("pg_code") || "").toUpperCase();
+const base = location.pathname.replace(/host\/?$/, "").replace(/index\.html$/, "");
+const joinLink = (c) => location.origin + base + "?c=" + c;
+
+// ---- player: enter code + number -------------------------------------------
+function viewJoin(){
+  const c = lobbyCode();
+  app.innerHTML = `
+  <h1>Your prompt</h1><p class="sub">Type your lobby code and the number you were given.</p>
+  <form class="card" id="f">
+    <label>Lobby code</label><input class="big" id="code" maxlength="4" autocapitalize="characters" autocomplete="off" value="${esc(c)}" placeholder="ABCD">
+    <label>Your number</label><input class="big" id="num" inputmode="numeric" pattern="[0-9]*" maxlength="3" autocomplete="off" placeholder="#">
+    <button class="full">See my prompt</button><div class="err" id="e"></div>
+  </form>
+  <div class="links"><a href="#submit">Submit a prompt</a><a href="${base}host/">Host</a></div>`;
+  $(c ? "#num" : "#code").focus();
+  $("#f").onsubmit = async (ev) => {
+    ev.preventDefault();
+    const code = $("#code").value.trim().toUpperCase(), number = $("#num").value.trim();
+    if (code.length !== 4 || !number) return $("#e").textContent = "Enter both the code and your number.";
+    try { const d = await call(`/lobby/${code}/player`, {number}); store.set("pg_code", code); viewPrompt(code, d); }
+    catch(e){ $("#e").textContent = e.message; }
+  };
+}
+function viewPrompt(code, d){
+  app.innerHTML = `
+  <div class="card" style="margin-top:40px;padding:28px 22px">
+    <div class="num">Number ${esc(d.number)}</div>
+    <div class="prompt">${esc(d.prompt)}</div>
+  </div>
+  <div class="row" style="margin-top:12px"><button class="ghost" id="again">Check again</button><button class="ghost" id="out">Done</button></div>
+  <div class="links"><a href="#submit">Submit a prompt</a></div>`;
+  $("#again").onclick = async () => { try { viewPrompt(code, await call(`/lobby/${code}/player`, {number:d.number})); } catch(e){ alert(e.message); } };
+  $("#out").onclick = viewJoin;
+}
+
+// ---- anyone: submit a prompt to a lobby ------------------------------------
+function viewSubmit(){
+  app.innerHTML = `
+  <h1>Submit a prompt</h1><p class="sub">The host decides which ones get used.</p>
+  <form class="card" id="f">
+    <label>Lobby code</label><input class="big" id="code" maxlength="4" autocapitalize="characters" autocomplete="off" value="${esc(lobbyCode())}" placeholder="ABCD">
+    <label>Your prompt</label><textarea id="t" rows="4" maxlength="500"></textarea>
+    <button class="full">Send</button><div class="err" id="e"></div>
+  </form>
+  <div class="links"><a href="#">Back</a></div>`;
+  $("#f").onsubmit = async (ev) => {
+    ev.preventDefault();
+    const code = $("#code").value.trim().toUpperCase(), text = $("#t").value.trim();
+    if (code.length !== 4 || !text) return $("#e").textContent = "Enter the code and a prompt.";
+    try { await call(`/lobby/${code}/submit`, {text}); store.set("pg_code", code); $("#t").value = "";
+      $("#e").innerHTML = `<span class="ok">Sent. Add another if you like.</span>`; }
+    catch(e){ $("#e").textContent = e.message; }
+  };
+}
+
+// ---- host ------------------------------------------------------------------
+let H = null; // {code, password, state}
+function viewHostLogin(){
+  app.innerHTML = `
+  <h1>Host</h1><p class="sub">Start a lobby, or open one you already made.</p>
+  <form class="card" id="n"><h2 style="margin-top:0">New lobby</h2>
+    <label>Pick a host password</label><input id="np" type="password" autocomplete="new-password">
+    <button class="full">Create lobby</button><div class="err" id="ne"></div></form>
+  <form class="card" id="o"><h2 style="margin-top:0">Open a lobby</h2>
+    <label>Lobby code</label><input class="big" id="oc" maxlength="4" autocapitalize="characters" value="${esc(store.get("pg_host_code")||"")}">
+    <label>Password</label><input id="op" type="password" autocomplete="current-password">
+    <button class="full">Open</button><div class="err" id="oe"></div></form>
+  <div class="links"><a href="${base}">Player view</a></div>`;
+  $("#n").onsubmit = async (ev) => { ev.preventDefault();
+    const password = $("#np").value;
+    try { const {code} = await call("/lobby", {password}); await openHost(code, password); } catch(e){ $("#ne").textContent = e.message; } };
+  $("#o").onsubmit = async (ev) => { ev.preventDefault();
+    try { await openHost($("#oc").value.trim().toUpperCase(), $("#op").value); } catch(e){ $("#oe").textContent = e.message; } };
+}
+async function openHost(code, password){
+  const state = await call(`/lobby/${code}/host`, {password, action:"get"});
+  H = {code, password, state, showMap:false};
+  store.set("pg_host_code", code); store.sset("pg_host", JSON.stringify({code, password}));
+  renderHost();
+}
+async function act(action, extra={}){
+  try { H.state = await call(`/lobby/${H.code}/host`, {password:H.password, action, ...extra}); renderHost(); return true; }
+  catch(e){ alert(e.message); return false; }
+}
+function renderHost(){
+  const s = H.state, by = st => s.prompts.filter(p => p.status === st);
+  const pending = by("pending"), active = by("active"), unused = by("unused");
+  const item = (p, acts) => `<div class="item"><div class="t">${esc(p.text)}<div class="tag">${p.from === "submitted" ? "submitted" : "yours"}</div></div><div class="acts">${acts}</div></div>`;
+  const btn = (id, status, label, cls="ghost sm") => `<button class="${cls}" data-id="${id}" data-st="${status}">${label}</button>`;
+  const list = (arr, fn, none) => arr.length ? arr.map(fn).join("") : `<div class="empty">${none}</div>`;
+  const map = Object.entries(s.players).map(([n,id]) => `<tr><td>${n}</td><td>${esc((s.prompts.find(p=>p.id===id)||{}).text||"")}</td></tr>`).join("");
+  app.innerHTML = `
+  <div class="card" style="text-align:center">
+    <div class="tag">LOBBY CODE</div><div class="code">${esc(H.code)}</div>
+    <div class="tag" style="word-break:break-all">${esc(joinLink(H.code))}</div>
+    <div class="row" style="margin-top:12px"><button class="ghost sm" id="copy">Copy link</button><button class="ghost sm" id="refresh">Refresh</button><button class="ghost sm" id="lo">Log out</button></div>
+  </div>
+
+  <h2>Hand out prompts</h2>
+  <div class="card">
+    <label>How many people?</label>
+    <div class="row"><input id="cnt" inputmode="numeric" value="${s.count || ""}" placeholder="10"><button id="go">${s.count ? "Reshuffle" : "Assign"}</button></div>
+    <div class="tag" style="margin-top:8px">${active.length} active prompt${active.length===1?"":"s"}. ${s.count ? `Round ${s.round}: numbers 1–${s.count} are live.` : "Nothing handed out yet."} If there are more people than prompts, some share.</div>
+    ${s.count ? `<button class="ghost sm" id="map" style="margin-top:10px">${H.showMap?"Hide":"Show"} who has what</button>` : ""}
+    ${s.count && H.showMap ? `<table style="margin-top:10px">${map}</table>` : ""}
+  </div>
+
+  <h2>Submitted · ${pending.length} waiting</h2>
+  <div class="card">${list(pending, p => item(p, btn(p.id,"active","Use","sm") + btn(p.id,"unused","Don't use")), "No submissions yet. Share the link above and people can send some.")}</div>
+
+  <h2>Active · ${active.length}</h2>
+  <div class="card">
+    ${list(active, p => item(p, `<button class="ghost sm" data-edit="${p.id}">Edit</button>` + btn(p.id,"unused","Set aside")), "No active prompts. Add some below.")}
+    <label>Add prompts (one per line)</label><textarea id="add" rows="3"></textarea>
+    <button class="full" id="addb">Add</button>
+  </div>
+
+  <h2>Unused · ${unused.length}</h2>
+  <div class="card">${list(unused, p => item(p, btn(p.id,"active","Use again")), "Nothing set aside.")}</div>`;
+
+  $("#copy").onclick = () => navigator.clipboard?.writeText(joinLink(H.code)).then(()=>$("#copy").textContent="Copied");
+  $("#refresh").onclick = () => act("get");
+  $("#lo").onclick = () => { store.sset("pg_host",""); H = null; viewHostLogin(); };
+  $("#go").onclick = () => { const count = $("#cnt").value.trim();
+    if (s.count && !confirm("Reshuffle? Everyone's number will point to a new prompt.")) return;
+    act("assign", {count}); };
+  $("#map") && ($("#map").onclick = () => { H.showMap = !H.showMap; renderHost(); });
+  $("#addb").onclick = async () => { const text = $("#add").value; if (text.trim()) await act("add", {text}); };
+  app.querySelectorAll("[data-st]").forEach(b => b.onclick = () => act("set", {id:+b.dataset.id, status:b.dataset.st}));
+  app.querySelectorAll("[data-edit]").forEach(b => b.onclick = () => {
+    const p = s.prompts.find(x => x.id === +b.dataset.edit); const t = prompt("Edit prompt", p.text);
+    if (t && t.trim() && t !== p.text) act("edit", {id:p.id, text:t}); });
+}
+
+// ---- routing ---------------------------------------------------------------
+function route(){
+  if (/\/host\/?$/.test(location.pathname) || location.hash === "#host") {
+    const saved = JSON.parse(store.sget("pg_host") || "null");
+    if (H) return renderHost();
+    if (saved && saved.code) return openHost(saved.code, saved.password).catch(viewHostLogin);
+    return viewHostLogin();
+  }
+  if (location.hash === "#submit") return viewSubmit();
+  viewJoin();
+}
+addEventListener("hashchange", route); route();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register(base + "sw.js", {scope: base}).catch(()=>{});
+</script>
+</body>
+</html>

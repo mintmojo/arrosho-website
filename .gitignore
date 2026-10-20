@@ -7,3 +7,9 @@ deploy-jestfest.ps1
 verify-relay.mjs
 deploy-log.txt
 verify-log.txt
+
+prompts-api/node_modules/
+prompts-api/.wrangler/
+DEPLOY-PROMPTS.bat
+deploy-prompts.ps1
+deploy-prompts-log.txt
